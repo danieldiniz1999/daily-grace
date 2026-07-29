@@ -19,6 +19,7 @@ import {
 
 import appMockup from "@/assets/app-mockup.jpg";
 import autoraImg from "@/assets/autora.jpg";
+import depoimentoModerno from "@/assets/depoimento-moderno.jpg";
 import maosBiblia from "@/assets/maos-biblia.jpg";
 import mulherOracao from "@/assets/mulher-oracao.jpg";
 import {
