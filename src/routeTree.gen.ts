@@ -13,9 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AuthenticatedDevocionaisRouteImport } from './routes/_authenticated/devocionais'
 import { Route as AuthenticatedDevocionalDateRouteImport } from './routes/_authenticated/devocional.$date'
+import { Route as ApiPublicKiwifyRouteImport } from './routes/api/public/kiwify'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -36,6 +38,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
   id: '/conta',
   path: '/conta',
@@ -53,22 +60,31 @@ const AuthenticatedDevocionalDateRoute =
     path: '/devocional/$date',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicKiwifyRoute = ApiPublicKiwifyRouteImport.update({
+  id: '/api/public/kiwify',
+  path: '/api/public/kiwify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/conta': typeof AuthenticatedContaRoute
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
+  '/api/public/kiwify': typeof ApiPublicKiwifyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/conta': typeof AuthenticatedContaRoute
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
+  '/api/public/kiwify': typeof ApiPublicKiwifyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -76,9 +92,11 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/devocionais': typeof AuthenticatedDevocionaisRoute
   '/_authenticated/devocional/$date': typeof AuthenticatedDevocionalDateRoute
+  '/api/public/kiwify': typeof ApiPublicKiwifyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -86,26 +104,32 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/admin'
     | '/conta'
     | '/devocionais'
     | '/devocional/$date'
+    | '/api/public/kiwify'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/admin'
     | '/conta'
     | '/devocionais'
     | '/devocional/$date'
+    | '/api/public/kiwify'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/reset-password'
+    | '/_authenticated/admin'
     | '/_authenticated/conta'
     | '/_authenticated/devocionais'
     | '/_authenticated/devocional/$date'
+    | '/api/public/kiwify'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -113,6 +137,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiPublicKiwifyRoute: typeof ApiPublicKiwifyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -145,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/conta': {
       id: '/_authenticated/conta'
       path: '/conta'
@@ -166,16 +198,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDevocionalDateRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/kiwify': {
+      id: '/api/public/kiwify'
+      path: '/api/public/kiwify'
+      fullPath: '/api/public/kiwify'
+      preLoaderRoute: typeof ApiPublicKiwifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedContaRoute: typeof AuthenticatedContaRoute
   AuthenticatedDevocionaisRoute: typeof AuthenticatedDevocionaisRoute
   AuthenticatedDevocionalDateRoute: typeof AuthenticatedDevocionalDateRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedContaRoute: AuthenticatedContaRoute,
   AuthenticatedDevocionaisRoute: AuthenticatedDevocionaisRoute,
   AuthenticatedDevocionalDateRoute: AuthenticatedDevocionalDateRoute,
@@ -189,6 +230,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiPublicKiwifyRoute: ApiPublicKiwifyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

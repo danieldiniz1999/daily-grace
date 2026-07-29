@@ -90,7 +90,6 @@ export const Route = createFileRoute("/api/public/kiwify")({
             status,
             kiwify_order_id: orderId || null,
             kiwify_customer_email: email,
-            ...(status === "active" ? {} : {}),
           },
           { onConflict: "user_id" },
         );

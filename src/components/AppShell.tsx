@@ -8,7 +8,13 @@ import { cn } from "@/lib/utils";
 
 type NavItem = { to: string; label: string; icon: ReactNode };
 
-export function AppShell({ children, isAdmin }: { children: ReactNode; isAdmin?: boolean }) {
+export function AppShell({
+  children,
+  isAdmin,
+}: {
+  children?: ReactNode;
+  isAdmin?: boolean;
+}) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
