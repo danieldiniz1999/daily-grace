@@ -19,7 +19,7 @@ import {
 
 import appMockup from "@/assets/app-mockup.jpg";
 import autoraImg from "@/assets/autora.jpg";
-import heroImg from "@/assets/hero-devocional.jpg";
+import maosBiblia from "@/assets/maos-biblia.jpg";
 import mulherOracao from "@/assets/mulher-oracao.jpg";
 import {
   Accordion,
