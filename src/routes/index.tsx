@@ -19,7 +19,7 @@ import {
 
 import appMockup from "@/assets/app-mockup.jpg";
 import autoraImg from "@/assets/autora.jpg";
-import heroImg from "@/assets/hero-devocional.jpg";
+import maosBiblia from "@/assets/maos-biblia.jpg";
 import mulherOracao from "@/assets/mulher-oracao.jpg";
 import {
   Accordion,
@@ -379,8 +379,8 @@ function Landing() {
           <div className="bg-grace absolute -inset-6 rounded-[3rem] opacity-15 blur-3xl" />
           <div className="relative">
             <img
-              src={heroImg}
-              alt="Bíblia aberta com orquídeas, vela acesa e xícara de chá em uma manhã tranquila"
+              src={maosBiblia}
+              alt="Mãos femininas segurando uma Bíblia com flores lilás ao fundo"
               width={1280}
               height={1600}
               className="aspect-4/5 w-full rounded-[2.25rem] object-cover shadow-lift"
