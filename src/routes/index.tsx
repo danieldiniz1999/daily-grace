@@ -378,6 +378,7 @@ function Landing() {
         <div className="relative">
           <div className="bg-grace absolute -inset-6 rounded-[3rem] opacity-15 blur-3xl" />
           <div className="relative">
+            <img
               src={maosBiblia}
               alt="Mãos femininas segurando uma Bíblia com flores lilás ao fundo"
               width={1280}
