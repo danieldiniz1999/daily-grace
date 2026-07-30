@@ -311,6 +311,10 @@ function SubscribersAdmin() {
 
   return (
     <div className="space-y-3">
+      <KiwifyPanel
+        onDone={() => queryClient.invalidateQueries({ queryKey: ["admin-subscribers"] })}
+      />
+
       {(data ?? []).map((s) => (
         <div
           key={s.id}
