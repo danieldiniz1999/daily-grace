@@ -18,7 +18,6 @@ import {
   X,
 } from "lucide-react";
 
-import appMockup from "@/assets/app-mockup.jpg";
 import autoraImg from "@/assets/autora.jpg";
 import depoimentoModerno from "@/assets/depoimento-moderno.jpg";
 import heroUploaded from "@/assets/hero-uploaded.png.asset.json";
