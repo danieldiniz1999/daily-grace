@@ -19,6 +19,7 @@ import {
 
 import appMockup from "@/assets/app-mockup.jpg";
 import autoraImg from "@/assets/autora.jpg";
+import depoimentoModerno from "@/assets/depoimento-moderno.jpg";
 import maosBiblia from "@/assets/maos-biblia.jpg";
 import mulherOracao from "@/assets/mulher-oracao.jpg";
 import {
@@ -646,32 +647,64 @@ function Landing() {
             eyebrow="Histórias reais"
             title="Mulheres que voltaram a ter intimidade com Deus"
           />
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {depoimentos.map((d) => (
-              <figure
-                key={d.nome}
-                className="flex flex-col rounded-[1.75rem] border border-border/60 bg-card p-8 shadow-card"
-              >
-                <Quote className="size-8 text-accent/60" />
-                <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed text-foreground/85">
-                  {d.texto}
-                </blockquote>
-                <div className="mt-6 flex items-center gap-1 text-primary">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="size-4 fill-current" />
-                  ))}
+          <div className="mt-12 grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+            {/* Imagem moderna com card de destaque */}
+            <div className="relative">
+              <div className="bg-grace absolute -inset-5 rounded-[3rem] opacity-15 blur-3xl" />
+              <div className="relative">
+                <img
+                  src={depoimentoModerno}
+                  alt="Mulher jovem em ambiente moderno lendo o devocional no celular com a Bíblia aberta"
+                  width={1024}
+                  height={1024}
+                  loading="lazy"
+                  className="aspect-square w-full rounded-[2.25rem] object-cover shadow-lift"
+                />
+                <div className="absolute -bottom-5 -right-5 max-w-[260px] rounded-2xl border border-border/60 bg-card/95 p-5 shadow-card backdrop-blur sm:-right-8 sm:max-w-[280px]">
+                  <div className="flex items-center gap-1 text-primary">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className="size-4 fill-current" />
+                    ))}
+                    <span className="ml-1.5 text-sm font-semibold text-foreground">5.0</span>
+                  </div>
+                  <p className="mt-2 text-sm leading-snug text-foreground/85">
+                    "Virou o meu momento favorito do dia."
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">Juliana M., assinante</p>
                 </div>
-                <figcaption className="mt-2.5 flex items-center gap-3">
-                  <span className="bg-grace flex size-10 items-center justify-center rounded-full font-display text-lg font-semibold text-primary-foreground">
-                    {d.nome.charAt(0)}
-                  </span>
-                  <span className="text-sm font-semibold">
-                    {d.nome}
-                    <span className="block font-normal text-muted-foreground">{d.cidade}</span>
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
+              </div>
+            </div>
+
+            {/* Cards de depoimento */}
+            <div className="grid gap-5">
+              {depoimentos.map((d) => (
+                <figure
+                  key={d.nome}
+                  className="flex flex-col rounded-[1.75rem] border border-border/60 bg-card p-7 shadow-card"
+                >
+                  <Quote className="size-7 text-accent/60" />
+                  <blockquote className="mt-3 flex-1 text-[15px] leading-relaxed text-foreground/85">
+                    {d.texto}
+                  </blockquote>
+                  <div className="mt-5 flex items-center justify-between">
+                    <figcaption className="flex items-center gap-3">
+                      <span className="bg-grace flex size-10 items-center justify-center rounded-full font-display text-lg font-semibold text-primary-foreground">
+                        {d.nome.charAt(0)}
+                      </span>
+                      <span className="text-sm font-semibold">
+                        {d.nome}
+                        <span className="block font-normal text-muted-foreground">{d.cidade}</span>
+                      </span>
+                    </figcaption>
+                    <div className="flex items-center gap-0.5 text-primary">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className="size-3.5 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                </figure>
+              ))}
+            </div>
           </div>
         </div>
       </section>
