@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createHmac, timingSafeEqual } from "crypto";
 
-import { detectBillingPeriod } from "@/lib/kiwify-plan";
+
 
 function obj(v: unknown): Record<string, unknown> {
   return (v && typeof v === "object" ? v : {}) as Record<string, unknown>;
