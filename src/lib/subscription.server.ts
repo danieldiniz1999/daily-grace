@@ -1,6 +1,6 @@
-import { randomBytes } from "crypto";
-
 import { detectBillingPeriod } from "./kiwify-plan";
+import { generateMemorablePassword } from "./password.server";
+
 
 export type ProvisionInput = {
   email: string;
