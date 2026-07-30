@@ -22,6 +22,7 @@ import appMockup from "@/assets/app-mockup.jpg";
 import autoraImg from "@/assets/autora.jpg";
 import depoimentoModerno from "@/assets/depoimento-moderno.jpg";
 import heroUploaded from "@/assets/hero-uploaded.png.asset.json";
+import mockupApp from "@/assets/mockup-app.png.asset.json";
 import mulherOracao from "@/assets/mulher-oracao.jpg";
 import { AnimateIn } from "@/components/animate-in";
 import { Button } from "@/components/ui/button";
