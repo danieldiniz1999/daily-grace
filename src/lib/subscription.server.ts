@@ -65,6 +65,8 @@ export async function provisionSubscription(input: ProvisionInput) {
       }
       userId = newUser.user.id;
       created = true;
+      generatedPassword = password;
+
     }
 
     const { data: profileCheck } = await supabaseAdmin
