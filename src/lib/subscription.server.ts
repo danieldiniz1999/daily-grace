@@ -26,6 +26,8 @@ export async function provisionSubscription(input: ProvisionInput) {
 
   let userId: string | null = null;
   let created = false;
+  let generatedPassword: string | null = null;
+
 
   const { data: existingProfile } = await supabaseAdmin
     .from("profiles")
