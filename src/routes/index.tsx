@@ -664,66 +664,69 @@ function Landing() {
       {/* DEPOIMENTOS */}
       <section id="depoimentos" className="border-y border-border/50 bg-background/60">
         <div className="mx-auto max-w-6xl px-5 py-24">
-          <SectionHead
-            eyebrow="Histórias reais"
-            title="Mulheres que voltaram a ter intimidade com Deus"
-          />
+          <AnimateIn>
+            <SectionHead
+              eyebrow="Histórias reais"
+              title="Mulheres que voltaram a ter intimidade com Deus"
+            />
+          </AnimateIn>
           <div className="mt-12 grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
             {/* Imagem moderna com card de destaque */}
-            <div className="relative">
-              <div className="bg-grace absolute -inset-5 rounded-[3rem] opacity-15 blur-3xl" />
+            <AnimateIn>
               <div className="relative">
-                <img
-                  src={depoimentoModerno}
-                  alt="Mulher jovem em ambiente moderno lendo o devocional no celular com a Bíblia aberta"
-                  width={1024}
-                  height={1024}
-                  loading="lazy"
-                  className="aspect-square w-full rounded-[2.25rem] object-cover shadow-lift"
-                />
-                <div className="absolute -bottom-5 -right-5 max-w-[260px] rounded-2xl border border-border/60 bg-card/95 p-5 shadow-card backdrop-blur sm:-right-8 sm:max-w-[280px]">
-                  <div className="flex items-center gap-1 text-primary">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="size-4 fill-current" />
-                    ))}
-                    <span className="ml-1.5 text-sm font-semibold text-foreground">5.0</span>
+                <div className="bg-grace absolute -inset-5 rounded-[3rem] opacity-15 blur-3xl" />
+                <div className="relative">
+                  <img
+                    src={depoimentoModerno}
+                    alt="Mulher jovem em ambiente moderno lendo o devocional no celular com a Bíblia aberta"
+                    width={1024}
+                    height={1024}
+                    loading="lazy"
+                    className="aspect-square w-full rounded-[2.25rem] object-cover shadow-lift"
+                  />
+                  <div className="absolute -bottom-5 -right-5 max-w-[260px] rounded-2xl border border-border/60 bg-card/95 p-5 shadow-card backdrop-blur sm:-right-8 sm:max-w-[280px]">
+                    <div className="flex items-center gap-1 text-primary">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className="size-4 fill-current" />
+                      ))}
+                      <span className="ml-1.5 text-sm font-semibold text-foreground">5.0</span>
+                    </div>
+                    <p className="mt-2 text-sm leading-snug text-foreground/85">
+                      "Virou o meu momento favorito do dia."
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">Juliana M., assinante</p>
                   </div>
-                  <p className="mt-2 text-sm leading-snug text-foreground/85">
-                    "Virou o meu momento favorito do dia."
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">Juliana M., assinante</p>
                 </div>
               </div>
-            </div>
+            </AnimateIn>
 
             {/* Cards de depoimento */}
             <div className="grid gap-5">
-              {depoimentos.map((d) => (
-                <figure
-                  key={d.nome}
-                  className="flex flex-col rounded-[1.75rem] border border-border/60 bg-card p-7 shadow-card"
-                >
-                  <Quote className="size-7 text-accent/60" />
-                  <blockquote className="mt-3 flex-1 text-[15px] leading-relaxed text-foreground/85">
-                    {d.texto}
-                  </blockquote>
-                  <div className="mt-5 flex items-center justify-between">
-                    <figcaption className="flex items-center gap-3">
-                      <span className="bg-grace flex size-10 items-center justify-center rounded-full font-display text-lg font-semibold text-primary-foreground">
-                        {d.nome.charAt(0)}
-                      </span>
-                      <span className="text-sm font-semibold">
-                        {d.nome}
-                        <span className="block font-normal text-muted-foreground">{d.cidade}</span>
-                      </span>
-                    </figcaption>
-                    <div className="flex items-center gap-0.5 text-primary">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className="size-3.5 fill-current" />
-                      ))}
+              {depoimentos.map((d, i) => (
+                <AnimateIn key={d.nome} delay={i * 120}>
+                  <figure className="flex h-full flex-col rounded-[1.75rem] border border-border/60 bg-card p-7 shadow-card">
+                    <Quote className="size-7 text-accent/60" />
+                    <blockquote className="mt-3 flex-1 text-[15px] leading-relaxed text-foreground/85">
+                      {d.texto}
+                    </blockquote>
+                    <div className="mt-5 flex items-center justify-between">
+                      <figcaption className="flex items-center gap-3">
+                        <span className="bg-grace flex size-10 items-center justify-center rounded-full font-display text-lg font-semibold text-primary-foreground">
+                          {d.nome.charAt(0)}
+                        </span>
+                        <span className="text-sm font-semibold">
+                          {d.nome}
+                          <span className="block font-normal text-muted-foreground">{d.cidade}</span>
+                        </span>
+                      </figcaption>
+                      <div className="flex items-center gap-0.5 text-primary">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star key={i} className="size-3.5 fill-current" />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </figure>
+                  </figure>
+                </AnimateIn>
               ))}
             </div>
           </div>
@@ -731,36 +734,38 @@ function Landing() {
       </section>
 
       {/* AUTORA */}
-      <section className="mx-auto max-w-5xl px-5 py-24">
-        <div className="grid items-center gap-12 md:grid-cols-[0.85fr_1fr]">
-          <img
-            src={autoraImg}
-            alt="Autora dos devocionais do Daily Grace com uma Bíblia aberta"
-            width={1000}
-            height={1000}
-            loading="lazy"
-            className="aspect-square w-full rounded-[2rem] object-cover shadow-card"
-          />
-          <div>
-            <SectionHead
-              align="left"
-              eyebrow="Quem escreve"
-              title="Palavra escrita por quem entende a sua rotina"
-              sub="Cada devocional nasce da Palavra e da vida real: casa, filhos, trabalho, espera e recomeços. Nada de teologia distante — texto simples, bíblico e aplicável, pensado do começo ao fim para a mulher cristã."
+      <AnimateIn>
+        <section className="mx-auto max-w-5xl px-5 py-24">
+          <div className="grid items-center gap-12 md:grid-cols-[0.85fr_1fr]">
+            <img
+              src={autoraImg}
+              alt="Autora dos devocionais do Daily Grace com uma Bíblia aberta"
+              width={1000}
+              height={1000}
+              loading="lazy"
+              className="aspect-square w-full rounded-[2rem] object-cover shadow-card"
             />
-            <div className="mt-7 flex flex-wrap gap-3">
-              {["Base bíblica", "Linguagem simples", "Aplicação prática"].map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground"
-                >
-                  {t}
-                </span>
-              ))}
+            <div>
+              <SectionHead
+                align="left"
+                eyebrow="Quem escreve"
+                title="Palavra escrita por quem entende a sua rotina"
+                sub="Cada devocional nasce da Palavra e da vida real: casa, filhos, trabalho, espera e recomeços. Nada de teologia distante — texto simples, bíblico e aplicável, pensado do começo ao fim para a mulher cristã."
+              />
+              <div className="mt-7 flex flex-wrap gap-3">
+                {["Base bíblica", "Linguagem simples", "Aplicação prática"].map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </AnimateIn>
 
       {/* BÔNUS */}
       <section className="mx-auto max-w-6xl px-5 pb-24">
