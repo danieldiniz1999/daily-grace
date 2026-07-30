@@ -18,10 +18,10 @@ import {
   X,
 } from "lucide-react";
 
-import appMockup from "@/assets/app-mockup.jpg";
 import autoraImg from "@/assets/autora.jpg";
 import depoimentoModerno from "@/assets/depoimento-moderno.jpg";
 import heroUploaded from "@/assets/hero-uploaded.png.asset.json";
+import mockupApp from "@/assets/mockup-app.png.asset.json";
 import mulherOracao from "@/assets/mulher-oracao.jpg";
 import { AnimateIn } from "@/components/animate-in";
 import { Button } from "@/components/ui/button";
@@ -516,12 +516,12 @@ function Landing() {
                 </div>
               </div>
               <img
-                src={appMockup}
-                alt="Celular mostrando o devocional do dia ao lado de uma Bíblia aberta"
-                width={1200}
-                height={1200}
+                src={mockupApp.url}
+                alt="Celular mostrando a tela do app Daily Grace com o devocional do dia"
+                width={1024}
+                height={1024}
                 loading="lazy"
-                className="aspect-square w-full rounded-[2rem] object-cover shadow-lift"
+                className="w-full object-contain drop-shadow-2xl"
               />
             </div>
           </div>
