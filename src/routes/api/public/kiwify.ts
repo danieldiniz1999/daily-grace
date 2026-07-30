@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createHmac, timingSafeEqual, randomBytes } from "crypto";
+import { createHmac, timingSafeEqual } from "crypto";
+
+import { detectBillingPeriod } from "@/lib/kiwify-plan";
 
 function obj(v: unknown): Record<string, unknown> {
   return (v && typeof v === "object" ? v : {}) as Record<string, unknown>;
@@ -35,13 +37,21 @@ function getPlanName(payload: Record<string, unknown>): string {
   return texts.join(" | ");
 }
 
-
-function detectBillingPeriod(name: string): "monthly" | "annual" | null {
-  const lower = name.toLowerCase();
-  if (/\b(mensal|monthly|month|m[eê]s)\b/.test(lower)) return "monthly";
-  if (/\b(anual|annual|yearly|year|ano)\b/.test(lower)) return "annual";
-  return null;
+/** Coleta todos os identificadores de produto presentes no payload. */
+function getProductIds(payload: Record<string, unknown>): string[] {
+  const values = [
+    payload.product_id,
+    payload.ProductId,
+    obj(payload.product).id,
+    obj(payload.Product).id,
+    obj(payload.Product).product_id,
+    obj(obj(payload.Subscription ?? payload.subscription).product).id,
+    obj(payload.Commissions).product_id,
+  ];
+  return values.map((v) => (typeof v === "string" ? v.trim() : "")).filter(Boolean);
 }
+
+
 
 
 
