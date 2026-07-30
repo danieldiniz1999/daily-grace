@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+import logoAsset from "@/assets/daily-grace-logo.png.asset.json";
 
 type NavItem = { to: string; label: string; icon: ReactNode };
 
@@ -39,9 +40,11 @@ export function AppShell({
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
           <Link to="/devocionais" className="flex items-center gap-2">
-            <span className="bg-grace flex size-9 items-center justify-center rounded-full">
-              <Heart className="size-4 text-primary-foreground" />
-            </span>
+            <img
+              src={logoAsset.url}
+              alt="Daily Grace"
+              className="size-9 object-contain"
+            />
             <span className="font-display text-xl leading-none font-semibold tracking-tight">
               Daily Grace
             </span>

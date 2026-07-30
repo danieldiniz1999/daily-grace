@@ -29,6 +29,7 @@ import mulherOracao from "@/assets/mulher-oracao.jpg";
 import { AnimateIn } from "@/components/animate-in";
 import { Button } from "@/components/ui/button";
 import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
+import logoAsset from "@/assets/daily-grace-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -293,9 +294,7 @@ function Landing() {
       <div className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
         <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
           <div className="flex items-center gap-2.5">
-            <span className="bg-grace flex size-9 items-center justify-center rounded-full shadow-soft">
-              <Heart className="size-4 text-primary-foreground" />
-            </span>
+            <img src={logoAsset.url} alt="Daily Grace" className="size-9 object-contain" />
             <span className="font-display text-2xl font-semibold tracking-tight">Daily Grace</span>
           </div>
           <nav className="hidden items-center gap-7 text-sm text-muted-foreground lg:flex">
