@@ -467,67 +467,71 @@ function Landing() {
       </AnimateIn>
 
       {/* ANTES x DEPOIS */}
-      <section className="mx-auto max-w-5xl px-5 pb-24">
-        <SectionHead
-          eyebrow="A transformação"
-          title="A diferença de ter uma palavra todos os dias"
-        />
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
-          <div className="rounded-[2rem] border border-border/60 bg-muted/40 p-8">
-            <p className="text-xs font-bold tracking-[0.2em] text-muted-foreground uppercase">
-              Sem o Daily Grace
-            </p>
-            <ul className="mt-5 space-y-3">
-              {antes.map((i) => (
-                <li key={i} className="flex items-start gap-3 text-[15px] text-muted-foreground">
-                  <X className="mt-0.5 size-4 shrink-0 text-destructive" />
-                  {i}
-                </li>
-              ))}
-            </ul>
+      <AnimateIn>
+        <section className="mx-auto max-w-5xl px-5 pb-24">
+          <SectionHead
+            eyebrow="A transformação"
+            title="A diferença de ter uma palavra todos os dias"
+          />
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            <div className="rounded-[2rem] border border-border/60 bg-muted/40 p-8">
+              <p className="text-xs font-bold tracking-[0.2em] text-muted-foreground uppercase">
+                Sem o Daily Grace
+              </p>
+              <ul className="mt-5 space-y-3">
+                {antes.map((i) => (
+                  <li key={i} className="flex items-start gap-3 text-[15px] text-muted-foreground">
+                    <X className="mt-0.5 size-4 shrink-0 text-destructive" />
+                    {i}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-[2rem] border border-primary/25 bg-card p-8 shadow-lift">
+              <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
+                Com o Daily Grace
+              </p>
+              <ul className="mt-5 space-y-3">
+                {depois.map((i) => (
+                  <li key={i} className="flex items-start gap-3 text-[15px] text-foreground/85">
+                    <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                    {i}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div className="rounded-[2rem] border border-primary/25 bg-card p-8 shadow-lift">
-            <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
-              Com o Daily Grace
-            </p>
-            <ul className="mt-5 space-y-3">
-              {depois.map((i) => (
-                <li key={i} className="flex items-start gap-3 text-[15px] text-foreground/85">
-                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
-                  {i}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
+        </section>
+      </AnimateIn>
 
       {/* SOLUÇÃO */}
-      <section className="mx-auto max-w-6xl px-5 pb-24">
-        <div className="rounded-[2.75rem] border border-border/60 bg-card/85 p-8 shadow-card backdrop-blur sm:p-14">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div>
-              <SectionHead
-                align="left"
-                eyebrow="A solução"
-                title="Daily Grace: a sua constância com Deus, resolvida"
-                sub="Chega de decidir por onde começar. Ao acordar, já tem uma palavra esperando por você — curta, profunda e prática. Você abre, lê, ora e segue o dia diferente."
-              />
-              <div className="mt-8">
-                <CTA>Quero começar agora</CTA>
+      <AnimateIn>
+        <section className="mx-auto max-w-6xl px-5 pb-24">
+          <div className="rounded-[2.75rem] border border-border/60 bg-card/85 p-8 shadow-card backdrop-blur sm:p-14">
+            <div className="grid items-center gap-12 lg:grid-cols-2">
+              <div>
+                <SectionHead
+                  align="left"
+                  eyebrow="A solução"
+                  title="Daily Grace: a sua constância com Deus, resolvida"
+                  sub="Chega de decidir por onde começar. Ao acordar, já tem uma palavra esperando por você — curta, profunda e prática. Você abre, lê, ora e segue o dia diferente."
+                />
+                <div className="mt-8">
+                  <CTA>Quero começar agora</CTA>
+                </div>
               </div>
+              <img
+                src={appMockup}
+                alt="Celular mostrando o devocional do dia ao lado de uma Bíblia aberta"
+                width={1200}
+                height={1200}
+                loading="lazy"
+                className="aspect-square w-full rounded-[2rem] object-cover shadow-lift"
+              />
             </div>
-            <img
-              src={appMockup}
-              alt="Celular mostrando o devocional do dia ao lado de uma Bíblia aberta"
-              width={1200}
-              height={1200}
-              loading="lazy"
-              className="aspect-square w-full rounded-[2rem] object-cover shadow-lift"
-            />
           </div>
-        </div>
-      </section>
+        </section>
+      </AnimateIn>
 
       {/* BENEFÍCIOS */}
       <section id="beneficios" className="mx-auto max-w-6xl px-5 pb-24">
