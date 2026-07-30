@@ -517,12 +517,12 @@ function Landing() {
                 </div>
               </div>
               <img
-                src={appMockup}
-                alt="Celular mostrando o devocional do dia ao lado de uma Bíblia aberta"
-                width={1200}
-                height={1200}
+                src={mockupApp.url}
+                alt="Celular mostrando a tela do app Daily Grace com o devocional do dia"
+                width={1024}
+                height={1024}
                 loading="lazy"
-                className="aspect-square w-full rounded-[2rem] object-cover shadow-lift"
+                className="w-full object-contain drop-shadow-2xl"
               />
             </div>
           </div>
