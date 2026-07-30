@@ -768,151 +768,163 @@ function Landing() {
       </AnimateIn>
 
       {/* BÔNUS */}
-      <section className="mx-auto max-w-6xl px-5 pb-24">
-        <div className="rounded-[2.75rem] bg-cream p-8 shadow-card sm:p-14">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-cream-foreground/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] text-cream-foreground uppercase">
-              <Gift className="size-3.5" /> Bônus inclusos
-            </span>
-            <h2 className="font-display mt-5 text-4xl leading-tight font-semibold text-cream-foreground text-balance sm:text-[2.9rem]">
-              Você ainda leva junto com a assinatura
-            </h2>
+      <AnimateIn>
+        <section className="mx-auto max-w-6xl px-5 pb-24">
+          <div className="rounded-[2.75rem] bg-cream p-8 shadow-card sm:p-14">
+            <div className="mx-auto max-w-2xl text-center">
+              <span className="inline-flex items-center gap-2 rounded-full bg-cream-foreground/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] text-cream-foreground uppercase">
+                <Gift className="size-3.5" /> Bônus inclusos
+              </span>
+              <h2 className="font-display mt-5 text-4xl leading-tight font-semibold text-cream-foreground text-balance sm:text-[2.9rem]">
+                Você ainda leva junto com a assinatura
+              </h2>
+            </div>
+            <div className="mt-11 grid gap-5 md:grid-cols-3">
+              {bonus.map((b, i) => (
+                <AnimateIn key={b.titulo} delay={i * 120}>
+                  <div className="h-full rounded-[1.5rem] bg-background/80 p-7">
+                    <CheckCircle2 className="size-6 text-primary" />
+                    <h3 className="font-display mt-4 text-2xl font-semibold">{b.titulo}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.texto}</p>
+                  </div>
+                </AnimateIn>
+              ))}
+            </div>
           </div>
-          <div className="mt-11 grid gap-5 md:grid-cols-3">
-            {bonus.map((b) => (
-              <div key={b.titulo} className="rounded-[1.5rem] bg-background/80 p-7">
-                <CheckCircle2 className="size-6 text-primary" />
-                <h3 className="font-display mt-4 text-2xl font-semibold">{b.titulo}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.texto}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </AnimateIn>
 
       {/* OFERTA */}
-      <section id="oferta" className="mx-auto max-w-3xl px-5 pb-24">
-        <div className="overflow-hidden rounded-[2.5rem] border border-primary/20 bg-card shadow-lift">
-          <div className="bg-grace px-8 py-7 text-center">
-            <Eyebrow tone="on">Assinatura Daily Grace</Eyebrow>
-            <h2 className="font-display mt-4 text-4xl leading-tight font-semibold text-primary-foreground text-balance">
-              Menos que um café por dia para caminhar com Deus
-            </h2>
-          </div>
-          <div className="px-8 py-11 text-center sm:px-14">
-            <p className="text-muted-foreground text-pretty">
-              Acesso completo à área da assinante, devocional novo todos os dias, acervo liberado e
-              bônus inclusos.
-            </p>
-
-            <ul className="mx-auto mt-8 max-w-md space-y-3 text-left">
-              {[
-                "Devocional inédito todos os dias",
-                "Versículo, reflexão e oração guiada",
-                "Acervo completo do seu período de assinatura",
-                "Guia de Oração da Mulher de Fé",
-                "30 Versículos para dias difíceis",
-                "Acesso no celular, tablet e computador",
-                "Cancelamento livre, sem multa",
-              ].map((i) => (
-                <li key={i} className="flex items-start gap-3 text-[15px]">
-                  <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
-                  {i}
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-10">
-              <CTA className="w-full sm:w-auto">Assinar o Daily Grace</CTA>
+      <AnimateIn>
+        <section id="oferta" className="mx-auto max-w-3xl px-5 pb-24">
+          <div className="overflow-hidden rounded-[2.5rem] border border-primary/20 bg-card shadow-lift">
+            <div className="bg-grace px-8 py-7 text-center">
+              <Eyebrow tone="on">Assinatura Daily Grace</Eyebrow>
+              <h2 className="font-display mt-4 text-4xl leading-tight font-semibold text-primary-foreground text-balance">
+                Menos que um café por dia para caminhar com Deus
+              </h2>
             </div>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Pagamento seguro pela Kiwify · Acesso imediato · Cancele quando quiser
-            </p>
-          </div>
-        </div>
+            <div className="px-8 py-11 text-center sm:px-14">
+              <p className="text-muted-foreground text-pretty">
+                Acesso completo à área da assinante, devocional novo todos os dias, acervo liberado e
+                bônus inclusos.
+              </p>
 
-        {/* GARANTIA */}
-        <div className="mt-8 flex flex-col items-center gap-5 rounded-[2rem] border border-border/60 bg-background/75 p-8 text-center sm:flex-row sm:text-left">
-          <span className="bg-grace flex size-18 shrink-0 items-center justify-center rounded-full shadow-soft">
-            <ShieldCheck className="size-9 text-primary-foreground" />
-          </span>
-          <div>
-            <h3 className="font-display text-2xl font-semibold">Garantia incondicional de 7 dias</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              Experimente sem risco. Se em 7 dias você sentir que o Daily Grace não é para você,
-              basta pedir o reembolso e devolvemos 100% do valor. O risco é todo nosso.
-            </p>
+              <ul className="mx-auto mt-8 max-w-md space-y-3 text-left">
+                {[
+                  "Devocional inédito todos os dias",
+                  "Versículo, reflexão e oração guiada",
+                  "Acervo completo do seu período de assinatura",
+                  "Guia de Oração da Mulher de Fé",
+                  "30 Versículos para dias difíceis",
+                  "Acesso no celular, tablet e computador",
+                  "Cancelamento livre, sem multa",
+                ].map((i) => (
+                  <li key={i} className="flex items-start gap-3 text-[15px]">
+                    <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
+                    {i}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-10">
+                <CTA className="w-full sm:w-auto">Assinar o Daily Grace</CTA>
+              </div>
+              <p className="mt-4 text-sm text-muted-foreground">
+                Pagamento seguro pela Kiwify · Acesso imediato · Cancele quando quiser
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+
+          {/* GARANTIA */}
+          <div className="mt-8 flex flex-col items-center gap-5 rounded-[2rem] border border-border/60 bg-background/75 p-8 text-center sm:flex-row sm:text-left">
+            <span className="bg-grace flex size-18 shrink-0 items-center justify-center rounded-full shadow-soft">
+              <ShieldCheck className="size-9 text-primary-foreground" />
+            </span>
+            <div>
+              <h3 className="font-display text-2xl font-semibold">Garantia incondicional de 7 dias</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                Experimente sem risco. Se em 7 dias você sentir que o Daily Grace não é para você,
+                basta pedir o reembolso e devolvemos 100% do valor. O risco é todo nosso.
+              </p>
+            </div>
+          </div>
+        </section>
+      </AnimateIn>
 
       {/* FAQ */}
-      <section className="mx-auto max-w-3xl px-5 pb-24">
-        <SectionHead eyebrow="Dúvidas frequentes" title="Ainda tem alguma pergunta?" />
-        <Accordion type="single" collapsible className="mt-10">
-          {faq.map((f) => (
-            <AccordionItem key={f.q} value={f.q} className="border-border/60">
-              <AccordionTrigger className="text-left text-base font-semibold hover:no-underline">
-                {f.q}
-              </AccordionTrigger>
-              <AccordionContent className="text-[15px] leading-relaxed text-muted-foreground">
-                {f.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </section>
+      <AnimateIn>
+        <section className="mx-auto max-w-3xl px-5 pb-24">
+          <SectionHead eyebrow="Dúvidas frequentes" title="Ainda tem alguma pergunta?" />
+          <Accordion type="single" collapsible className="mt-10">
+            {faq.map((f) => (
+              <AccordionItem key={f.q} value={f.q} className="border-border/60">
+                <AccordionTrigger className="text-left text-base font-semibold hover:no-underline">
+                  {f.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-[15px] leading-relaxed text-muted-foreground">
+                  {f.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+      </AnimateIn>
 
       {/* CTA FINAL */}
-      <section className="mx-auto max-w-5xl px-5 pb-28">
-        <div className="bg-grace relative overflow-hidden rounded-[2.75rem] px-8 py-16 text-center shadow-lift sm:px-14">
-          <Heart className="pointer-events-none absolute -top-8 -left-6 size-40 text-primary-foreground/10" />
-          <Heart className="pointer-events-none absolute -right-8 -bottom-10 size-48 text-primary-foreground/10" />
-          <h2 className="font-display relative mx-auto max-w-3xl text-4xl leading-[1.08] font-semibold text-primary-foreground text-balance sm:text-5xl">
-            "A tua palavra é lâmpada para os meus pés e luz para o meu caminho"
-          </h2>
-          <p className="relative mt-3 text-primary-foreground/80">Salmos 119:105</p>
-          <p className="relative mx-auto mt-7 max-w-xl text-primary-foreground/90 text-pretty">
-            Amanhã de manhã você pode acordar com uma palavra esperando por você. Comece hoje a sua
-            caminhada diária com Deus.
-          </p>
-          <div className="relative mt-9">
-            <CTA tone="cream">Quero assinar o Daily Grace</CTA>
+      <AnimateIn>
+        <section className="mx-auto max-w-5xl px-5 pb-28">
+          <div className="bg-grace relative overflow-hidden rounded-[2.75rem] px-8 py-16 text-center shadow-lift sm:px-14">
+            <Heart className="pointer-events-none absolute -top-8 -left-6 size-40 text-primary-foreground/10" />
+            <Heart className="pointer-events-none absolute -right-8 -bottom-10 size-48 text-primary-foreground/10" />
+            <h2 className="font-display relative mx-auto max-w-3xl text-4xl leading-[1.08] font-semibold text-primary-foreground text-balance sm:text-5xl">
+              "A tua palavra é lâmpada para os meus pés e luz para o meu caminho"
+            </h2>
+            <p className="relative mt-3 text-primary-foreground/80">Salmos 119:105</p>
+            <p className="relative mx-auto mt-7 max-w-xl text-primary-foreground/90 text-pretty">
+              Amanhã de manhã você pode acordar com uma palavra esperando por você. Comece hoje a sua
+              caminhada diária com Deus.
+            </p>
+            <div className="relative mt-9">
+              <CTA tone="cream">Quero assinar o Daily Grace</CTA>
+            </div>
+            <p className="relative mt-4 text-sm text-primary-foreground/75">
+              Acesso imediato · Garantia de 7 dias · Cancele quando quiser
+            </p>
           </div>
-          <p className="relative mt-4 text-sm text-primary-foreground/75">
-            Acesso imediato · Garantia de 7 dias · Cancele quando quiser
-          </p>
-        </div>
-      </section>
+        </section>
+      </AnimateIn>
 
       {/* RODAPÉ */}
-      <footer className="border-t border-border/60 bg-background/70">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-5 py-10 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div className="flex items-center gap-2.5">
-            <span className="bg-grace flex size-9 items-center justify-center rounded-full">
-              <Heart className="size-4 text-primary-foreground" />
-            </span>
-            <span className="font-display text-2xl font-semibold">Daily Grace</span>
+      <AnimateIn>
+        <footer className="border-t border-border/60 bg-background/70">
+          <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-5 py-10 text-center sm:flex-row sm:justify-between sm:text-left">
+            <div className="flex items-center gap-2.5">
+              <span className="bg-grace flex size-9 items-center justify-center rounded-full">
+                <Heart className="size-4 text-primary-foreground" />
+              </span>
+              <span className="font-display text-2xl font-semibold">Daily Grace</span>
+            </div>
+            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              <a href="#beneficios" className="hover:text-foreground">
+                Benefícios
+              </a>
+              <a href="#como-funciona" className="hover:text-foreground">
+                Como funciona
+              </a>
+              <a href="#oferta" className="hover:text-foreground">
+                Assinatura
+              </a>
+              <Link to="/auth" className="hover:text-foreground">
+                Entrar
+              </Link>
+            </nav>
           </div>
-          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-            <a href="#beneficios" className="hover:text-foreground">
-              Benefícios
-            </a>
-            <a href="#como-funciona" className="hover:text-foreground">
-              Como funciona
-            </a>
-            <a href="#oferta" className="hover:text-foreground">
-              Assinatura
-            </a>
-            <Link to="/auth" className="hover:text-foreground">
-              Entrar
-            </Link>
-          </nav>
-        </div>
-        <p className="border-t border-border/50 py-6 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Daily Grace — feito com fé e carinho.
-        </p>
-      </footer>
+          <p className="border-t border-border/50 py-6 text-center text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Daily Grace — feito com fé e carinho.
+          </p>
+        </footer>
+      </AnimateIn>
 
       {/* CTA fixo no celular */}
       <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border/60 bg-background/95 p-3 backdrop-blur sm:hidden">
