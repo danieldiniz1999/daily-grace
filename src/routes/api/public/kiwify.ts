@@ -98,6 +98,16 @@ export const Route = createFileRoute("/api/public/kiwify")({
 
         if (!email) return new Response("Sem e-mail no payload", { status: 400 });
 
+        // Só processa vendas do produto Daily Grace
+        const expectedProductId = process.env.KIWIFY_PRODUCT_ID?.trim();
+        if (expectedProductId) {
+          const ids = getProductIds(payload);
+          if (ids.length > 0 && !ids.includes(expectedProductId)) {
+            console.log("[kiwify] evento de outro produto ignorado", ids);
+            return new Response("ok (outro produto)");
+          }
+        }
+
         const paidEvents = ["order_approved", "subscription_renewed", "billet_created"];
         const isPaid =
           orderStatus === "paid" ||
@@ -114,9 +124,6 @@ export const Route = createFileRoute("/api/public/kiwify")({
         const status = isCanceled ? "canceled" : isLate ? "past_due" : isPaid ? "active" : null;
         if (!status) return new Response("ok (evento ignorado)");
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-        const billingPeriod = detectBillingPeriod(getPlanName(payload));
         const paidAt =
           payload.paid_at ??
           payload.payment_date ??
@@ -124,118 +131,30 @@ export const Route = createFileRoute("/api/public/kiwify")({
           payload.created_at ??
           payload.createdAt ??
           null;
-        const startedAt = typeof paidAt === "string" && !isNaN(Date.parse(paidAt))
-          ? new Date(paidAt)
-          : new Date();
+        const startedAt =
+          typeof paidAt === "string" && !isNaN(Date.parse(paidAt))
+            ? new Date(paidAt)
+            : new Date();
 
-        // Encontra ou cria a usuária pelo e-mail
-        let userId: string | null = null;
-        const { data: existingProfile } = await supabaseAdmin
-          .from("profiles")
-          .select("id")
-          .eq("email", email)
-          .maybeSingle();
+        const { provisionSubscription } = await import("@/lib/subscription.server");
 
-        if (existingProfile) {
-          userId = existingProfile.id;
-        } else {
-          // Busca na Auth também para evitar duplicar usuária
-          const { data: userList } = await supabaseAdmin.auth.admin.listUsers({
-            page: 1,
-            perPage: 1000,
-          });
-          const existingUser = userList?.users?.find((u) => u.email === email);
-
-          if (existingUser) {
-            userId = existingUser.id;
-            if (name) {
-              await supabaseAdmin.auth.admin.updateUserById(userId, {
-                user_metadata: { full_name: name },
-              });
-            }
-          } else {
-            const tempPassword = randomBytes(24).toString("hex");
-            const { data: created, error: createError } =
-              await supabaseAdmin.auth.admin.createUser({
-                email,
-                password: tempPassword,
-                email_confirm: true,
-                user_metadata: { full_name: name },
-              });
-            if (createError || !created?.user) {
-              console.error("[kiwify] falha ao criar usuária", createError);
-              return new Response("Falha ao criar usuária", { status: 500 });
-            }
-            userId = created.user.id;
-          }
-
-          // Cria o perfil se ainda não existir
-          const { data: profileCheck } = await supabaseAdmin
-            .from("profiles")
-            .select("id")
-            .eq("id", userId)
-            .maybeSingle();
-          if (!profileCheck) {
-            const { error: profileError } = await supabaseAdmin.from("profiles").insert({
-              id: userId,
-              email,
-              full_name: name,
-            });
-            if (profileError) {
-              console.error("[kiwify] erro ao criar perfil", profileError);
-              // não falha o webhook por conta do perfil, mas loga
-            }
-          }
-        }
-
-        // Calcula o fim do período
-        let currentPeriodEnd: string | null = null;
-        if (billingPeriod && status === "active") {
-          const endDate = new Date(startedAt);
-          if (billingPeriod === "annual") {
-            endDate.setFullYear(endDate.getFullYear() + 1);
-          } else {
-            endDate.setMonth(endDate.getMonth() + 1);
-          }
-          currentPeriodEnd = endDate.toISOString();
-        }
-
-        // Se for renovação, estende o fim do período atual
-        if (webhookEvent === "subscription_renewed") {
-          const { data: currentSub } = await supabaseAdmin
-            .from("subscriptions")
-            .select("current_period_end, billing_period")
-            .eq("user_id", userId)
-            .maybeSingle();
-          const baseDate = currentSub?.current_period_end
-            ? new Date(currentSub.current_period_end)
-            : startedAt;
-          const period = currentSub?.billing_period ?? billingPeriod ?? "monthly";
-          const endDate = new Date(baseDate);
-          if (period === "annual") endDate.setFullYear(endDate.getFullYear() + 1);
-          else endDate.setMonth(endDate.getMonth() + 1);
-          currentPeriodEnd = endDate.toISOString();
-        }
-
-        const { error } = await supabaseAdmin.from("subscriptions").upsert(
-          {
-            user_id: userId!,
+        try {
+          await provisionSubscription({
+            email,
+            name,
             status,
-            started_at: startedAt.toISOString(),
-            billing_period: billingPeriod,
-            current_period_end: currentPeriodEnd,
-            kiwify_order_id: orderId || null,
-            kiwify_customer_email: email,
-          },
-          { onConflict: "user_id" },
-        );
-
-        if (error) {
-          console.error("[kiwify] erro ao salvar assinatura", error);
+            startedAt,
+            planName: getPlanName(payload),
+            orderId: orderId || null,
+            renew: webhookEvent === "subscription_renewed",
+          });
+        } catch (e) {
+          console.error("[kiwify] erro ao salvar assinatura", e);
           return new Response("Erro ao salvar assinatura", { status: 500 });
         }
 
         return new Response("ok");
+
       },
     },
   },
