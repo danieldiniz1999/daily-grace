@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, RefreshCw, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/AppShell";
@@ -21,6 +22,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useAppData";
 import { supabase } from "@/integrations/supabase/client";
 import { formatLong, todayISO } from "@/lib/date";
+import { refreshKiwifyStatus, syncKiwifySales } from "@/lib/kiwify.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -349,6 +351,72 @@ function SubscribersAdmin() {
       {data?.length === 0 && (
         <p className="text-sm text-muted-foreground">Nenhuma assinante ainda.</p>
       )}
+    </div>
+  );
+}
+
+function KiwifyPanel({ onDone }: { onDone: () => void }) {
+  const [email, setEmail] = useState("");
+  const syncFn = useServerFn(syncKiwifySales);
+  const refreshFn = useServerFn(refreshKiwifyStatus);
+
+  const sync = useMutation({
+    mutationFn: () => syncFn({}),
+    onSuccess: (r) => {
+      toast.success(
+        `Sincronizado: ${r.imported} nova(s), ${r.updated} atualizada(s), ${r.skipped} ignorada(s).`,
+      );
+      if (r.errors.length) toast.error(r.errors.join(" • "));
+      onDone();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const refresh = useMutation({
+    mutationFn: () => refreshFn({ data: { email: email.trim().toLowerCase() } }),
+    onSuccess: (r) => {
+      if (!r.found) toast.error("Nenhuma compra encontrada na Kiwify para esse e-mail.");
+      else toast.success(`Status na Kiwify: ${r.status ?? "indefinido"}. Atualizado no app.`);
+      onDone();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <div className="rounded-2xl border border-border/60 bg-card p-4">
+      <div className="flex items-center gap-2">
+        <RefreshCw className="h-4 w-4 text-primary" />
+        <p className="font-medium">Integração Kiwify</p>
+      </div>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Sincroniza apenas as compras do produto Daily Grace.
+      </p>
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <Button
+          className="rounded-full"
+          onClick={() => sync.mutate()}
+          disabled={sync.isPending}
+        >
+          {sync.isPending ? "Sincronizando..." : "Importar compras da Kiwify"}
+        </Button>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <Input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="e-mail da assinante"
+          className="w-64 rounded-full"
+        />
+        <Button
+          variant="outline"
+          className="rounded-full"
+          onClick={() => refresh.mutate()}
+          disabled={refresh.isPending || !email.includes("@")}
+        >
+          {refresh.isPending ? "Consultando..." : "Conferir status"}
+        </Button>
+      </div>
     </div>
   );
 }
