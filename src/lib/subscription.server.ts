@@ -121,5 +121,26 @@ export async function provisionSubscription(input: ProvisionInput) {
 
   if (error) throw new Error(error.message);
 
-  return { userId: userId!, created, billingPeriod, currentPeriodEnd, generatedPassword, email, name };
+  // Envia o e-mail de boas-vindas com a senha definitiva (só para contas novas).
+  let welcomeEmailSent = false;
+  if (created && generatedPassword && input.status === "active") {
+    try {
+      const { sendWelcomeEmail } = await import("./email.server");
+      const result = await sendWelcomeEmail({ email, name, password: generatedPassword });
+      welcomeEmailSent = !!result.sent;
+    } catch (e) {
+      console.error("[kiwify] falha ao enviar e-mail de boas-vindas", e);
+    }
+  }
+
+  return {
+    userId: userId!,
+    created,
+    billingPeriod,
+    currentPeriodEnd,
+    email,
+    name,
+    welcomeEmailSent,
+  };
+
 }
