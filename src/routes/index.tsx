@@ -68,13 +68,15 @@ function CTA({
     <Button
       asChild
       size="lg"
-      className={`group h-14 rounded-full px-9 text-base font-semibold tracking-tight shadow-lift transition-all duration-300 hover:-translate-y-0.5 hover:brightness-105 ${
-        tone === "cream" ? "bg-cream text-cream-foreground hover:bg-cream" : "bg-grace"
+      className={`group relative h-14 overflow-hidden rounded-full px-9 text-base font-semibold tracking-tight shadow-lift transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-xl active:scale-[0.98] ${
+        tone === "cream"
+          ? "bg-cream text-cream-foreground hover:bg-cream"
+          : "bg-grace btn-glow"
       } ${className}`}
     >
       <a href={KIWIFY_CHECKOUT_URL} target="_blank" rel="noreferrer">
         {children}
-        <ArrowRight className="ml-1 size-4 transition-transform group-hover:translate-x-1" />
+        <ArrowRight className="ml-1 size-4 transition-transform duration-300 group-hover:translate-x-1" />
       </a>
     </Button>
   );
