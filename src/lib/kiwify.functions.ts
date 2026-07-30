@@ -12,8 +12,13 @@ export const syncKiwifySales = createServerFn({ method: "POST" })
     });
     if (!isAdmin) throw new Error("Acesso restrito à administradora.");
 
-    const { listProductSales, saleStatusToSubscription, planNameFromSale, getProductId } =
-      await import("./kiwify.server");
+    const {
+      listProductSales,
+      saleStatusToSubscription,
+      planNameFromSale,
+      getProductId,
+      dateWindows,
+    } = await import("./kiwify.server");
     const { provisionSubscription } = await import("./subscription.server");
 
     if (!getProductId()) throw new Error("KIWIFY_PRODUCT_ID não configurado.");
@@ -22,40 +27,51 @@ export const syncKiwifySales = createServerFn({ method: "POST" })
     let updated = 0;
     let skipped = 0;
     const errors: string[] = [];
+    const seen = new Set<string>();
 
-    for (let page = 1; page <= 20; page++) {
-      const sales = await listProductSales({ page, pageSize: 100 });
-      if (sales.length === 0) break;
+    for (const win of dateWindows(24)) {
+      for (let page = 1; page <= 20; page++) {
+        const sales = await listProductSales({
+          start: win.start,
+          end: win.end,
+          page,
+          pageSize: 100,
+        });
+        if (sales.length === 0) break;
 
-      for (const sale of sales) {
-        const email = (sale.customer?.email ?? "").trim().toLowerCase();
-        const status = saleStatusToSubscription(sale);
-        if (!email || !status) {
-          skipped++;
-          continue;
+        for (const sale of sales) {
+          const email = (sale.customer?.email ?? "").trim().toLowerCase();
+          const status = saleStatusToSubscription(sale);
+          if (!email || !status || seen.has(email)) {
+            if (!seen.has(email)) skipped++;
+            continue;
+          }
+          seen.add(email);
+
+          const dateStr = sale.paid_at ?? sale.approved_date ?? sale.created_at ?? "";
+          const startedAt =
+            dateStr && !isNaN(Date.parse(dateStr)) ? new Date(dateStr) : new Date();
+
+          try {
+            const result = await provisionSubscription({
+              email,
+              name: sale.customer?.full_name ?? sale.customer?.name ?? null,
+              status,
+              startedAt,
+              planName: planNameFromSale(sale),
+              orderId: sale.order_id ?? sale.id ?? null,
+            });
+            if (result.created) imported++;
+            else updated++;
+          } catch (e) {
+            errors.push(`${email}: ${e instanceof Error ? e.message : "erro"}`);
+          }
         }
-        const dateStr = sale.paid_at ?? sale.approved_date ?? sale.created_at ?? "";
-        const startedAt =
-          dateStr && !isNaN(Date.parse(dateStr)) ? new Date(dateStr) : new Date();
 
-        try {
-          const result = await provisionSubscription({
-            email,
-            name: sale.customer?.full_name ?? sale.customer?.name ?? null,
-            status,
-            startedAt,
-            planName: planNameFromSale(sale),
-            orderId: sale.order_id ?? sale.id ?? null,
-          });
-          if (result.created) imported++;
-          else updated++;
-        } catch (e) {
-          errors.push(`${email}: ${e instanceof Error ? e.message : "erro"}`);
-        }
+        if (sales.length < 100) break;
       }
-
-      if (sales.length < 100) break;
     }
+
 
     return { imported, updated, skipped, errors: errors.slice(0, 10) };
   });
