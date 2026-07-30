@@ -405,20 +405,22 @@ function Landing() {
       </section>
 
       {/* NÚMEROS */}
-      <section className="mt-8 border-y border-border/50 bg-background/60">
-        <div className="mx-auto grid max-w-5xl gap-8 px-5 py-10 text-center sm:grid-cols-3">
-          {[
-            { valor: "5 min", label: "por dia é tudo que você precisa" },
-            { valor: "365", label: "devocionais por ano de caminhada" },
-            { valor: "100%", label: "bíblico e escrito para mulheres" },
-          ].map((s) => (
-            <div key={s.label}>
-              <p className="font-display text-5xl font-semibold text-primary">{s.valor}</p>
-              <p className="mt-1.5 text-sm text-muted-foreground">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <AnimateIn>
+        <section className="mt-8 border-y border-border/50 bg-background/60">
+          <div className="mx-auto grid max-w-5xl gap-8 px-5 py-10 text-center sm:grid-cols-3">
+            {[
+              { valor: "5 min", label: "por dia é tudo que você precisa" },
+              { valor: "365", label: "devocionais por ano de caminhada" },
+              { valor: "100%", label: "bíblico e escrito para mulheres" },
+            ].map((s) => (
+              <div key={s.label}>
+                <p className="font-display text-5xl font-semibold text-primary">{s.valor}</p>
+                <p className="mt-1.5 text-sm text-muted-foreground">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </AnimateIn>
 
       {/* DOR */}
       <section className="mx-auto max-w-6xl px-5 py-24">
