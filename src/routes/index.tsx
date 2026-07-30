@@ -330,7 +330,6 @@ function Landing() {
         </header>
       </div>
 
-      {/* HERO */}
       <section className="mx-auto grid max-w-6xl items-center gap-12 px-5 pt-12 pb-16 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:pt-20">
         <div>
           <Eyebrow>Devocional diário feminino</Eyebrow>
