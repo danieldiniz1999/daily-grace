@@ -921,9 +921,7 @@ function Landing() {
               {/* Logo e identidade */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2.5">
-                  <span className="bg-grace flex size-9 items-center justify-center rounded-full">
-                    <Heart className="size-4 text-primary-foreground" />
-                  </span>
+                  <img src={logoAsset.url} alt="Daily Grace" className="size-9 object-contain" />
                   <span className="font-display text-2xl font-semibold">Daily Grace</span>
                 </div>
                 <p className="text-sm leading-relaxed text-muted-foreground">
