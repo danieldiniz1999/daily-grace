@@ -4,6 +4,7 @@ import {
   BookOpenText,
   CalendarCheck,
   CheckCircle2,
+  ChevronDown,
   Clock3,
   Gift,
   Heart,
@@ -22,12 +23,6 @@ import autoraImg from "@/assets/autora.jpg";
 import depoimentoModerno from "@/assets/depoimento-moderno.jpg";
 import heroUploaded from "@/assets/hero-uploaded.png.asset.json";
 import mulherOracao from "@/assets/mulher-oracao.jpg";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { AnimateIn } from "@/components/animate-in";
 import { Button } from "@/components/ui/button";
 import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
