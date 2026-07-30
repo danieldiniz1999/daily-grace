@@ -121,5 +121,5 @@ export async function provisionSubscription(input: ProvisionInput) {
 
   if (error) throw new Error(error.message);
 
-  return { userId: userId!, created, billingPeriod, currentPeriodEnd };
+  return { userId: userId!, created, billingPeriod, currentPeriodEnd, generatedPassword, email, name };
 }
