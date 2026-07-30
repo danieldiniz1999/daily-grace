@@ -559,97 +559,106 @@ function Landing() {
       {/* AMOSTRA DO DEVOCIONAL */}
       <section className="border-y border-border/50 bg-background/60">
         <div className="mx-auto max-w-5xl px-5 py-24">
-          <SectionHead
-            eyebrow="Por dentro"
-            title="Veja como é um devocional Daily Grace"
-            sub="Todo dia você recebe a mesma estrutura simples e profunda, pronta para ler em poucos minutos."
-          />
+          <AnimateIn>
+            <SectionHead
+              eyebrow="Por dentro"
+              title="Veja como é um devocional Daily Grace"
+              sub="Todo dia você recebe a mesma estrutura simples e profunda, pronta para ler em poucos minutos."
+            />
+          </AnimateIn>
           <div className="mt-12 grid items-start gap-6 lg:grid-cols-[1.15fr_1fr]">
-            <article className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-lift sm:p-10">
-              <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
-                Devocional de hoje
-              </p>
-              <h3 className="font-display mt-3 text-4xl leading-tight font-semibold text-balance">
-                Descanse — Ele já está cuidando
-              </h3>
-              <div className="rule-grace my-6" />
-              <p className="font-display text-2xl leading-snug text-foreground/90 italic">
-                "Lançando sobre Ele toda a vossa ansiedade, porque Ele tem cuidado de vós."
-              </p>
-              <p className="mt-2 text-sm font-semibold text-primary">1 Pedro 5:7</p>
-              <p className="mt-6 leading-relaxed text-muted-foreground">
-                Tem dias em que a lista não acaba e o coração aperta antes mesmo do café. Deus não
-                pede que você dê conta de tudo — Ele pede que entregue. Hoje, antes de resolver,
-                respire e devolva a Ele o peso que nunca foi seu para carregar…
-              </p>
-              <div className="mt-7 rounded-2xl bg-secondary/70 p-5">
-                <p className="text-xs font-bold tracking-[0.2em] text-secondary-foreground uppercase">
-                  Oração
+            <AnimateIn delay={100}>
+              <article className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-lift sm:p-10">
+                <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
+                  Devocional de hoje
                 </p>
-                <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
-                  "Senhor, eu entrego a Ti aquilo que tenho tentado controlar sozinha. Acalma o meu
-                  coração e me ensina a confiar…"
+                <h3 className="font-display mt-3 text-4xl leading-tight font-semibold text-balance">
+                  Descanse — Ele já está cuidando
+                </h3>
+                <div className="rule-grace my-6" />
+                <p className="font-display text-2xl leading-snug text-foreground/90 italic">
+                  "Lançando sobre Ele toda a vossa ansiedade, porque Ele tem cuidado de vós."
                 </p>
-              </div>
-            </article>
+                <p className="mt-2 text-sm font-semibold text-primary">1 Pedro 5:7</p>
+                <p className="mt-6 leading-relaxed text-muted-foreground">
+                  Tem dias em que a lista não acaba e o coração aperta antes mesmo do café. Deus não
+                  pede que você dê conta de tudo — Ele pede que entregue. Hoje, antes de resolver,
+                  respire e devolva a Ele o peso que nunca foi seu para carregar…
+                </p>
+                <div className="mt-7 rounded-2xl bg-secondary/70 p-5">
+                  <p className="text-xs font-bold tracking-[0.2em] text-secondary-foreground uppercase">
+                    Oração
+                  </p>
+                  <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
+                    "Senhor, eu entrego a Ti aquilo que tenho tentado controlar sozinha. Acalma o meu
+                    coração e me ensina a confiar…"
+                  </p>
+                </div>
+              </article>
+            </AnimateIn>
 
-            <div className="rounded-[2rem] border border-border/60 bg-card/85 p-8 shadow-card">
-              <h3 className="font-display text-2xl font-semibold">Temas que você vai encontrar</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Assuntos da vida real de uma mulher de fé.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {temas.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-border/70 bg-background px-3.5 py-1.5 text-sm text-foreground/80"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="rule-grace my-7" />
-              <div className="flex items-start gap-3">
-                <Clock3 className="mt-0.5 size-5 shrink-0 text-primary" />
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  Tempo médio de leitura: <strong className="text-foreground">5 minutos</strong>.
-                  Perfeito para o café da manhã, o trajeto ou antes de dormir.
+            <AnimateIn delay={200}>
+              <div className="rounded-[2rem] border border-border/60 bg-card/85 p-8 shadow-card">
+                <h3 className="font-display text-2xl font-semibold">Temas que você vai encontrar</h3>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Assuntos da vida real de uma mulher de fé.
                 </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {temas.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full border border-border/70 bg-background px-3.5 py-1.5 text-sm text-foreground/80"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <div className="rule-grace my-7" />
+                <div className="flex items-start gap-3">
+                  <Clock3 className="mt-0.5 size-5 shrink-0 text-primary" />
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    Tempo médio de leitura: <strong className="text-foreground">5 minutos</strong>.
+                    Perfeito para o café da manhã, o trajeto ou antes de dormir.
+                  </p>
+                </div>
               </div>
-            </div>
+            </AnimateIn>
           </div>
         </div>
       </section>
 
       {/* COMO FUNCIONA */}
       <section id="como-funciona" className="mx-auto max-w-6xl px-5 py-24">
-        <SectionHead
-          eyebrow="Como funciona"
-          title="Do pagamento ao primeiro devocional em 3 passos"
-        />
+        <AnimateIn>
+          <SectionHead
+            eyebrow="Como funciona"
+            title="Do pagamento ao primeiro devocional em 3 passos"
+          />
+        </AnimateIn>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {passos.map((p) => (
-            <div
-              key={p.n}
-              className="relative overflow-hidden rounded-[1.75rem] bg-card/85 p-8 shadow-card"
-            >
-              <span className="font-display pointer-events-none absolute -top-4 right-3 text-8xl font-semibold text-primary/8">
-                {p.n}
-              </span>
-              <span className="font-display bg-grace relative flex size-12 items-center justify-center rounded-2xl text-lg font-semibold text-primary-foreground">
-                {p.n}
-              </span>
-              <h3 className="font-display relative mt-5 text-2xl font-semibold">{p.titulo}</h3>
-              <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
-                {p.texto}
-              </p>
-            </div>
+          {passos.map((p, i) => (
+            <AnimateIn key={p.n} delay={i * 120}>
+              <div className="relative h-full overflow-hidden rounded-[1.75rem] bg-card/85 p-8 shadow-card">
+                <span className="font-display pointer-events-none absolute -top-4 right-3 text-8xl font-semibold text-primary/8">
+                  {p.n}
+                </span>
+                <span className="font-display bg-grace relative flex size-12 items-center justify-center rounded-2xl text-lg font-semibold text-primary-foreground">
+                  {p.n}
+                </span>
+                <h3 className="font-display relative mt-5 text-2xl font-semibold">{p.titulo}</h3>
+                <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {p.texto}
+                </p>
+              </div>
+            </AnimateIn>
           ))}
         </div>
-        <p className="mx-auto mt-9 max-w-2xl rounded-2xl border border-border/60 bg-background/70 p-4 text-center text-sm text-muted-foreground">
-          Assinou no dia 20? Você recebe o mês inteiro até ali — e os próximos vão abrindo dia após
-          dia, na data certa.
-        </p>
+        <AnimateIn delay={400}>
+          <p className="mx-auto mt-9 max-w-2xl rounded-2xl border border-border/60 bg-background/70 p-4 text-center text-sm text-muted-foreground">
+            Assinou no dia 20? Você recebe o mês inteiro até ali — e os próximos vão abrindo dia após
+            dia, na data certa.
+          </p>
+        </AnimateIn>
       </section>
 
       {/* DEPOIMENTOS */}
