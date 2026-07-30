@@ -930,7 +930,7 @@ function Landing() {
       <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border/60 bg-background/95 p-3 backdrop-blur sm:hidden">
         <Button
           asChild
-          className="bg-grace group h-12 w-full overflow-hidden rounded-full text-base font-semibold shadow-soft transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+          className="bg-grace group relative h-12 w-full overflow-hidden rounded-full text-base font-semibold shadow-soft btn-glow transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
         >
           <a href={KIWIFY_CHECKOUT_URL} target="_blank" rel="noreferrer">
             Quero assinar agora
