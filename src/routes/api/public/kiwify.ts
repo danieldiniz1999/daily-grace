@@ -125,9 +125,10 @@ export const Route = createFileRoute("/api/public/kiwify")({
         } else {
           // Busca na Auth também para evitar duplicar usuária
           const { data: userList } = await supabaseAdmin.auth.admin.listUsers({
-            filter: `email:eq:${email}`,
+            page: 1,
+            perPage: 1000,
           });
-          const existingUser = userList?.users?.[0];
+          const existingUser = userList?.users?.find((u) => u.email === email);
 
           if (existingUser) {
             userId = existingUser.id;
