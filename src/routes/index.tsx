@@ -387,17 +387,6 @@ function Landing() {
               height={1024}
               className="aspect-square w-full rounded-[2.25rem] object-cover shadow-lift"
             />
-            <div className="absolute -bottom-6 left-1/2 w-[88%] -translate-x-1/2 rounded-2xl border border-border/60 bg-background/95 p-4 shadow-card backdrop-blur">
-              <div className="flex items-center gap-1 text-primary">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="size-4 fill-current" />
-                ))}
-              </div>
-              <p className="mt-2 text-sm leading-snug text-foreground/85">
-                "Virou o meu momento favorito do dia."
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">Juliana M., assinante</p>
-            </div>
           </div>
         </div>
       </section>
