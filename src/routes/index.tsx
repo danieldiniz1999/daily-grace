@@ -4,6 +4,7 @@ import {
   BookOpenText,
   CalendarCheck,
   CheckCircle2,
+  ChevronDown,
   Clock3,
   Gift,
   Heart,
@@ -22,12 +23,6 @@ import autoraImg from "@/assets/autora.jpg";
 import depoimentoModerno from "@/assets/depoimento-moderno.jpg";
 import heroUploaded from "@/assets/hero-uploaded.png.asset.json";
 import mulherOracao from "@/assets/mulher-oracao.jpg";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { AnimateIn } from "@/components/animate-in";
 import { Button } from "@/components/ui/button";
 import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
@@ -856,18 +851,37 @@ function Landing() {
       <AnimateIn>
         <section className="mx-auto max-w-3xl px-5 pb-24">
           <SectionHead eyebrow="Dúvidas frequentes" title="Ainda tem alguma pergunta?" />
-          <Accordion type="single" collapsible className="mt-10">
+
+          <div className="mt-10 space-y-4">
             {faq.map((f) => (
-              <AccordionItem key={f.q} value={f.q} className="border-border/60">
-                <AccordionTrigger className="text-left text-base font-semibold hover:no-underline">
-                  {f.q}
-                </AccordionTrigger>
-                <AccordionContent className="text-[15px] leading-relaxed text-muted-foreground">
+              <details
+                key={f.q}
+                className="group rounded-2xl border border-white/60 bg-white/40 shadow-sm transition-all duration-300 hover:bg-white/60 open:bg-white open:shadow-lg open:shadow-primary/5"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between p-6">
+                  <h3 className="pr-4 text-left text-base font-semibold text-foreground">{f.q}</h3>
+                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-white text-primary transition-all duration-300 group-open:bg-primary group-open:text-primary-foreground">
+                    <ChevronDown className="size-4 transition-transform duration-300 group-open:rotate-180" />
+                  </div>
+                </summary>
+                <div className="px-6 pb-6 text-[15px] leading-relaxed text-muted-foreground">
                   {f.a}
-                </AccordionContent>
-              </AccordionItem>
+                </div>
+              </details>
             ))}
-          </Accordion>
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-sm text-muted-foreground">Ainda com dúvidas? Nossa equipe está aqui para você.</p>
+            <Button
+              asChild
+              className="mt-4 h-12 rounded-full bg-primary px-8 font-semibold text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent hover:shadow-lg"
+            >
+              <a href="https://wa.me/" target="_blank" rel="noreferrer">
+                Falar com suporte
+              </a>
+            </Button>
+          </div>
         </section>
       </AnimateIn>
 
