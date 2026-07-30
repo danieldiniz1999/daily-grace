@@ -1,6 +1,6 @@
-import { randomBytes } from "crypto";
-
 import { detectBillingPeriod } from "./kiwify-plan";
+import { generateMemorablePassword } from "./password.server";
+
 
 export type ProvisionInput = {
   email: string;
@@ -26,6 +26,8 @@ export async function provisionSubscription(input: ProvisionInput) {
 
   let userId: string | null = null;
   let created = false;
+  let generatedPassword: string | null = null;
+
 
   const { data: existingProfile } = await supabaseAdmin
     .from("profiles")
@@ -50,18 +52,21 @@ export async function provisionSubscription(input: ProvisionInput) {
         });
       }
     } else {
-      const tempPassword = randomBytes(24).toString("hex");
+      const password = generateMemorablePassword();
       const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
         email,
-        password: tempPassword,
+        password,
         email_confirm: true,
         user_metadata: { full_name: name },
       });
+
       if (createError || !newUser?.user) {
         throw new Error(createError?.message ?? "Falha ao criar usuária");
       }
       userId = newUser.user.id;
       created = true;
+      generatedPassword = password;
+
     }
 
     const { data: profileCheck } = await supabaseAdmin
@@ -116,5 +121,5 @@ export async function provisionSubscription(input: ProvisionInput) {
 
   if (error) throw new Error(error.message);
 
-  return { userId: userId!, created, billingPeriod, currentPeriodEnd };
+  return { userId: userId!, created, billingPeriod, currentPeriodEnd, generatedPassword, email, name };
 }
