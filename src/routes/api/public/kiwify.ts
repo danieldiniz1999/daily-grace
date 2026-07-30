@@ -29,12 +29,12 @@ function getPlanName(payload: Record<string, unknown>): string {
     payload.PlanName,
     payload.product_id,
   ];
-  for (const c of candidates) {
-    const val = typeof c === "string" ? c : null;
-    if (val && val.trim()) return val.trim();
-  }
-  return "";
+  const texts = candidates
+    .map((c) => (typeof c === "string" ? c.trim() : ""))
+    .filter(Boolean);
+  return texts.join(" | ");
 }
+
 
 function detectBillingPeriod(name: string): "monthly" | "annual" | null {
   const lower = name.toLowerCase();
