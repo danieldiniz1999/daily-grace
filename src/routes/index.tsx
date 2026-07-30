@@ -905,7 +905,7 @@ function Landing() {
               caminhada diária com Deus.
             </p>
             <div className="relative mt-9">
-              <CTA tone="cream">Quero assinar o Daily Grace</CTA>
+              <CTA tone="white">Quero assinar o Daily Grace</CTA>
             </div>
             <p className="relative mt-4 text-sm text-primary-foreground/75">
               Acesso imediato · Garantia de 7 dias · Cancele quando quiser
