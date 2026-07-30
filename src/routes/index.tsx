@@ -25,7 +25,7 @@ import autoraImg from "@/assets/autora.jpg";
 import depoimentoModerno from "@/assets/depoimento-moderno.jpg";
 import heroUploaded from "@/assets/hero-uploaded.png.asset.json";
 import mockupApp from "@/assets/mockup-app.png.asset.json";
-import mulherOracao from "@/assets/mulher-oracao.jpg";
+import seIdentifica from "@/assets/se-identifica.jpg.asset.json";
 import { AnimateIn } from "@/components/animate-in";
 import { Button } from "@/components/ui/button";
 import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
@@ -427,8 +427,8 @@ function Landing() {
             <div className="relative">
               <div className="absolute -inset-4 rounded-[2.5rem] bg-cream/70" />
               <img
-                src={mulherOracao}
-                alt="Mulher orando em silêncio perto da janela"
+                src={seIdentifica.url}
+                alt="Bíblia lilás, celular com notificações de fé, café e flores - a rotina que deseja"
                 width={1200}
                 height={900}
                 loading="lazy"
