@@ -915,138 +915,42 @@ function Landing() {
       {/* RODAPÉ */}
       <AnimateIn>
         <footer className="border-t border-border/60 bg-background/70">
-          <div className="mx-auto max-w-6xl px-5 py-16">
-            <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-              {/* Logo e identidade */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2.5">
-                  <img src={logoAsset.url} alt="Daily Grace" className="size-9 object-contain" />
-                  <span className="font-display text-2xl font-semibold">Daily Grace</span>
-                </div>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  Uma palavra nova toda manhã para mulheres cristãs que querem viver com propósito,
-                  fé e paz no coração.
-                </p>
-                <div className="flex items-center gap-3">
-                  <a
-                    href="https://instagram.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="bg-muted hover:bg-grace hover:text-primary-foreground flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors"
-                    aria-label="Instagram"
-                  >
-                    <Instagram className="size-4" />
-                  </a>
-                  <a
-                    href="https://wa.me/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="bg-muted hover:bg-grace hover:text-primary-foreground flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors"
-                    aria-label="WhatsApp"
-                  >
-                    <MessageCircle className="size-4" />
-                  </a>
-                  <a
-                    href="mailto:contato@dailygrace.com"
-                    className="bg-muted hover:bg-grace hover:text-primary-foreground flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors"
-                    aria-label="E-mail"
-                  >
-                    <Mail className="size-4" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Links rápidos */}
-              <div>
-                <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-foreground">
-                  Navegue
-                </h4>
-                <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-                  <li>
-                    <a href="#beneficios" className="hover:text-foreground transition-colors">
-                      Benefícios
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#como-funciona" className="hover:text-foreground transition-colors">
-                      Como funciona
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#depoimentos" className="hover:text-foreground transition-colors">
-                      Depoimentos
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#oferta" className="hover:text-foreground transition-colors">
-                      Assinatura
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Suporte */}
-              <div>
-                <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-foreground">
-                  Suporte
-                </h4>
-                <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-                  <li>
-                    <a href="#" className="hover:text-foreground transition-colors">
-                      Central de ajuda
-                    </a>
-                  </li>
-                  <li>
-                    <Link to="/auth" className="hover:text-foreground transition-colors">
-                      Área da assinante
-                    </Link>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-foreground transition-colors">
-                      Reembolso e garantia
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://wa.me/"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:text-foreground transition-colors"
-                    >
-                      Falar no WhatsApp
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Legal */}
-              <div>
-                <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-foreground">
-                  Legal
-                </h4>
-                <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-                  <li>
-                    <a href="#" className="hover:text-foreground transition-colors">
-                      Termos de uso
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-foreground transition-colors">
-                      Política de privacidade
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-foreground transition-colors">
-                      Política de cookies
-                    </a>
-                  </li>
-                </ul>
-              </div>
+          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 px-5 py-8 sm:flex-row">
+            <div className="flex items-center gap-2.5">
+              <img src={logoAsset.url} alt="Daily Grace" className="size-7 object-contain" />
+              <span className="font-display text-xl font-semibold tracking-tight">Daily Grace</span>
             </div>
 
-            <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 text-xs text-muted-foreground sm:flex-row">
-              <p>© {new Date().getFullYear()} Daily Grace — feito com fé e carinho.</p>
-              <p>Todos os direitos reservados.</p>
+            <p className="text-center text-xs text-muted-foreground">
+              © {new Date().getFullYear()} Daily Grace — Todos os direitos reservados.
+            </p>
+
+            <div className="flex items-center gap-3">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-muted hover:bg-grace hover:text-primary-foreground flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="size-4" />
+              </a>
+              <a
+                href="https://wa.me/"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-muted hover:bg-grace hover:text-primary-foreground flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle className="size-4" />
+              </a>
+              <a
+                href="mailto:contato@dailygrace.com"
+                className="bg-muted hover:bg-grace hover:text-primary-foreground flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors"
+                aria-label="E-mail"
+              >
+                <Mail className="size-4" />
+              </a>
             </div>
           </div>
         </footer>
