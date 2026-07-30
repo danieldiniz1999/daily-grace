@@ -28,6 +28,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { AnimateIn } from "@/components/animate-in";
 import { Button } from "@/components/ui/button";
 import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
 
