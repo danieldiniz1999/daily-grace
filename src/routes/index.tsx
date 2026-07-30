@@ -423,46 +423,48 @@ function Landing() {
       </AnimateIn>
 
       {/* DOR */}
-      <section className="mx-auto max-w-6xl px-5 py-24">
-        <div className="grid items-center gap-14 lg:grid-cols-2">
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-[2.5rem] bg-cream/70" />
-            <img
-              src={mulherOracao}
-              alt="Mulher orando em silêncio perto da janela"
-              width={1200}
-              height={900}
-              loading="lazy"
-              className="relative aspect-4/3 w-full rounded-[2rem] object-cover shadow-card"
-            />
+      <AnimateIn>
+        <section className="mx-auto max-w-6xl px-5 py-24">
+          <div className="grid items-center gap-14 lg:grid-cols-2">
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-[2.5rem] bg-cream/70" />
+              <img
+                src={mulherOracao}
+                alt="Mulher orando em silêncio perto da janela"
+                width={1200}
+                height={900}
+                loading="lazy"
+                className="relative aspect-4/3 w-full rounded-[2rem] object-cover shadow-card"
+              />
+            </div>
+            <div>
+              <SectionHead
+                align="left"
+                eyebrow="Se identifica?"
+                title={
+                  <>
+                    Você ama a Deus — mas o dia a dia tem <em className="not-italic text-grace">roubado</em>{" "}
+                    o seu tempo com Ele
+                  </>
+                }
+              />
+              <ul className="mt-7 space-y-3.5">
+                {dores.map((d) => (
+                  <li key={d} className="flex items-start gap-3 text-[15px] text-muted-foreground">
+                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-destructive/10">
+                      <X className="size-3 text-destructive" />
+                    </span>
+                    {d}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-7 border-l-2 border-primary/40 pl-4 text-lg font-medium text-foreground text-pretty">
+                A culpa não é da sua fé. É da falta de um caminho simples para seguir todos os dias.
+              </p>
+            </div>
           </div>
-          <div>
-            <SectionHead
-              align="left"
-              eyebrow="Se identifica?"
-              title={
-                <>
-                  Você ama a Deus — mas o dia a dia tem <em className="not-italic text-grace">roubado</em>{" "}
-                  o seu tempo com Ele
-                </>
-              }
-            />
-            <ul className="mt-7 space-y-3.5">
-              {dores.map((d) => (
-                <li key={d} className="flex items-start gap-3 text-[15px] text-muted-foreground">
-                  <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-destructive/10">
-                    <X className="size-3 text-destructive" />
-                  </span>
-                  {d}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-7 border-l-2 border-primary/40 pl-4 text-lg font-medium text-foreground text-pretty">
-              A culpa não é da sua fé. É da falta de um caminho simples para seguir todos os dias.
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
+      </AnimateIn>
 
       {/* ANTES x DEPOIS */}
       <section className="mx-auto max-w-5xl px-5 pb-24">
