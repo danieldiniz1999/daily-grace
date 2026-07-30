@@ -1,43 +1,49 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createHmac, timingSafeEqual, randomBytes } from "crypto";
 
+function obj(v: unknown): Record<string, unknown> {
+  return (v && typeof v === "object" ? v : {}) as Record<string, unknown>;
+}
+
 function getPlanName(payload: Record<string, unknown>): string {
+  const sub = obj(payload.Subscription ?? payload.subscription);
+  const subPlan = obj(sub.plan ?? sub.Plan);
   const candidates = [
+    subPlan.name,
+    subPlan.plan_name,
+    subPlan.frequency,
+    sub.plan_name,
+    sub.name,
+    sub.frequency,
     payload.product_name,
     payload.plan_name,
     payload.subscription_name,
     payload.subscription_type,
-    payload.product_id,
-    (payload.product as Record<string, unknown>)?.name,
-    (payload.product as Record<string, unknown>)?.plan_name,
-    (payload.plan as Record<string, unknown>)?.name,
-    (payload.subscription as Record<string, unknown>)?.plan_name,
-    (payload.subscription as Record<string, unknown>)?.name,
-    (payload.offer as Record<string, unknown>)?.name,
-    (payload.Product as Record<string, unknown>)?.name,
-    (payload.Plan as Record<string, unknown>)?.name,
-    (payload.Subscription as Record<string, unknown>)?.name,
-    (payload.Subscription as Record<string, unknown>)?.plan_name,
+    obj(payload.product).name,
+    obj(payload.product).plan_name,
+    obj(payload.plan).name,
+    obj(payload.offer).name,
+    obj(payload.Product).name,
+    obj(payload.Plan).name,
     payload.ProductName,
     payload.PlanName,
+    payload.product_id,
   ];
-  for (const c of candidates) {
-    const val = typeof c === "string" ? c : null;
-    if (val && val.trim()) return val.trim();
-  }
-  return "";
+  const texts = candidates
+    .map((c) => (typeof c === "string" ? c.trim() : ""))
+    .filter(Boolean);
+  return texts.join(" | ");
 }
+
 
 function detectBillingPeriod(name: string): "monthly" | "annual" | null {
   const lower = name.toLowerCase();
-  if (lower.includes("anual") || lower.includes("annual") || lower.includes("ano")) {
-    return "annual";
-  }
-  if (lower.includes("mensal") || lower.includes("monthly") || lower.includes("mês") || lower.includes("mes")) {
-    return "monthly";
-  }
+  if (/\b(mensal|monthly|month|m[eê]s)\b/.test(lower)) return "monthly";
+  if (/\b(anual|annual|yearly|year|ano)\b/.test(lower)) return "annual";
   return null;
 }
+
+
 
 /**
  * Webhook da Kiwify.
