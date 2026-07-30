@@ -59,18 +59,20 @@ function CTA({
   className = "",
 }: {
   children?: React.ReactNode;
-  tone?: "solid" | "cream";
+  tone?: "solid" | "cream" | "white";
   className?: string;
 }) {
+  const toneClasses = {
+    solid: "bg-grace btn-glow text-primary-foreground",
+    cream: "bg-cream text-cream-foreground hover:bg-cream",
+    white: "bg-white text-foreground hover:bg-white/95 border border-white/80 shadow-soft",
+  };
+
   return (
     <Button
       asChild
       size="lg"
-      className={`group relative h-14 overflow-hidden rounded-full px-9 text-base font-semibold tracking-tight shadow-lift transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-xl active:scale-[0.98] ${
-        tone === "cream"
-          ? "bg-cream text-cream-foreground hover:bg-cream"
-          : "bg-grace btn-glow"
-      } ${className}`}
+      className={`group relative h-14 overflow-hidden rounded-full px-9 text-base font-semibold tracking-tight transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-xl active:scale-[0.98] ${toneClasses[tone]} ${className}`}
     >
       <a href={KIWIFY_CHECKOUT_URL} target="_blank" rel="noreferrer">
         {children}
@@ -903,7 +905,7 @@ function Landing() {
               caminhada diária com Deus.
             </p>
             <div className="relative mt-9">
-              <CTA tone="cream">Quero assinar o Daily Grace</CTA>
+              <CTA tone="white">Quero assinar o Daily Grace</CTA>
             </div>
             <p className="relative mt-4 text-sm text-primary-foreground/75">
               Acesso imediato · Garantia de 7 dias · Cancele quando quiser
