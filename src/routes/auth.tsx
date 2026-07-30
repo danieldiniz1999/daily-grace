@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
 import logoAsset from "@/assets/daily-grace-logo.png.asset.json";
@@ -32,7 +31,6 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -47,22 +45,6 @@ function AuthPage() {
     setLoading(false);
     if (error) return toast.error("Não conseguimos entrar: verifique e-mail e senha.");
     navigate({ to: "/devocionais", replace: true });
-  }
-
-  async function handleSignup(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: { full_name: name },
-      },
-    });
-    setLoading(false);
-    if (error) return toast.error(error.message);
-    toast.success("Conta criada! Você já pode entrar.");
   }
 
   async function handleReset() {
@@ -82,105 +64,56 @@ function AuthPage() {
       </Link>
 
       <div className="w-full max-w-md rounded-3xl border border-border/60 bg-card p-7 shadow-soft">
-        <Tabs defaultValue="login">
-          <TabsList className="grid w-full grid-cols-2 rounded-full bg-secondary p-1">
-            <TabsTrigger value="login" className="rounded-full">
-              Entrar
-            </TabsTrigger>
-            <TabsTrigger value="signup" className="rounded-full">
-              Criar conta
-            </TabsTrigger>
-          </TabsList>
+        <div className="mb-6 text-center">
+          <h1 className="font-display text-2xl font-semibold">Entrar na minha conta</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Use o e-mail da sua compra na Kiwify.
+          </p>
+        </div>
 
-          <TabsContent value="login" className="mt-6">
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">E-mail</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="voce@email.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Senha</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                />
-              </div>
-              <Button
-                type="submit"
-                disabled={loading}
-                className="bg-grace w-full rounded-full py-6 text-base"
-              >
-                {loading ? "Entrando..." : "Entrar"}
-              </Button>
-              <button
-                type="button"
-                onClick={handleReset}
-                className="w-full text-center text-sm text-muted-foreground hover:text-foreground"
-              >
-                Esqueci minha senha
-              </button>
-            </form>
-          </TabsContent>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">E-mail</Label>
+            <Input
+              id="email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="voce@email.com"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Senha</Label>
+            <Input
+              id="password"
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+            />
+          </div>
+          <Button
+            type="submit"
+            disabled={loading}
+            className="bg-grace w-full rounded-full py-6 text-base"
+          >
+            {loading ? "Entrando..." : "Entrar"}
+          </Button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="w-full text-center text-sm text-muted-foreground hover:text-foreground"
+          >
+            Esqueci minha senha
+          </button>
+        </form>
 
-          <TabsContent value="signup" className="mt-6">
-            <form onSubmit={handleSignup} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Nome</Label>
-                <Input
-                  id="name"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Seu nome"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email2">E-mail da compra</Label>
-                <Input
-                  id="email2"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="voce@email.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password2">Senha</Label>
-                <Input
-                  id="password2"
-                  type="password"
-                  required
-                  minLength={6}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Mínimo 6 caracteres"
-                />
-              </div>
-              <Button
-                type="submit"
-                disabled={loading}
-                className="bg-grace w-full rounded-full py-6 text-base"
-              >
-                {loading ? "Criando..." : "Criar minha conta"}
-              </Button>
-              <p className="text-center text-xs text-muted-foreground">
-                Use o mesmo e-mail da sua compra na Kiwify para liberar o acesso.
-              </p>
-            </form>
-          </TabsContent>
-        </Tabs>
+        <p className="mt-6 rounded-2xl bg-secondary/60 p-4 text-center text-xs leading-relaxed text-muted-foreground">
+          Comprou agora? Sua conta é criada automaticamente após a confirmação do pagamento. Você
+          recebe um e-mail para definir sua senha.
+        </p>
       </div>
 
       <p className="mt-6 text-sm text-muted-foreground">
@@ -197,3 +130,4 @@ function AuthPage() {
     </div>
   );
 }
+
