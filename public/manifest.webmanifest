@@ -1,0 +1,17 @@
+{
+  "name": "Daily Grace — Devocionais diários",
+  "short_name": "Daily Grace",
+  "description": "Um devocional novo a cada dia para mulheres cristãs.",
+  "start_url": "/devocionais",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FBFFC1",
+  "theme_color": "#A740C4",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
