@@ -90,11 +90,43 @@ export type KiwifySale = {
   };
 };
 
-/** Lista vendas do produto Daily Grace (paginado). */
-export async function listProductSales(opts: { page?: number; pageSize?: number } = {}) {
+function iso(d: Date) {
+  return d.toISOString().slice(0, 10);
+}
+
+/**
+ * A API da Kiwify aceita no máximo 90 dias por consulta.
+ * Gera as janelas de datas cobrindo os últimos `months` meses.
+ */
+export function dateWindows(months: number): Array<{ start: string; end: string }> {
+  const windows: Array<{ start: string; end: string }> = [];
+  const now = new Date();
+  const limit = new Date(now);
+  limit.setMonth(limit.getMonth() - months);
+
+  let end = new Date(now);
+  while (end > limit) {
+    const start = new Date(end);
+    start.setDate(start.getDate() - 89);
+    windows.push({ start: iso(start < limit ? limit : start), end: iso(end) });
+    end = new Date(start);
+    end.setDate(end.getDate() - 1);
+  }
+  return windows;
+}
+
+/** Lista vendas do produto Daily Grace em uma janela de até 90 dias. */
+export async function listProductSales(opts: {
+  start: string;
+  end: string;
+  page?: number;
+  pageSize?: number;
+}) {
   const { productId } = creds();
   const data = await apiGet<{ data?: KiwifySale[]; pagination?: unknown }>("/sales", {
     product_id: productId ?? "",
+    start_date: opts.start,
+    end_date: opts.end,
     page_number: String(opts.page ?? 1),
     page_size: String(opts.pageSize ?? 100),
   });
@@ -102,20 +134,30 @@ export async function listProductSales(opts: { page?: number; pageSize?: number 
   return productId ? list.filter((s) => saleBelongsToProduct(s, productId)) : list;
 }
 
-/** Busca as vendas de um e-mail específico dentro do produto. */
+/** Busca as vendas de um e-mail específico dentro do produto (últimos 24 meses). */
 export async function findSalesByEmail(email: string) {
   const { productId } = creds();
-  const data = await apiGet<{ data?: KiwifySale[] }>("/sales", {
-    product_id: productId ?? "",
-    email,
-    page_size: "20",
-  });
-  const list = Array.isArray(data?.data) ? data.data : [];
-  const filtered = productId ? list.filter((s) => saleBelongsToProduct(s, productId)) : list;
-  return filtered.filter(
-    (s) => (s.customer?.email ?? "").trim().toLowerCase() === email.trim().toLowerCase(),
-  );
+  const target = email.trim().toLowerCase();
+  const found: KiwifySale[] = [];
+
+  for (const w of dateWindows(24)) {
+    const data = await apiGet<{ data?: KiwifySale[] }>("/sales", {
+      product_id: productId ?? "",
+      start_date: w.start,
+      end_date: w.end,
+      email: target,
+      page_size: "20",
+    });
+    const list = Array.isArray(data?.data) ? data.data : [];
+    const filtered = (productId ? list.filter((s) => saleBelongsToProduct(s, productId)) : list)
+      .filter((s) => (s.customer?.email ?? "").trim().toLowerCase() === target);
+    found.push(...filtered);
+    if (found.length > 0) break;
+  }
+
+  return found;
 }
+
 
 export function saleBelongsToProduct(sale: KiwifySale, productId: string): boolean {
   const ids = [sale.product_id, sale.product?.id].filter(Boolean).map(String);
