@@ -38,26 +38,11 @@ function getPlanName(payload: Record<string, unknown>): string {
 
 function detectBillingPeriod(name: string): "monthly" | "annual" | null {
   const lower = name.toLowerCase();
-  if (
-    lower.includes("anual") ||
-    lower.includes("annual") ||
-    lower.includes("yearly") ||
-    lower.includes("year") ||
-    lower.includes("ano")
-  ) {
-    return "annual";
-  }
-  if (
-    lower.includes("mensal") ||
-    lower.includes("monthly") ||
-    lower.includes("month") ||
-    lower.includes("mês") ||
-    lower.includes("mes")
-  ) {
-    return "monthly";
-  }
+  if (/\b(mensal|monthly|month|m[eê]s)\b/.test(lower)) return "monthly";
+  if (/\b(anual|annual|yearly|year|ano)\b/.test(lower)) return "annual";
   return null;
 }
+
 
 
 /**
