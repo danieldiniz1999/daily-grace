@@ -545,74 +545,233 @@ function Landing() {
 
       {/* AMOSTRA DO DEVOCIONAL */}
       <section className="border-y border-border/50 bg-background/60">
-        <div className="mx-auto max-w-5xl px-5 py-24">
+        <div className="mx-auto max-w-6xl px-5 py-24">
           <AnimateIn>
             <SectionHead
               eyebrow="Por dentro"
               title="Veja como é um devocional Daily Grace"
-              sub="Todo dia você recebe a mesma estrutura simples e profunda, pronta para ler em poucos minutos."
+              sub="Não é um versículo solto com duas frases. Cada devocional é um estudo completo: contexto bíblico, reflexão profunda, aplicação prática, oração guiada e espaço para escrever com Deus."
             />
           </AnimateIn>
-          <div className="mt-12 grid items-start gap-6 lg:grid-cols-[1.15fr_1fr]">
+
+          <div className="mt-12 grid items-start gap-6 lg:grid-cols-[1.4fr_1fr]">
             <AnimateIn delay={100}>
-              <article className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-lift sm:p-10">
-                <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
-                  Devocional de hoje
-                </p>
-                <h3 className="font-display mt-3 text-4xl leading-tight font-semibold text-balance">
-                  Descanse — Ele já está cuidando
-                </h3>
-                <div className="rule-grace my-6" />
-                <p className="font-display text-2xl leading-snug text-foreground/90 italic">
-                  "Lançando sobre Ele toda a vossa ansiedade, porque Ele tem cuidado de vós."
-                </p>
-                <p className="mt-2 text-sm font-semibold text-primary">1 Pedro 5:7</p>
-                <p className="mt-6 leading-relaxed text-muted-foreground">
-                  Tem dias em que a lista não acaba e o coração aperta antes mesmo do café. Deus não
-                  pede que você dê conta de tudo — Ele pede que entregue. Hoje, antes de resolver,
-                  respire e devolva a Ele o peso que nunca foi seu para carregar…
-                </p>
-                <div className="mt-7 rounded-2xl bg-secondary/70 p-5">
-                  <p className="text-xs font-bold tracking-[0.2em] text-secondary-foreground uppercase">
-                    Oração
+              <article className="overflow-hidden rounded-[2rem] border border-border/60 bg-card shadow-lift">
+                {/* topo do devocional */}
+                <header className="bg-secondary/50 px-8 py-7 sm:px-10">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold tracking-[0.18em] text-primary uppercase">
+                      Dia 12 · Descanso
+                    </span>
+                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Clock3 className="size-3.5" /> 7 min de leitura
+                    </span>
+                  </div>
+                  <h3 className="font-display mt-4 text-4xl leading-tight font-semibold text-balance">
+                    Descanse — Ele já está cuidando
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    Uma palavra para o dia em que você acordou cansada antes mesmo de começar.
                   </p>
-                  <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
-                    "Senhor, eu entrego a Ti aquilo que tenho tentado controlar sozinha. Acalma o meu
-                    coração e me ensina a confiar…"
-                  </p>
+                </header>
+
+                <div className="space-y-8 px-8 py-9 sm:px-10">
+                  {/* versículo */}
+                  <div>
+                    <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
+                      Palavra do dia
+                    </p>
+                    <div className="mt-3 border-l-2 border-primary/40 pl-5">
+                      <p className="font-display text-2xl leading-snug text-foreground/90 italic">
+                        "Lançando sobre Ele toda a vossa ansiedade, porque Ele tem cuidado de vós."
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-primary">1 Pedro 5:7</p>
+                    </div>
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      Leitura complementar: Salmos 55:22 · Mateus 11:28-30 · Filipenses 4:6-7
+                    </p>
+                  </div>
+
+                  {/* contexto */}
+                  <div>
+                    <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
+                      Contexto bíblico
+                    </p>
+                    <p className="mt-3 leading-relaxed text-muted-foreground">
+                      Pedro escreve para mulheres e homens que estavam sofrendo perseguição, longe de
+                      casa e sem nenhuma garantia do amanhã. No original grego, "lançar" é o mesmo
+                      verbo usado para jogar a capa sobre o lombo do animal que vai carregar o peso.
+                      Ou seja: não é apenas "pensar positivo" — é transferir a carga para Quem tem
+                      ombros para ela.
+                    </p>
+                  </div>
+
+                  {/* reflexão */}
+                  <div>
+                    <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
+                      Reflexão
+                    </p>
+                    <div className="mt-3 space-y-4 leading-relaxed text-muted-foreground">
+                      <p>
+                        Tem dias em que a lista não acaba e o coração aperta antes mesmo do café. Você
+                        resolve a casa, o trabalho, os filhos, a família — e no fim do dia se dá conta
+                        de que carregou tudo sozinha outra vez.
+                      </p>
+                      <p>
+                        Deus não pede que você dê conta de tudo. Ele pede que você entregue. A
+                        ansiedade nasce quando assumimos uma responsabilidade que nunca foi nossa: a
+                        de controlar o resultado. Descansar não é desistir, é confiar em Alguém maior
+                        que a sua força.
+                      </p>
+                      <p>
+                        Hoje, antes de resolver, respire. Devolva a Ele o peso e observe: o cuidado
+                        Dele já estava ali antes de você acordar.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* aplicação prática */}
+                  <div className="rounded-2xl border border-border/60 bg-background/70 p-6">
+                    <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
+                      Aplicação prática de hoje
+                    </p>
+                    <ul className="mt-4 space-y-3">
+                      {[
+                        "Escreva o nome de uma preocupação que você vem carregando sozinha.",
+                        "Ore entregando essa área específica, em voz alta, com as suas palavras.",
+                        "Escolha uma atitude de descanso hoje: dizer não, pedir ajuda ou apenas parar 10 minutos.",
+                      ].map((item) => (
+                        <li key={item} className="flex gap-3 text-sm leading-relaxed">
+                          <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                          <span className="text-foreground/85">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* perguntas de reflexão */}
+                  <div>
+                    <p className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
+                      Para conversar com Deus
+                    </p>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      {[
+                        "O que eu tenho tentado controlar que só Deus pode resolver?",
+                        "Como seria o meu dia se eu realmente confiasse no cuidado Dele?",
+                      ].map((q) => (
+                        <p
+                          key={q}
+                          className="rounded-xl border border-border/60 bg-card px-4 py-3 text-sm leading-relaxed text-foreground/85"
+                        >
+                          {q}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* oração */}
+                  <div className="rounded-2xl bg-secondary/70 p-6">
+                    <p className="text-xs font-bold tracking-[0.2em] text-secondary-foreground uppercase">
+                      Oração guiada
+                    </p>
+                    <p className="mt-3 text-[15px] leading-relaxed text-foreground/85">
+                      "Senhor, eu entrego a Ti aquilo que tenho tentado controlar sozinha. Tira de mim
+                      o peso que nunca foi meu para carregar. Acalma o meu coração, ordena os meus
+                      pensamentos e me ensina a confiar no Teu cuidado — hoje e em cada amanhã. Em
+                      nome de Jesus, amém."
+                    </p>
+                  </div>
+
+                  {/* declaração */}
+                  <div className="flex items-start gap-3 border-t border-border/60 pt-6">
+                    <Sparkles className="mt-0.5 size-5 shrink-0 text-primary" />
+                    <p className="font-display text-xl leading-snug text-foreground/90 italic">
+                      "Eu não preciso carregar sozinha. Deus cuida de mim com fidelidade."
+                    </p>
+                  </div>
                 </div>
               </article>
             </AnimateIn>
 
             <AnimateIn delay={200}>
-              <div className="rounded-[2rem] border border-border/60 bg-card/85 p-8 shadow-card">
-                <h3 className="font-display text-2xl font-semibold">Temas que você vai encontrar</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Assuntos da vida real de uma mulher de fé.
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {temas.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-border/70 bg-background px-3.5 py-1.5 text-sm text-foreground/80"
-                    >
-                      {t}
-                    </span>
-                  ))}
+              <div className="space-y-6 lg:sticky lg:top-24">
+                <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-card">
+                  <h3 className="font-display text-2xl font-semibold">
+                    O que vem em cada devocional
+                  </h3>
+                  <ul className="mt-5 space-y-4">
+                    {[
+                      {
+                        t: "Palavra do dia",
+                        d: "Versículo central + leituras complementares para aprofundar.",
+                      },
+                      {
+                        t: "Contexto bíblico",
+                        d: "O significado real do texto, sem complicação teológica.",
+                      },
+                      {
+                        t: "Reflexão",
+                        d: "Uma mensagem encorpada, aplicada à vida de mulher real.",
+                      },
+                      {
+                        t: "Aplicação prática",
+                        d: "Passos concretos para viver a palavra ainda hoje.",
+                      },
+                      {
+                        t: "Oração guiada",
+                        d: "Escrita para você repetir quando faltarem as palavras.",
+                      },
+                      {
+                        t: "Declaração de fé",
+                        d: "Uma verdade para levar no coração durante o dia.",
+                      },
+                    ].map((item) => (
+                      <li key={item.t} className="flex gap-3">
+                        <BookOpenText className="mt-0.5 size-4 shrink-0 text-primary" />
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">{item.t}</p>
+                          <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                            {item.d}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="rule-grace my-7" />
-                <div className="flex items-start gap-3">
-                  <Clock3 className="mt-0.5 size-5 shrink-0 text-primary" />
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    Tempo médio de leitura: <strong className="text-foreground">5 minutos</strong>.
-                    Perfeito para o café da manhã, o trajeto ou antes de dormir.
+
+                <div className="rounded-[2rem] border border-border/60 bg-card/85 p-8 shadow-card">
+                  <h3 className="font-display text-2xl font-semibold">
+                    Temas que você vai encontrar
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Assuntos da vida real de uma mulher de fé.
                   </p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {temas.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full border border-border/70 bg-background px-3.5 py-1.5 text-sm text-foreground/80"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="rule-grace my-7" />
+                  <div className="flex items-start gap-3">
+                    <Clock3 className="mt-0.5 size-5 shrink-0 text-primary" />
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      Tempo médio de leitura:{" "}
+                      <strong className="text-foreground">5 a 8 minutos</strong>. Perfeito para o café
+                      da manhã, o trajeto ou antes de dormir.
+                    </p>
+                  </div>
                 </div>
               </div>
             </AnimateIn>
           </div>
         </div>
       </section>
+
 
       {/* COMO FUNCIONA */}
       <section id="como-funciona" className="mx-auto max-w-6xl px-5 py-24">
