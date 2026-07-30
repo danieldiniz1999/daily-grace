@@ -52,13 +52,14 @@ export async function provisionSubscription(input: ProvisionInput) {
         });
       }
     } else {
-      const tempPassword = randomBytes(24).toString("hex");
+      const password = generateMemorablePassword();
       const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
         email,
-        password: tempPassword,
+        password,
         email_confirm: true,
         user_metadata: { full_name: name },
       });
+
       if (createError || !newUser?.user) {
         throw new Error(createError?.message ?? "Falha ao criar usuária");
       }
