@@ -535,22 +535,23 @@ function Landing() {
 
       {/* BENEFÍCIOS */}
       <section id="beneficios" className="mx-auto max-w-6xl px-5 pb-24">
-        <SectionHead
-          eyebrow="O que você recebe"
-          title="Tudo que você precisa para não perder mais um dia com Deus"
-        />
+        <AnimateIn>
+          <SectionHead
+            eyebrow="O que você recebe"
+            title="Tudo que você precisa para não perder mais um dia com Deus"
+          />
+        </AnimateIn>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {entregas.map(({ icon: Icon, titulo, texto }) => (
-            <div
-              key={titulo}
-              className="group rounded-[1.75rem] border border-border/60 bg-card/85 p-7 shadow-card backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-lift"
-            >
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary transition group-hover:bg-primary/10">
-                <Icon className="size-5 text-primary" />
-              </span>
-              <h3 className="font-display mt-5 text-2xl font-semibold">{titulo}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{texto}</p>
-            </div>
+          {entregas.map(({ icon: Icon, titulo, texto }, i) => (
+            <AnimateIn key={titulo} delay={i * 100}>
+              <div className="group h-full rounded-[1.75rem] border border-border/60 bg-card/85 p-7 shadow-card backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-lift">
+                <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary transition group-hover:bg-primary/10">
+                  <Icon className="size-5 text-primary" />
+                </span>
+                <h3 className="font-display mt-5 text-2xl font-semibold">{titulo}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{texto}</p>
+              </div>
+            </AnimateIn>
           ))}
         </div>
       </section>
