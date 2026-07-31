@@ -175,7 +175,7 @@ function FieldLabel({ children, className }: { children: React.ReactNode; classN
 function DevotionalsAdmin() {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [showPreview, setShowPreview] = useState(true);
+  const [search, setSearch] = useState("");
   const [search, setSearch] = useState("");
   const [monthFilter, setMonthFilter] = useState("all");
   const [visible, setVisible] = useState(8);
