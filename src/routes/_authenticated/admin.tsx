@@ -20,26 +20,17 @@ import { toast } from "sonner";
 
 import { AppShell } from "@/components/AppShell";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -355,102 +346,145 @@ function DevotionalsAdmin() {
             {form.id && <Badge variant="secondary">editando</Badge>}
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label>Data de liberação</Label>
-              <Input
-                type="date"
-                required
-                value={form.publish_date}
-                onChange={set("publish_date")}
-                className={dateConflict ? "border-destructive" : undefined}
-              />
-              {dateConflict ? (
-                <p className="flex items-center gap-1 text-[11px] text-destructive">
-                  <TriangleAlert className="size-3" /> Já existe um devocional nesta data.
-                </p>
-              ) : (
-                <button
-                  type="button"
-                  className="flex items-center gap-1 text-[11px] text-primary hover:underline"
-                  onClick={() => setForm((f) => ({ ...f, publish_date: nextFreeDate }))}
-                >
-                  <CalendarPlus className="size-3" /> usar próxima data livre
-                </button>
-              )}
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label>Referência</Label>
-                <CharCount value={form.verse_reference} max={LIMITS.verse_reference} />
-              </div>
-              <Input
-                required
-                value={form.verse_reference}
-                onChange={set("verse_reference")}
-              />
-            </div>
-          </div>
+          <Accordion type="single" collapsible defaultValue="etapa-1" className="w-full">
+            <AccordionItem value="etapa-1" className="rounded-2xl border border-border/60 px-4">
+              <AccordionTrigger className="text-sm font-semibold">
+                <span className="flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">1</span>
+                  Data e referência bíblica
+                </span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="grid gap-4 pb-2 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label>Data de liberação</Label>
+                    <Input
+                      type="date"
+                      required
+                      value={form.publish_date}
+                      onChange={set("publish_date")}
+                      className={dateConflict ? "border-destructive" : undefined}
+                    />
+                    {dateConflict ? (
+                      <p className="flex items-center gap-1 text-[11px] text-destructive">
+                        <TriangleAlert className="size-3" /> Já existe um devocional nesta data.
+                      </p>
+                    ) : (
+                      <button
+                        type="button"
+                        className="flex items-center gap-1 text-[11px] text-primary hover:underline"
+                        onClick={() => setForm((f) => ({ ...f, publish_date: nextFreeDate }))}
+                      >
+                        <CalendarPlus className="size-3" /> usar próxima data livre
+                      </button>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label>Referência bíblica</Label>
+                      <CharCount value={form.verse_reference} max={LIMITS.verse_reference} />
+                    </div>
+                    <Input
+                      required
+                      value={form.verse_reference}
+                      onChange={set("verse_reference")}
+                    />
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label>Título</Label>
-              <CharCount value={form.title} max={LIMITS.title} />
-            </div>
-            <Input
-              required
-              value={form.title}
-              onChange={set("title")}
-            />
-          </div>
+            <AccordionItem value="etapa-2" className="rounded-2xl border border-border/60 px-4">
+              <AccordionTrigger className="text-sm font-semibold">
+                <span className="flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">2</span>
+                  Título e versículo
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="space-y-4 pb-2">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Título</Label>
+                    <CharCount value={form.title} max={LIMITS.title} />
+                  </div>
+                  <Input required value={form.title} onChange={set("title")} />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Versículo</Label>
+                    <CharCount value={form.verse_text} max={LIMITS.verse_text} />
+                  </div>
+                  <AutoTextarea required minRows={2} value={form.verse_text} onChange={set("verse_text")} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label>Versículo</Label>
-              <CharCount value={form.verse_text} max={LIMITS.verse_text} />
-            </div>
-            <AutoTextarea
-              required
-              minRows={2}
-              value={form.verse_text}
-              onChange={set("verse_text")}
-            />
-          </div>
+            <AccordionItem value="etapa-3" className="rounded-2xl border border-border/60 px-4">
+              <AccordionTrigger className="text-sm font-semibold">
+                <span className="flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">3</span>
+                  Mensagem do dia
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="pb-2">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Mensagem</Label>
+                    <CharCount value={form.content} max={LIMITS.content} />
+                  </div>
+                  <AutoTextarea required minRows={8} value={form.content} onChange={set("content")} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label>Mensagem</Label>
-              <CharCount value={form.content} max={LIMITS.content} />
-            </div>
-            <AutoTextarea
-              required
-              minRows={8}
-              value={form.content}
-              onChange={set("content")}
-            />
-          </div>
+            <AccordionItem value="etapa-4" className="rounded-2xl border border-border/60 px-4">
+              <AccordionTrigger className="text-sm font-semibold">
+                <span className="flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">4</span>
+                  Reflexão e oração
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="space-y-4 pb-2">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Pergunta para refletir (opcional)</Label>
+                    <CharCount value={form.reflection_question} max={LIMITS.reflection_question} />
+                  </div>
+                  <AutoTextarea minRows={2} value={form.reflection_question} onChange={set("reflection_question")} />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Oração (opcional)</Label>
+                    <CharCount value={form.prayer} max={LIMITS.prayer} />
+                  </div>
+                  <AutoTextarea minRows={4} value={form.prayer} onChange={set("prayer")} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label>Pergunta para refletir (opcional)</Label>
-              <CharCount value={form.reflection_question} max={LIMITS.reflection_question} />
-            </div>
-            <AutoTextarea
-              minRows={2}
-              value={form.reflection_question}
-              onChange={set("reflection_question")}
-            />
-          </div>
+            <AccordionItem value="etapa-5" className="rounded-2xl border border-border/60 px-4">
+              <AccordionTrigger className="text-sm font-semibold">
+                <span className="flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">5</span>
+                  Revisar e publicar
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="pb-2">
+                <div className="rounded-2xl bg-secondary/40 p-4 text-sm">
+                  <p className="mb-2 text-xs font-medium text-muted-foreground">Resumo do devocional</p>
+                  <ul className="space-y-1">
+                    <li><span className="text-muted-foreground">Data:</span> {formatLong(form.publish_date)}</li>
+                    <li><span className="text-muted-foreground">Referência:</span> {form.verse_reference || "—"}</li>
+                    <li><span className="text-muted-foreground">Título:</span> {form.title || "—"}</li>
+                    <li><span className="text-muted-foreground">Versículo:</span> {form.verse_text ? `${form.verse_text.slice(0, 60)}...` : "—"}</li>
+                    <li><span className="text-muted-foreground">Mensagem:</span> {form.content ? `${form.content.slice(0, 80)}...` : "—"}</li>
+                  </ul>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label>Oração (opcional)</Label>
-              <CharCount value={form.prayer} max={LIMITS.prayer} />
-            </div>
-            <AutoTextarea minRows={4} value={form.prayer} onChange={set("prayer")} />
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 pt-2">
             <Button
               type="submit"
               disabled={save.isPending || dateConflict || tooLong}
