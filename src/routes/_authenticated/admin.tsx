@@ -116,20 +116,20 @@ function AdminPage() {
 
   return (
     <AppShell isAdmin>
-      <h1 className="font-display text-4xl font-semibold">Administração</h1>
-      <Tabs defaultValue="devocionais" className="mt-6">
-        <TabsList className="rounded-full bg-secondary p-1">
-          <TabsTrigger value="devocionais" className="rounded-full px-5">
+      <h1 className="font-display text-4xl md:text-5xl font-semibold">Administração</h1>
+      <Tabs defaultValue="devocionais" className="mt-8">
+        <TabsList className="rounded-full bg-secondary p-1.5">
+          <TabsTrigger value="devocionais" className="rounded-full px-6 py-2 text-sm md:text-base">
             Devocionais
           </TabsTrigger>
-          <TabsTrigger value="assinantes" className="rounded-full px-5">
+          <TabsTrigger value="assinantes" className="rounded-full px-6 py-2 text-sm md:text-base">
             Assinantes
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="devocionais" className="mt-6">
+        <TabsContent value="devocionais" className="mt-8">
           <DevotionalsAdmin />
         </TabsContent>
-        <TabsContent value="assinantes" className="mt-6">
+        <TabsContent value="assinantes" className="mt-8">
           <SubscribersAdmin />
         </TabsContent>
       </Tabs>
