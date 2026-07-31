@@ -65,12 +65,12 @@ type FormState = {
 };
 
 const LIMITS = {
-  title: 120,
+  title: 300,
   verse_reference: 100,
-  verse_text: 2000,
-  content: 6000,
-  reflection_question: 500,
-  prayer: 1500,
+  verse_text: 5000,
+  content: 10000,
+  reflection_question: 2000,
+  prayer: 3000,
 };
 
 const DRAFT_KEY = "dg-admin-devotional-draft";
