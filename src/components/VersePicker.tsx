@@ -107,7 +107,7 @@ export function VersePicker({
           ))}
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-[220px_1fr]">
+        <div className="grid gap-3 sm:grid-cols-[200px_1fr] md:grid-cols-[220px_1fr]">
           <div className="space-y-2">
             <div className="relative">
               <Search className="text-muted-foreground absolute top-2.5 left-2 size-5" />
@@ -117,7 +117,7 @@ export function VersePicker({
                 className="h-10 pl-9 text-base"
               />
             </div>
-            <ScrollArea className="h-72 rounded-lg border">
+            <ScrollArea className="h-44 rounded-lg border sm:h-72">
               <div className="p-1">
                 {filteredBooks.map((b) => (
                   <button
@@ -168,7 +168,7 @@ export function VersePicker({
                   </div>
                 </ScrollArea>
 
-                <ScrollArea className="h-72 rounded-lg border">
+                <ScrollArea className="h-56 rounded-lg border sm:h-72">
                   <div className="space-y-1 p-2">
                     {chapters === null ? (
                       <p className="text-muted-foreground p-2 text-sm md:text-base">Carregando…</p>
@@ -198,14 +198,14 @@ export function VersePicker({
                 </ScrollArea>
               </>
             ) : (
-              <div className="text-muted-foreground flex h-[22rem] items-center justify-center rounded-lg border text-sm md:text-base">
+              <div className="text-muted-foreground flex h-40 items-center sm:h-[22rem] justify-center rounded-lg border text-sm md:text-base">
                 Escolha um livro
               </div>
             )}
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-muted-foreground text-sm md:text-base">
             {book && selected.length > 0
               ? formatReference(book.name, chapter, selected)
