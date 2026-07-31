@@ -40,6 +40,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useAppData";
 import { supabase } from "@/integrations/supabase/client";
 import { formatLong, monthLabel, todayISO } from "@/lib/date";
+import { cn } from "@/lib/utils";
 import { refreshKiwifyStatus, syncKiwifySales } from "@/lib/kiwify.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
