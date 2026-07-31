@@ -681,48 +681,47 @@ function DevotionalsAdmin() {
 
 function StatCard({ label, value, small }: { label: string; value: string | number; small?: boolean }) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-4">
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className={`font-display font-semibold ${small ? "text-lg" : "text-3xl"}`}>{value}</p>
+    <div className="rounded-2xl border border-border/60 bg-card p-5 shadow-sm">
+      <p className="text-sm md:text-base text-muted-foreground">{label}</p>
+      <p className={`font-display font-semibold ${small ? "text-lg md:text-xl" : "text-3xl md:text-4xl"}`}>{value}</p>
     </div>
   );
 }
 
 function DevotionalPreview({ form }: { form: FormState }) {
   return (
-    <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
-      <p className="text-xs tracking-wide text-muted-foreground uppercase">Prévia da assinante</p>
-      <p className="mt-3 text-xs text-muted-foreground">{formatLong(form.publish_date)}</p>
-      <h3 className="font-display mt-1 text-2xl font-semibold">
+    <div className="rounded-3xl border border-border/60 bg-card p-6 md:p-8 shadow-card">
+      <p className="text-sm tracking-wide text-muted-foreground uppercase">Prévia da assinante</p>
+      <p className="mt-3 text-sm text-muted-foreground">{formatLong(form.publish_date)}</p>
+      <h3 className="font-display mt-1 text-2xl md:text-3xl font-semibold">
         {form.title || "Título do devocional"}
       </h3>
-      <div className="bg-secondary/60 mt-4 rounded-2xl p-4">
-        <p className="font-display text-lg italic">
+      <div className="bg-secondary/60 mt-5 rounded-2xl p-5">
+        <p className="font-display text-lg md:text-xl italic leading-relaxed">
           {form.verse_text || "O texto do versículo aparece aqui."}
         </p>
-        <p className="text-primary mt-2 text-xs font-medium">
+        <p className="text-primary mt-2 text-sm md:text-base font-semibold">
           {form.verse_reference || "Referência"}
         </p>
       </div>
-      <div className="mt-4 space-y-3 text-sm leading-relaxed whitespace-pre-line">
+      <div className="mt-5 space-y-4 text-base md:text-lg leading-relaxed whitespace-pre-line">
         {form.content || "A mensagem do dia aparece aqui conforme você escreve."}
       </div>
       {form.reflection_question && (
-        <div className="border-primary/40 mt-4 border-l-2 pl-3 text-sm">
-          <p className="text-xs text-muted-foreground">Para refletir</p>
+        <div className="border-primary/40 mt-5 border-l-2 pl-4 text-base md:text-lg">
+          <p className="text-sm text-muted-foreground">Para refletir</p>
           <p>{form.reflection_question}</p>
         </div>
       )}
       {form.prayer && (
-        <div className="mt-4 rounded-2xl border border-border/60 p-4 text-sm whitespace-pre-line">
-          <p className="text-xs text-muted-foreground">Oração</p>
+        <div className="mt-5 rounded-2xl border border-border/60 p-5 text-base md:text-lg whitespace-pre-line">
+          <p className="text-sm text-muted-foreground">Oração</p>
           {form.prayer}
         </div>
       )}
     </div>
   );
 }
-
 
 function SubscribersAdmin() {
   const queryClient = useQueryClient();
@@ -756,7 +755,7 @@ function SubscribersAdmin() {
   });
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <KiwifyPanel
         onDone={() => queryClient.invalidateQueries({ queryKey: ["admin-subscribers"] })}
       />
@@ -764,14 +763,14 @@ function SubscribersAdmin() {
       {(data ?? []).map((s) => (
         <div
           key={s.id}
-          className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card p-4"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card p-5"
         >
           <div className="min-w-0">
-            <p className="font-medium">{s.profile?.full_name ?? "Sem nome"}</p>
-            <p className="text-xs break-all text-muted-foreground">
+            <p className="font-semibold text-base md:text-lg">{s.profile?.full_name ?? "Sem nome"}</p>
+            <p className="text-sm break-all text-muted-foreground">
               {s.profile?.email ?? s.kiwify_customer_email}
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-sm text-muted-foreground">
               Compra: {formatLong(s.started_at.slice(0, 10))}
             </p>
           </div>
@@ -781,7 +780,7 @@ function SubscribersAdmin() {
               update.mutate({ id: s.id, status: v as "active" | "past_due" | "canceled" })
             }
           >
-            <SelectTrigger className="w-44 rounded-full">
+            <SelectTrigger className="w-44 rounded-full h-11 text-base">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -793,7 +792,7 @@ function SubscribersAdmin() {
         </div>
       ))}
       {data?.length === 0 && (
-        <p className="text-sm text-muted-foreground">Nenhuma assinante ainda.</p>
+        <p className="text-base text-muted-foreground">Nenhuma assinante ainda.</p>
       )}
     </div>
   );
@@ -827,33 +826,37 @@ function KiwifyPanel({ onDone }: { onDone: () => void }) {
   });
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-4">
-      <div className="flex items-center gap-2">
-        <RefreshCw className="h-4 w-4 text-primary" />
-        <p className="font-medium">Integração Kiwify</p>
+    <div className="rounded-2xl border border-border/60 bg-card p-5 md:p-6">
+      <div className="flex items-center gap-3">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+          <RefreshCw className="size-5 text-primary" />
+        </span>
+        <div>
+          <p className="font-semibold text-base md:text-lg">Integração Kiwify</p>
+          <p className="text-sm text-muted-foreground">
+            Sincroniza apenas as compras do produto Daily Grace.
+          </p>
+        </div>
       </div>
-      <p className="mt-1 text-xs text-muted-foreground">
-        Sincroniza apenas as compras do produto Daily Grace.
-      </p>
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div className="mt-5 flex flex-wrap items-center gap-3">
         <Button
-          className="rounded-full"
+          className="rounded-full px-6 py-5 text-base"
           onClick={() => sync.mutate()}
           disabled={sync.isPending}
         >
           {sync.isPending ? "Sincronizando..." : "Importar compras da Kiwify"}
         </Button>
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-2">
+      <div className="mt-4 flex flex-wrap items-center gap-3">
         <Input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-64 rounded-full"
+          className="w-64 rounded-full h-11 text-base"
         />
         <Button
           variant="outline"
-          className="rounded-full"
+          className="rounded-full h-11 px-5 text-base"
           onClick={() => refresh.mutate()}
           disabled={refresh.isPending || !email.includes("@")}
         >
