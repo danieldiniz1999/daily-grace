@@ -176,7 +176,6 @@ function DevotionalsAdmin() {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<FormState>(emptyForm);
   const [search, setSearch] = useState("");
-  const [search, setSearch] = useState("");
   const [monthFilter, setMonthFilter] = useState("all");
   const [visible, setVisible] = useState(8);
   const [pendingDelete, setPendingDelete] = useState<{ id: string; title: string } | null>(null);
