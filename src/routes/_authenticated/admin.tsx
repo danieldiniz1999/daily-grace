@@ -524,15 +524,6 @@ function DevotionalsAdmin() {
                 Limpar
               </Button>
             )}
-            <Button
-              type="button"
-              variant="ghost"
-              className="ml-auto rounded-full px-5 py-5 text-base"
-              onClick={() => setShowPreview((v) => !v)}
-            >
-              {showPreview ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
-              {showPreview ? "Ocultar prévia" : "Ver prévia"}
-            </Button>
           </div>
           <p className="text-xs md:text-sm text-muted-foreground">
             O texto fica salvo automaticamente neste navegador enquanto você escreve.
