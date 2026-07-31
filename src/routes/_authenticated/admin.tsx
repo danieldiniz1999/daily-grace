@@ -505,20 +505,20 @@ function DevotionalsAdmin() {
             </AccordionItem>
           </Accordion>
 
-          <div className="flex flex-wrap items-center gap-2 pt-2">
+          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border/40">
             <Button
               type="submit"
               disabled={save.isPending || dateConflict || tooLong}
-              className="bg-grace rounded-full px-6"
+              className="bg-grace rounded-full px-8 py-5 text-base md:text-lg font-semibold btn-glow shadow-soft"
             >
-              <Plus className="size-4" />
+              <Plus className="size-5" />
               {save.isPending ? "Salvando..." : form.id ? "Salvar alterações" : "Publicar devocional"}
             </Button>
             {!isBlank(form) && (
               <Button
                 type="button"
                 variant="outline"
-                className="rounded-full"
+                className="rounded-full px-6 py-5 text-base"
                 onClick={() => {
                   setForm(emptyForm());
                   localStorage.removeItem(DRAFT_KEY);
@@ -530,14 +530,14 @@ function DevotionalsAdmin() {
             <Button
               type="button"
               variant="ghost"
-              className="ml-auto rounded-full"
+              className="ml-auto rounded-full px-5 py-5 text-base"
               onClick={() => setShowPreview((v) => !v)}
             >
-              {showPreview ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              {showPreview ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
               {showPreview ? "Ocultar prévia" : "Ver prévia"}
             </Button>
           </div>
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-xs md:text-sm text-muted-foreground">
             O texto fica salvo automaticamente neste navegador enquanto você escreve.
           </p>
         </form>
