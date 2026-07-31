@@ -156,7 +156,12 @@ export function AppShell({
                               : "text-[#A740C4]/80 hover:bg-[#CB6CE6]/10 hover:text-[#A740C4]",
                           )}
                         >
-                          <span className="transition-transform duration-300 group-hover:scale-110">
+                          <span
+                            className={cn(
+                              "transition-transform duration-300 group-hover:scale-110",
+                              pathname.startsWith(item.to) && "text-white",
+                            )}
+                          >
                             {item.icon}
                           </span>
                           {item.label}
