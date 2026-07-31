@@ -46,7 +46,8 @@ export const changePassword = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
-    const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.getUserById(userId);
     if (userError || !userData.user) throw new Error("Usuária não encontrada.");
 
     const email = userData.user.email;
