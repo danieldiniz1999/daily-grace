@@ -49,6 +49,11 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-code: var(--code);
+  --color-code-foreground: var(--code-foreground);
+  --color-code-muted: var(--code-muted);
+  --color-code-border: var(--code-border);
+  --color-code-accent: var(--code-accent);
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Karla", ui-sans-serif, system-ui, sans-serif;
 }
@@ -80,6 +85,11 @@
   --lilac-foreground: oklch(0.99 0.01 320);
   --cream: oklch(0.985 0.086 110);
   --cream-foreground: oklch(0.32 0.07 316);
+  --code: oklch(0.19 0.045 315);
+  --code-foreground: oklch(0.94 0.018 320);
+  --code-muted: oklch(0.64 0.045 315);
+  --code-border: oklch(0.31 0.06 315);
+  --code-accent: oklch(0.78 0.16 317);
   --chart-1: oklch(0.552 0.222 318);
   --chart-2: oklch(0.673 0.184 317);
   --chart-3: oklch(0.985 0.086 110);

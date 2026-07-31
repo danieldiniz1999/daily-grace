@@ -20,6 +20,7 @@ import { toast } from "sonner";
 
 import { AppShell } from "@/components/AppShell";
 import { VersePicker } from "@/components/VersePicker";
+import { VibeDatePicker } from "@/components/VibeDatePicker";
 import {
   Accordion,
   AccordionContent,
@@ -359,13 +360,12 @@ function DevotionalsAdmin() {
                 <div className="grid gap-4 pb-2 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label>Data de liberação</Label>
-                    <Input
-                      type="date"
-                      required
+                    <VibeDatePicker
                       value={form.publish_date}
-                      onChange={set("publish_date")}
-                      className={dateConflict ? "border-destructive" : undefined}
+                      onChange={(v) => setForm((f) => ({ ...f, publish_date: v }))}
+                      invalid={dateConflict}
                     />
+
                     {dateConflict ? (
                       <p className="flex items-center gap-1 text-[11px] text-destructive">
                         <TriangleAlert className="size-3" /> Já existe um devocional nesta data.
