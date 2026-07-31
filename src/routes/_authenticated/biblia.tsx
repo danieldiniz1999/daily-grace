@@ -1,11 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { BookOpenText, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import {
+  BookOpen,
+  BookOpenText,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+} from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin, useSubscription } from "@/hooks/useAppData";
@@ -43,6 +58,8 @@ function BibliaPage() {
   const [chapters, setChapters] = useState<string[][] | null>(null);
   const [chapter, setChapter] = useState(1);
   const [search, setSearch] = useState("");
+  const [booksOpen, setBooksOpen] = useState(false);
+  const [chaptersOpen, setChaptersOpen] = useState(false);
 
   useEffect(() => {
     void loadBooks().then(setBooks);
@@ -107,7 +124,7 @@ function BibliaPage() {
         </header>
 
         <div className="grid gap-4 lg:grid-cols-[240px_1fr]">
-          <aside className="space-y-2">
+          <aside className="hidden space-y-2 lg:block">
             <div className="relative">
               <Search className="text-muted-foreground absolute top-2.5 left-2 size-4" />
               <Input
@@ -141,8 +158,111 @@ function BibliaPage() {
           </aside>
 
           <section className="space-y-3">
+            <div className="flex gap-2 lg:hidden">
+              <Sheet open={booksOpen} onOpenChange={setBooksOpen}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="flex-1 justify-between gap-2 rounded-xl border-border/60 bg-background"
+                  >
+                    <span className="flex items-center gap-2 truncate">
+                      <BookOpen className="text-primary size-4 shrink-0" />
+                      <span className="truncate">{book?.name ?? "Livro"}</span>
+                    </span>
+                    <ChevronDown className="text-muted-foreground size-4 shrink-0" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="h-[80vh] rounded-t-3xl">
+                  <SheetHeader className="text-left">
+                    <SheetTitle>Escolher livro</SheetTitle>
+                    <SheetDescription>
+                      Selecione o livro que deseja ler.
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="mt-4 space-y-3">
+                    <div className="relative">
+                      <Search className="text-muted-foreground absolute top-2.5 left-2 size-4" />
+                      <Input
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Buscar livro..."
+                        className="h-9 pl-8"
+                      />
+                    </div>
+                    <ScrollArea className="h-[55vh]">
+                      <div className="space-y-1 pr-3">
+                        {filteredBooks.map((b) => (
+                          <button
+                            key={b.i}
+                            type="button"
+                            onClick={() => {
+                              setBookIndex(b.i);
+                              setChapter(1);
+                              setBooksOpen(false);
+                            }}
+                            className={cn(
+                              "w-full rounded-xl px-3 py-3 text-left text-sm transition-colors",
+                              bookIndex === b.i
+                                ? "bg-primary text-primary-foreground font-medium"
+                                : "hover:bg-muted",
+                            )}
+                          >
+                            {b.name}
+                          </button>
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                </SheetContent>
+              </Sheet>
+
+              <Sheet open={chaptersOpen} onOpenChange={setChaptersOpen}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-32 justify-between gap-2 rounded-xl border-border/60 bg-background sm:w-40"
+                  >
+                    <span className="truncate">Cap. {chapter}</span>
+                    <ChevronDown className="text-muted-foreground size-4 shrink-0" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="h-[70vh] rounded-t-3xl">
+                  <SheetHeader className="text-left">
+                    <SheetTitle>Escolher capítulo</SheetTitle>
+                    <SheetDescription>
+                      {book?.name} — selecione o capítulo.
+                    </SheetDescription>
+                  </SheetHeader>
+                  <ScrollArea className="mt-4 h-[50vh]">
+                    <div className="flex flex-wrap gap-2 pr-3">
+                      {book
+                        ? Array.from({ length: book.chapters }, (_, i) => i + 1).map((c) => (
+                            <button
+                              key={c}
+                              type="button"
+                              onClick={() => {
+                                setChapter(c);
+                                setChaptersOpen(false);
+                              }}
+                              className={cn(
+                                "grid h-10 w-12 place-items-center rounded-xl text-sm font-medium transition-colors",
+                                chapter === c
+                                  ? "bg-primary text-primary-foreground"
+                                  : "border border-border/60 bg-background text-muted-foreground hover:bg-muted",
+                              )}
+                            >
+                              {c}
+                            </button>
+                          ))
+                        : null}
+                    </div>
+                  </ScrollArea>
+                </SheetContent>
+              </Sheet>
+            </div>
+
             {book ? (
-              <ScrollArea className="max-h-24 rounded-2xl border border-border/60 bg-background">
+              <ScrollArea className="hidden max-h-24 rounded-2xl border border-border/60 bg-background lg:block">
                 <div className="flex flex-wrap gap-1 p-2">
                   {Array.from({ length: book.chapters }, (_, i) => i + 1).map((c) => (
                     <button
