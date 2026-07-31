@@ -386,6 +386,8 @@ function Landing() {
             <img
               src={heroUploaded.url}
               alt="Mulher sorrindo enquanto lê o devocional no celular com a Bíblia aberta"
+              fetchPriority="high"
+              decoding="async"
               width={1024}
               height={1024}
               className="aspect-square w-full rounded-[2.25rem] object-cover shadow-lift"
