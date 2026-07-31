@@ -169,7 +169,9 @@ function BibliaPage() {
                   >
                     <span className="flex items-center gap-2 truncate">
                       <BookOpen className="text-primary size-4 shrink-0" />
-                      <span className="truncate">{book?.name ?? "Livro"}</span>
+                      <span className={cn("truncate", book ? "text-foreground" : "text-muted-foreground")}>
+                        {book?.name ?? "Escolher livro"}
+                      </span>
                     </span>
                     <ChevronDown className="text-muted-foreground size-4 shrink-0" />
                   </Button>
