@@ -7,8 +7,6 @@ import {
   CalendarPlus,
   CheckCircle2,
   Copy,
-  Eye,
-  EyeOff,
   Pencil,
   Plus,
   RefreshCw,
@@ -177,7 +175,6 @@ function FieldLabel({ children, className }: { children: React.ReactNode; classN
 function DevotionalsAdmin() {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [showPreview, setShowPreview] = useState(true);
   const [search, setSearch] = useState("");
   const [monthFilter, setMonthFilter] = useState("all");
   const [visible, setVisible] = useState(8);
@@ -527,15 +524,6 @@ function DevotionalsAdmin() {
                 Limpar
               </Button>
             )}
-            <Button
-              type="button"
-              variant="ghost"
-              className="ml-auto rounded-full px-5 py-5 text-base"
-              onClick={() => setShowPreview((v) => !v)}
-            >
-              {showPreview ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
-              {showPreview ? "Ocultar prévia" : "Ver prévia"}
-            </Button>
           </div>
           <p className="text-xs md:text-sm text-muted-foreground">
             O texto fica salvo automaticamente neste navegador enquanto você escreve.
@@ -543,8 +531,6 @@ function DevotionalsAdmin() {
         </form>
 
         <div className="space-y-8">
-          {showPreview && <DevotionalPreview form={form} />}
-
           <div className="space-y-4">
             <h2 className="font-display text-2xl md:text-3xl font-semibold">Publicados</h2>
             <div className="flex flex-wrap gap-3">
@@ -688,40 +674,6 @@ function StatCard({ label, value, small }: { label: string; value: string | numb
   );
 }
 
-function DevotionalPreview({ form }: { form: FormState }) {
-  return (
-    <div className="rounded-3xl border border-border/60 bg-card p-6 md:p-8 shadow-card">
-      <p className="text-sm tracking-wide text-muted-foreground uppercase">Prévia da assinante</p>
-      <p className="mt-3 text-sm text-muted-foreground">{formatLong(form.publish_date)}</p>
-      <h3 className="font-display mt-1 text-2xl md:text-3xl font-semibold">
-        {form.title || "Título do devocional"}
-      </h3>
-      <div className="bg-secondary/60 mt-5 rounded-2xl p-5">
-        <p className="font-display text-lg md:text-xl italic leading-relaxed">
-          {form.verse_text || "O texto do versículo aparece aqui."}
-        </p>
-        <p className="text-primary mt-2 text-sm md:text-base font-semibold">
-          {form.verse_reference || "Referência"}
-        </p>
-      </div>
-      <div className="mt-5 space-y-4 text-base md:text-lg leading-relaxed whitespace-pre-line">
-        {form.content || "A mensagem do dia aparece aqui conforme você escreve."}
-      </div>
-      {form.reflection_question && (
-        <div className="border-primary/40 mt-5 border-l-2 pl-4 text-base md:text-lg">
-          <p className="text-sm text-muted-foreground">Para refletir</p>
-          <p>{form.reflection_question}</p>
-        </div>
-      )}
-      {form.prayer && (
-        <div className="mt-5 rounded-2xl border border-border/60 p-5 text-base md:text-lg whitespace-pre-line">
-          <p className="text-sm text-muted-foreground">Oração</p>
-          {form.prayer}
-        </div>
-      )}
-    </div>
-  );
-}
 
 function SubscribersAdmin() {
   const queryClient = useQueryClient();
