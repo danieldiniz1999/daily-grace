@@ -37,15 +37,15 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
         <button
           type="button"
           className={cn(
-            "group flex w-full items-center gap-3 rounded-xl border bg-code px-3 py-2.5 text-left font-mono text-sm text-code-foreground transition-all",
+            "group flex w-full items-center gap-3 rounded-xl border bg-code px-3 py-3 text-left font-mono text-sm md:text-base text-code-foreground transition-all",
             "hover:border-code-accent/70 hover:shadow-[0_0_0_3px_color-mix(in_oklab,var(--code-accent)_18%,transparent)]",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-code-accent/60",
             invalid ? "border-destructive" : "border-code-border",
             className,
           )}
         >
-          <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-code-accent/15 text-code-accent">
-            <CalendarDays className="size-3.5" />
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-code-accent/15 text-code-accent">
+            <CalendarDays className="size-4" />
           </span>
           <span className="flex-1 truncate">
             <span className="text-code-muted">date</span>
@@ -56,7 +56,7 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
               <span className="text-code-muted italic">null</span>
             )}
           </span>
-          <span className="hidden shrink-0 text-[10px] uppercase tracking-[0.18em] text-code-muted sm:inline">
+          <span className="hidden shrink-0 text-xs uppercase tracking-[0.18em] text-code-muted sm:inline">
             {selected ? format(selected, "EEE", { locale: ptBR }) : "—"}
           </span>
         </button>
@@ -73,15 +73,15 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
             <span className="size-2.5 rounded-full bg-cream/80" />
             <span className="size-2.5 rounded-full bg-code-accent/80" />
           </span>
-          <span className="ml-1 flex items-center gap-1.5 font-mono text-[11px] text-code-muted">
-            <Terminal className="size-3" />
+          <span className="ml-1 flex items-center gap-1.5 font-mono text-xs md:text-sm text-code-muted">
+            <Terminal className="size-3.5" />
             publish_date.ts
           </span>
         </div>
 
         <div className="flex">
           {/* numeração de linhas */}
-          <div className="hidden w-8 shrink-0 select-none flex-col items-center gap-[6px] border-r border-code-border/60 py-4 font-mono text-[10px] leading-4 text-code-muted/60 sm:flex">
+          <div className="hidden w-8 shrink-0 select-none flex-col items-center gap-[6px] border-r border-code-border/60 py-4 font-mono text-xs leading-4 text-code-muted/60 sm:flex">
             {Array.from({ length: 12 }, (_, i) => (
               <span key={i}>{String(i + 1).padStart(2, "0")}</span>
             ))}
@@ -96,15 +96,15 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
             initialFocus
             className={cn(
               "pointer-events-auto bg-transparent p-3 font-mono",
-              "[--cell-size:2.25rem]",
+              "[--cell-size:2.5rem]",
             )}
             classNames={{
-              caption_label: "text-sm font-semibold lowercase tracking-tight text-code-foreground",
+              caption_label: "text-base font-semibold lowercase tracking-tight text-code-foreground",
               button_previous:
-                "size-8 rounded-md border border-code-border/70 text-code-muted hover:bg-code-accent/15 hover:text-code-accent",
+                "size-9 rounded-md border border-code-border/70 text-code-muted hover:bg-code-accent/15 hover:text-code-accent",
               button_next:
-                "size-8 rounded-md border border-code-border/70 text-code-muted hover:bg-code-accent/15 hover:text-code-accent",
-              weekday: "flex-1 text-[10px] uppercase tracking-[0.14em] text-code-muted",
+                "size-9 rounded-md border border-code-border/70 text-code-muted hover:bg-code-accent/15 hover:text-code-accent",
+              weekday: "flex-1 text-xs uppercase tracking-[0.14em] text-code-muted",
               day: "group/day relative aspect-square h-full w-full select-none p-0 text-center",
               today: "rounded-md ring-1 ring-inset ring-code-accent/50",
               outside: "text-code-muted/40",
@@ -116,7 +116,7 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
                   {...props}
                   data-selected={modifiers.selected || undefined}
                   className={cn(
-                    "flex aspect-square h-auto w-full items-center justify-center rounded-md font-mono text-[13px] text-code-foreground/85 transition-colors",
+                    "flex aspect-square h-auto w-full items-center justify-center rounded-md font-mono text-sm md:text-base text-code-foreground/85 transition-colors",
                     "hover:bg-code-accent/20 hover:text-code-accent",
                     "data-[selected=true]:bg-code-accent data-[selected=true]:font-bold data-[selected=true]:text-code data-[selected=true]:shadow-[0_0_18px_color-mix(in_oklab,var(--code-accent)_45%,transparent)]",
                     className,
@@ -129,14 +129,14 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
           />
         </div>
 
-        <div className="flex items-center justify-between gap-2 border-t border-code-border/80 px-3 py-2 font-mono text-[11px]">
+        <div className="flex items-center justify-between gap-2 border-t border-code-border/80 px-3 py-2 font-mono text-xs md:text-sm">
           <span className="text-code-muted">
             <span className="text-code-accent">$</span> selecione um dia
           </span>
           <button
             type="button"
             onClick={() => commit(new Date())}
-            className="rounded-md border border-code-border/70 px-2 py-1 text-code-foreground/80 transition-colors hover:border-code-accent hover:text-code-accent"
+            className="rounded-md border border-code-border/70 px-2.5 py-1.5 text-code-foreground/80 transition-colors hover:border-code-accent hover:text-code-accent"
           >
             hoje()
           </button>

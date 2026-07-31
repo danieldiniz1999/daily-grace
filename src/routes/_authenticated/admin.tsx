@@ -40,6 +40,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useAppData";
 import { supabase } from "@/integrations/supabase/client";
 import { formatLong, monthLabel, todayISO } from "@/lib/date";
+import { cn } from "@/lib/utils";
 import { refreshKiwifyStatus, syncKiwifySales } from "@/lib/kiwify.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -115,20 +116,20 @@ function AdminPage() {
 
   return (
     <AppShell isAdmin>
-      <h1 className="font-display text-4xl font-semibold">Administração</h1>
-      <Tabs defaultValue="devocionais" className="mt-6">
-        <TabsList className="rounded-full bg-secondary p-1">
-          <TabsTrigger value="devocionais" className="rounded-full px-5">
+      <h1 className="font-display text-4xl md:text-5xl font-semibold">Administração</h1>
+      <Tabs defaultValue="devocionais" className="mt-8">
+        <TabsList className="rounded-full bg-secondary p-1.5">
+          <TabsTrigger value="devocionais" className="rounded-full px-6 py-2 text-sm md:text-base">
             Devocionais
           </TabsTrigger>
-          <TabsTrigger value="assinantes" className="rounded-full px-5">
+          <TabsTrigger value="assinantes" className="rounded-full px-6 py-2 text-sm md:text-base">
             Assinantes
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="devocionais" className="mt-6">
+        <TabsContent value="devocionais" className="mt-8">
           <DevotionalsAdmin />
         </TabsContent>
-        <TabsContent value="assinantes" className="mt-6">
+        <TabsContent value="assinantes" className="mt-8">
           <SubscribersAdmin />
         </TabsContent>
       </Tabs>
@@ -139,7 +140,7 @@ function AdminPage() {
 function CharCount({ value, max }: { value: string; max: number }) {
   const over = value.length > max;
   return (
-    <span className={`text-[11px] ${over ? "text-destructive" : "text-muted-foreground"}`}>
+    <span className={`text-xs md:text-sm font-medium ${over ? "text-destructive" : "text-muted-foreground"}`}>
       {value.length}/{max}
     </span>
   );
@@ -148,6 +149,7 @@ function CharCount({ value, max }: { value: string; max: number }) {
 function AutoTextarea({
   value,
   minRows = 3,
+  className,
   ...rest
 }: React.ComponentProps<typeof Textarea> & { minRows?: number }) {
   const ref = useRef<HTMLTextAreaElement | null>(null);
@@ -157,7 +159,19 @@ function AutoTextarea({
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   }, [value]);
-  return <Textarea ref={ref} rows={minRows} value={value} {...rest} />;
+  return (
+    <Textarea
+      ref={ref}
+      rows={minRows}
+      value={value}
+      className={cn("text-base leading-relaxed md:text-base", className)}
+      {...rest}
+    />
+  );
+}
+
+function FieldLabel({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <Label className={cn("text-sm md:text-base font-semibold", className)}>{children}</Label>;
 }
 
 function DevotionalsAdmin() {
@@ -322,15 +336,15 @@ function DevotionalsAdmin() {
     form.prayer.length > LIMITS.prayer;
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-3 sm:grid-cols-4">
+    <div className="space-y-8">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Devocionais" value={stats.total} />
         <StatCard label="Já liberados" value={stats.published} />
         <StatCard label="Agendados" value={stats.scheduled} />
         <StatCard label="Próxima data livre" value={formatLong(nextFreeDate).split(",")[1]?.trim() ?? nextFreeDate} small />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+      <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
         <form
           ref={formRef}
           onSubmit={(e) => {
@@ -339,27 +353,27 @@ function DevotionalsAdmin() {
             if (tooLong) return toast.error("Algum campo passou do limite de caracteres.");
             save.mutate(form);
           }}
-          className="h-fit space-y-4 rounded-3xl border border-border/60 bg-card p-6 shadow-card"
+          className="h-fit space-y-6 rounded-3xl border border-border/60 bg-card p-6 md:p-8 shadow-card"
         >
           <div className="flex items-center justify-between gap-2">
-            <h2 className="font-display text-xl font-semibold">
+            <h2 className="font-display text-2xl md:text-3xl font-semibold">
               {form.id ? "Editar devocional" : "Novo devocional"}
             </h2>
-            {form.id && <Badge variant="secondary">editando</Badge>}
+            {form.id && <Badge variant="secondary" className="text-sm">editando</Badge>}
           </div>
 
-          <Accordion type="single" collapsible defaultValue="etapa-1" className="w-full">
-            <AccordionItem value="etapa-1" className="rounded-2xl border border-border/60 px-4">
-              <AccordionTrigger className="text-sm font-semibold">
-                <span className="flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">1</span>
+          <Accordion type="single" collapsible defaultValue="etapa-1" className="w-full space-y-4">
+            <AccordionItem value="etapa-1" className="rounded-2xl border border-border/60 bg-secondary/20 px-4 md:px-5 py-1">
+              <AccordionTrigger className="text-base md:text-lg font-semibold [&>svg]:size-5">
+                <span className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-primary-foreground shadow-sm">1</span>
                   Data e referência bíblica
                 </span>
               </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid gap-4 pb-2 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label>Data de liberação</Label>
+              <AccordionContent className="pb-4 pt-2">
+                <div className="grid gap-5 pb-2 sm:grid-cols-2">
+                  <div className="space-y-3">
+                    <FieldLabel>Data de liberação</FieldLabel>
                     <VibeDatePicker
                       value={form.publish_date}
                       onChange={(v) => setForm((f) => ({ ...f, publish_date: v }))}
@@ -367,52 +381,53 @@ function DevotionalsAdmin() {
                     />
 
                     {dateConflict ? (
-                      <p className="flex items-center gap-1 text-[11px] text-destructive">
-                        <TriangleAlert className="size-3" /> Já existe um devocional nesta data.
+                      <p className="flex items-center gap-1.5 text-xs md:text-sm text-destructive">
+                        <TriangleAlert className="size-4" /> Já existe um devocional nesta data.
                       </p>
                     ) : (
                       <button
                         type="button"
-                        className="flex items-center gap-1 text-[11px] text-primary hover:underline"
+                        className="flex items-center gap-1.5 text-xs md:text-sm text-primary font-medium hover:underline"
                         onClick={() => setForm((f) => ({ ...f, publish_date: nextFreeDate }))}
                       >
-                        <CalendarPlus className="size-3" /> usar próxima data livre
+                        <CalendarPlus className="size-4" /> usar próxima data livre
                       </button>
                     )}
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <Label>Referência bíblica</Label>
+                      <FieldLabel>Referência bíblica</FieldLabel>
                       <CharCount value={form.verse_reference} max={LIMITS.verse_reference} />
                     </div>
                     <Input
                       required
                       value={form.verse_reference}
                       onChange={set("verse_reference")}
+                      className="h-11 text-base md:text-base"
                     />
                   </div>
                 </div>
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="etapa-2" className="rounded-2xl border border-border/60 px-4">
-              <AccordionTrigger className="text-sm font-semibold">
-                <span className="flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">2</span>
+            <AccordionItem value="etapa-2" className="rounded-2xl border border-border/60 bg-secondary/20 px-4 md:px-5 py-1">
+              <AccordionTrigger className="text-base md:text-lg font-semibold [&>svg]:size-5">
+                <span className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-primary-foreground shadow-sm">2</span>
                   Título e versículo
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="space-y-4 pb-2">
-                <div className="space-y-2">
+              <AccordionContent className="space-y-5 pb-4 pt-2">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <Label>Título</Label>
+                    <FieldLabel>Título</FieldLabel>
                     <CharCount value={form.title} max={LIMITS.title} />
                   </div>
-                  <Input required value={form.title} onChange={set("title")} />
+                  <Input required value={form.title} onChange={set("title")} className="h-11 text-base md:text-base" />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <Label>Versículo</Label>
+                    <FieldLabel>Versículo</FieldLabel>
                     <CharCount value={form.verse_text} max={LIMITS.verse_text} />
                   </div>
                   <VersePicker
@@ -420,90 +435,90 @@ function DevotionalsAdmin() {
                       setForm((f) => ({ ...f, verse_reference: reference, verse_text: text }))
                     }
                   />
-                  <AutoTextarea required minRows={2} value={form.verse_text} onChange={set("verse_text")} />
+                  <AutoTextarea required minRows={3} value={form.verse_text} onChange={set("verse_text")} />
                 </div>
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="etapa-3" className="rounded-2xl border border-border/60 px-4">
-              <AccordionTrigger className="text-sm font-semibold">
-                <span className="flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">3</span>
+            <AccordionItem value="etapa-3" className="rounded-2xl border border-border/60 bg-secondary/20 px-4 md:px-5 py-1">
+              <AccordionTrigger className="text-base md:text-lg font-semibold [&>svg]:size-5">
+                <span className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-primary-foreground shadow-sm">3</span>
                   Mensagem do dia
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="pb-2">
-                <div className="space-y-2">
+              <AccordionContent className="pb-4 pt-2">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <Label>Mensagem</Label>
+                    <FieldLabel>Mensagem</FieldLabel>
                     <CharCount value={form.content} max={LIMITS.content} />
                   </div>
-                  <AutoTextarea required minRows={8} value={form.content} onChange={set("content")} />
+                  <AutoTextarea required minRows={10} value={form.content} onChange={set("content")} />
                 </div>
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="etapa-4" className="rounded-2xl border border-border/60 px-4">
-              <AccordionTrigger className="text-sm font-semibold">
-                <span className="flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">4</span>
+            <AccordionItem value="etapa-4" className="rounded-2xl border border-border/60 bg-secondary/20 px-4 md:px-5 py-1">
+              <AccordionTrigger className="text-base md:text-lg font-semibold [&>svg]:size-5">
+                <span className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-primary-foreground shadow-sm">4</span>
                   Reflexão e oração
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="space-y-4 pb-2">
-                <div className="space-y-2">
+              <AccordionContent className="space-y-5 pb-4 pt-2">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <Label>Pergunta para refletir (opcional)</Label>
+                    <FieldLabel>Pergunta para refletir (opcional)</FieldLabel>
                     <CharCount value={form.reflection_question} max={LIMITS.reflection_question} />
                   </div>
-                  <AutoTextarea minRows={2} value={form.reflection_question} onChange={set("reflection_question")} />
+                  <AutoTextarea minRows={3} value={form.reflection_question} onChange={set("reflection_question")} />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <Label>Oração (opcional)</Label>
+                    <FieldLabel>Oração (opcional)</FieldLabel>
                     <CharCount value={form.prayer} max={LIMITS.prayer} />
                   </div>
-                  <AutoTextarea minRows={4} value={form.prayer} onChange={set("prayer")} />
+                  <AutoTextarea minRows={5} value={form.prayer} onChange={set("prayer")} />
                 </div>
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="etapa-5" className="rounded-2xl border border-border/60 px-4">
-              <AccordionTrigger className="text-sm font-semibold">
-                <span className="flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">5</span>
+            <AccordionItem value="etapa-5" className="rounded-2xl border border-border/60 bg-secondary/20 px-4 md:px-5 py-1">
+              <AccordionTrigger className="text-base md:text-lg font-semibold [&>svg]:size-5">
+                <span className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-primary-foreground shadow-sm">5</span>
                   Revisar e publicar
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="pb-2">
-                <div className="rounded-2xl bg-secondary/40 p-4 text-sm">
-                  <p className="mb-2 text-xs font-medium text-muted-foreground">Resumo do devocional</p>
-                  <ul className="space-y-1">
+              <AccordionContent className="pb-4 pt-2">
+                <div className="rounded-2xl bg-secondary/50 p-5 text-sm md:text-base">
+                  <p className="mb-3 text-sm font-semibold text-muted-foreground uppercase tracking-wide">Resumo do devocional</p>
+                  <ul className="space-y-2">
                     <li><span className="text-muted-foreground">Data:</span> {formatLong(form.publish_date)}</li>
                     <li><span className="text-muted-foreground">Referência:</span> {form.verse_reference || "—"}</li>
                     <li><span className="text-muted-foreground">Título:</span> {form.title || "—"}</li>
-                    <li><span className="text-muted-foreground">Versículo:</span> {form.verse_text ? `${form.verse_text.slice(0, 60)}...` : "—"}</li>
-                    <li><span className="text-muted-foreground">Mensagem:</span> {form.content ? `${form.content.slice(0, 80)}...` : "—"}</li>
+                    <li><span className="text-muted-foreground">Versículo:</span> {form.verse_text ? `${form.verse_text.slice(0, 70)}...` : "—"}</li>
+                    <li><span className="text-muted-foreground">Mensagem:</span> {form.content ? `${form.content.slice(0, 100)}...` : "—"}</li>
                   </ul>
                 </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
 
-          <div className="flex flex-wrap items-center gap-2 pt-2">
+          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border/40">
             <Button
               type="submit"
               disabled={save.isPending || dateConflict || tooLong}
-              className="bg-grace rounded-full px-6"
+              className="bg-grace rounded-full px-8 py-5 text-base md:text-lg font-semibold btn-glow shadow-soft"
             >
-              <Plus className="size-4" />
+              <Plus className="size-5" />
               {save.isPending ? "Salvando..." : form.id ? "Salvar alterações" : "Publicar devocional"}
             </Button>
             {!isBlank(form) && (
               <Button
                 type="button"
                 variant="outline"
-                className="rounded-full"
+                className="rounded-full px-6 py-5 text-base"
                 onClick={() => {
                   setForm(emptyForm());
                   localStorage.removeItem(DRAFT_KEY);
@@ -515,34 +530,34 @@ function DevotionalsAdmin() {
             <Button
               type="button"
               variant="ghost"
-              className="ml-auto rounded-full"
+              className="ml-auto rounded-full px-5 py-5 text-base"
               onClick={() => setShowPreview((v) => !v)}
             >
-              {showPreview ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              {showPreview ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
               {showPreview ? "Ocultar prévia" : "Ver prévia"}
             </Button>
           </div>
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-xs md:text-sm text-muted-foreground">
             O texto fica salvo automaticamente neste navegador enquanto você escreve.
           </p>
         </form>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           {showPreview && <DevotionalPreview form={form} />}
 
-          <div className="space-y-3">
-            <h2 className="font-display text-xl font-semibold">Publicados</h2>
-            <div className="flex flex-wrap gap-2">
-              <div className="relative flex-1 min-w-48">
-                <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <div className="space-y-4">
+            <h2 className="font-display text-2xl md:text-3xl font-semibold">Publicados</h2>
+            <div className="flex flex-wrap gap-3">
+              <div className="relative flex-1 min-w-56">
+                <Search className="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="rounded-full pl-9"
+                  className="rounded-full pl-10 h-11 text-base"
                 />
               </div>
               <Select value={monthFilter} onValueChange={setMonthFilter}>
-                <SelectTrigger className="w-44 rounded-full">
+                <SelectTrigger className="w-48 rounded-full h-11 text-base">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -557,9 +572,9 @@ function DevotionalsAdmin() {
             </div>
 
             {isLoading && (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {[0, 1, 2].map((i) => (
-                  <Skeleton key={i} className="h-20 rounded-2xl" />
+                  <Skeleton key={i} className="h-24 rounded-2xl" />
                 ))}
               </div>
             )}
@@ -570,47 +585,49 @@ function DevotionalsAdmin() {
               return (
                 <div
                   key={d.id}
-                  className="flex items-start justify-between gap-3 rounded-2xl border border-border/60 bg-card p-4"
+                  className="flex items-start justify-between gap-4 rounded-2xl border border-border/60 bg-card p-5 shadow-sm hover:shadow-card transition-shadow"
                 >
                   <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-xs text-muted-foreground">{formatLong(d.publish_date)}</p>
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <p className="text-sm text-muted-foreground">{formatLong(d.publish_date)}</p>
                       {isToday ? (
-                        <Badge className="bg-grace gap-1 text-[10px]">
-                          <CheckCircle2 className="size-3" /> hoje
+                        <Badge className="bg-grace gap-1 text-xs md:text-sm">
+                          <CheckCircle2 className="size-3.5" /> hoje
                         </Badge>
                       ) : scheduled ? (
-                        <Badge variant="outline" className="gap-1 text-[10px]">
-                          <CalendarClock className="size-3" /> agendado
+                        <Badge variant="outline" className="gap-1 text-xs md:text-sm">
+                          <CalendarClock className="size-3.5" /> agendado
                         </Badge>
                       ) : (
-                        <Badge variant="secondary" className="text-[10px]">
+                        <Badge variant="secondary" className="text-xs md:text-sm">
                           liberado
                         </Badge>
                       )}
                     </div>
-                    <p className="font-display truncate text-lg font-semibold">{d.title}</p>
-                    <p className="truncate text-xs text-muted-foreground">{d.verse_reference}</p>
+                    <p className="font-display truncate text-xl md:text-2xl font-semibold">{d.title}</p>
+                    <p className="truncate text-sm text-muted-foreground">{d.verse_reference}</p>
                   </div>
                   <div className="flex shrink-0 gap-1">
-                    <Button size="icon" variant="ghost" title="Editar" onClick={() => loadInto(d)}>
-                      <Pencil className="size-4" />
+                    <Button size="icon" variant="ghost" className="size-10" title="Editar" onClick={() => loadInto(d)}>
+                      <Pencil className="size-5" />
                     </Button>
                     <Button
                       size="icon"
                       variant="ghost"
+                      className="size-10"
                       title="Duplicar"
                       onClick={() => loadInto(d, true)}
                     >
-                      <Copy className="size-4" />
+                      <Copy className="size-5" />
                     </Button>
                     <Button
                       size="icon"
                       variant="ghost"
+                      className="size-10"
                       title="Excluir"
                       onClick={() => setPendingDelete({ id: d.id, title: d.title })}
                     >
-                      <Trash2 className="size-4 text-destructive" />
+                      <Trash2 className="size-5 text-destructive" />
                     </Button>
                   </div>
                 </div>
@@ -620,7 +637,7 @@ function DevotionalsAdmin() {
             {filtered.length > visible && (
               <Button
                 variant="outline"
-                className="w-full rounded-full"
+                className="w-full rounded-full py-5 text-base"
                 onClick={() => setVisible((v) => v + 8)}
               >
                 Carregar mais ({filtered.length - visible})
@@ -628,7 +645,7 @@ function DevotionalsAdmin() {
             )}
 
             {!isLoading && filtered.length === 0 && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-base text-muted-foreground">
                 {list?.length ? "Nenhum devocional encontrado com esse filtro." : "Nenhum devocional cadastrado ainda."}
               </p>
             )}
@@ -664,48 +681,47 @@ function DevotionalsAdmin() {
 
 function StatCard({ label, value, small }: { label: string; value: string | number; small?: boolean }) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-4">
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className={`font-display font-semibold ${small ? "text-lg" : "text-3xl"}`}>{value}</p>
+    <div className="rounded-2xl border border-border/60 bg-card p-5 shadow-sm">
+      <p className="text-sm md:text-base text-muted-foreground">{label}</p>
+      <p className={`font-display font-semibold ${small ? "text-lg md:text-xl" : "text-3xl md:text-4xl"}`}>{value}</p>
     </div>
   );
 }
 
 function DevotionalPreview({ form }: { form: FormState }) {
   return (
-    <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
-      <p className="text-xs tracking-wide text-muted-foreground uppercase">Prévia da assinante</p>
-      <p className="mt-3 text-xs text-muted-foreground">{formatLong(form.publish_date)}</p>
-      <h3 className="font-display mt-1 text-2xl font-semibold">
+    <div className="rounded-3xl border border-border/60 bg-card p-6 md:p-8 shadow-card">
+      <p className="text-sm tracking-wide text-muted-foreground uppercase">Prévia da assinante</p>
+      <p className="mt-3 text-sm text-muted-foreground">{formatLong(form.publish_date)}</p>
+      <h3 className="font-display mt-1 text-2xl md:text-3xl font-semibold">
         {form.title || "Título do devocional"}
       </h3>
-      <div className="bg-secondary/60 mt-4 rounded-2xl p-4">
-        <p className="font-display text-lg italic">
+      <div className="bg-secondary/60 mt-5 rounded-2xl p-5">
+        <p className="font-display text-lg md:text-xl italic leading-relaxed">
           {form.verse_text || "O texto do versículo aparece aqui."}
         </p>
-        <p className="text-primary mt-2 text-xs font-medium">
+        <p className="text-primary mt-2 text-sm md:text-base font-semibold">
           {form.verse_reference || "Referência"}
         </p>
       </div>
-      <div className="mt-4 space-y-3 text-sm leading-relaxed whitespace-pre-line">
+      <div className="mt-5 space-y-4 text-base md:text-lg leading-relaxed whitespace-pre-line">
         {form.content || "A mensagem do dia aparece aqui conforme você escreve."}
       </div>
       {form.reflection_question && (
-        <div className="border-primary/40 mt-4 border-l-2 pl-3 text-sm">
-          <p className="text-xs text-muted-foreground">Para refletir</p>
+        <div className="border-primary/40 mt-5 border-l-2 pl-4 text-base md:text-lg">
+          <p className="text-sm text-muted-foreground">Para refletir</p>
           <p>{form.reflection_question}</p>
         </div>
       )}
       {form.prayer && (
-        <div className="mt-4 rounded-2xl border border-border/60 p-4 text-sm whitespace-pre-line">
-          <p className="text-xs text-muted-foreground">Oração</p>
+        <div className="mt-5 rounded-2xl border border-border/60 p-5 text-base md:text-lg whitespace-pre-line">
+          <p className="text-sm text-muted-foreground">Oração</p>
           {form.prayer}
         </div>
       )}
     </div>
   );
 }
-
 
 function SubscribersAdmin() {
   const queryClient = useQueryClient();
@@ -739,7 +755,7 @@ function SubscribersAdmin() {
   });
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <KiwifyPanel
         onDone={() => queryClient.invalidateQueries({ queryKey: ["admin-subscribers"] })}
       />
@@ -747,14 +763,14 @@ function SubscribersAdmin() {
       {(data ?? []).map((s) => (
         <div
           key={s.id}
-          className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card p-4"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card p-5"
         >
           <div className="min-w-0">
-            <p className="font-medium">{s.profile?.full_name ?? "Sem nome"}</p>
-            <p className="text-xs break-all text-muted-foreground">
+            <p className="font-semibold text-base md:text-lg">{s.profile?.full_name ?? "Sem nome"}</p>
+            <p className="text-sm break-all text-muted-foreground">
               {s.profile?.email ?? s.kiwify_customer_email}
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-sm text-muted-foreground">
               Compra: {formatLong(s.started_at.slice(0, 10))}
             </p>
           </div>
@@ -764,7 +780,7 @@ function SubscribersAdmin() {
               update.mutate({ id: s.id, status: v as "active" | "past_due" | "canceled" })
             }
           >
-            <SelectTrigger className="w-44 rounded-full">
+            <SelectTrigger className="w-44 rounded-full h-11 text-base">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -776,7 +792,7 @@ function SubscribersAdmin() {
         </div>
       ))}
       {data?.length === 0 && (
-        <p className="text-sm text-muted-foreground">Nenhuma assinante ainda.</p>
+        <p className="text-base text-muted-foreground">Nenhuma assinante ainda.</p>
       )}
     </div>
   );
@@ -810,33 +826,37 @@ function KiwifyPanel({ onDone }: { onDone: () => void }) {
   });
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-4">
-      <div className="flex items-center gap-2">
-        <RefreshCw className="h-4 w-4 text-primary" />
-        <p className="font-medium">Integração Kiwify</p>
+    <div className="rounded-2xl border border-border/60 bg-card p-5 md:p-6">
+      <div className="flex items-center gap-3">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+          <RefreshCw className="size-5 text-primary" />
+        </span>
+        <div>
+          <p className="font-semibold text-base md:text-lg">Integração Kiwify</p>
+          <p className="text-sm text-muted-foreground">
+            Sincroniza apenas as compras do produto Daily Grace.
+          </p>
+        </div>
       </div>
-      <p className="mt-1 text-xs text-muted-foreground">
-        Sincroniza apenas as compras do produto Daily Grace.
-      </p>
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div className="mt-5 flex flex-wrap items-center gap-3">
         <Button
-          className="rounded-full"
+          className="rounded-full px-6 py-5 text-base"
           onClick={() => sync.mutate()}
           disabled={sync.isPending}
         >
           {sync.isPending ? "Sincronizando..." : "Importar compras da Kiwify"}
         </Button>
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-2">
+      <div className="mt-4 flex flex-wrap items-center gap-3">
         <Input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-64 rounded-full"
+          className="w-64 rounded-full h-11 text-base"
         />
         <Button
           variant="outline"
-          className="rounded-full"
+          className="rounded-full h-11 px-5 text-base"
           onClick={() => refresh.mutate()}
           disabled={refresh.isPending || !email.includes("@")}
         >
