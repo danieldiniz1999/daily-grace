@@ -6,10 +6,17 @@ export type BibleBook = {
 };
 
 export const BIBLE_VERSIONS = [
+  { id: "arc", label: "ARC", name: "Almeida Revista e Corrigida" },
+  { id: "ara", label: "ARA", name: "Almeida Revista e Atualizada" },
+  { id: "naa", label: "NAA", name: "Nova Almeida Atualizada" },
   { id: "acf", label: "ACF", name: "Almeida Corrigida Fiel" },
+  { id: "kja", label: "KJA", name: "King James Atualizada" },
   { id: "nvi", label: "NVI", name: "Nova Versão Internacional" },
-  { id: "aa", label: "AA", name: "Almeida Revisada (Imprensa Bíblica)" },
+  { id: "ntlh", label: "NTLH", name: "Nova Tradução na Linguagem de Hoje" },
+  { id: "nvt", label: "NVT", name: "Nova Versão Transformadora" },
 ] as const;
+
+export const DEFAULT_BIBLE_VERSION = "arc" as const;
 
 export type BibleVersionId = (typeof BIBLE_VERSIONS)[number]["id"];
 
