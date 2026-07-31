@@ -6,6 +6,7 @@ export type BibleBook = {
 };
 
 export const BIBLE_VERSIONS = [
+  { id: "nvt", label: "NVT", name: "Nova Versão Transformadora" },
   { id: "arc", label: "ARC", name: "Almeida Revista e Corrigida" },
   { id: "ara", label: "ARA", name: "Almeida Revista e Atualizada" },
   { id: "naa", label: "NAA", name: "Nova Almeida Atualizada" },
@@ -13,7 +14,6 @@ export const BIBLE_VERSIONS = [
   { id: "kja", label: "KJA", name: "King James Atualizada" },
   { id: "nvi", label: "NVI", name: "Nova Versão Internacional" },
   { id: "ntlh", label: "NTLH", name: "Nova Tradução na Linguagem de Hoje" },
-  { id: "nvt", label: "NVT", name: "Nova Versão Transformadora" },
 ] as const;
 
 export const DEFAULT_BIBLE_VERSION = "nvt" as const;
