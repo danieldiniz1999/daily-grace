@@ -85,6 +85,7 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
           initialFocus
           className={cn("pointer-events-auto w-full bg-transparent p-2 sm:p-3", "[--cell-size:2.5rem] sm:[--cell-size:2.8rem]")}
           classNames={{
+            root: "w-full",
             caption_label: "text-base font-semibold capitalize text-foreground",
             button_previous:
               "size-9 rounded-full text-muted-foreground hover:bg-primary/10 hover:text-primary",
