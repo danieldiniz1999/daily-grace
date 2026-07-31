@@ -7,8 +7,6 @@ import {
   CalendarPlus,
   CheckCircle2,
   Copy,
-  Eye,
-  EyeOff,
   Pencil,
   Plus,
   RefreshCw,
