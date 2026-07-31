@@ -69,7 +69,7 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
 
       <PopoverContent
         align="start"
-        className="w-auto max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-2xl border-border bg-card p-0 shadow-[var(--shadow-soft)]"
+        className="w-full max-w-[320px] overflow-hidden rounded-2xl border-border bg-card p-0 shadow-[var(--shadow-soft)]"
       >
         <div className="border-b border-border/70 bg-muted/40 px-3 py-2.5 sm:px-4 sm:py-3">
           <p className="text-sm font-medium text-foreground">Data de liberação</p>
@@ -83,8 +83,9 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
           defaultMonth={selected}
           onSelect={commit}
           initialFocus
-          className={cn("pointer-events-auto bg-transparent p-2 sm:p-3", "[--cell-size:2.2rem] sm:[--cell-size:2.6rem]")}
+          className={cn("pointer-events-auto w-full bg-transparent p-2 sm:p-3", "[--cell-size:2.6rem] sm:[--cell-size:2.8rem]")}
           classNames={{
+            root: "w-full",
             caption_label: "text-base font-semibold capitalize text-foreground",
             button_previous:
               "size-9 rounded-full text-muted-foreground hover:bg-primary/10 hover:text-primary",
