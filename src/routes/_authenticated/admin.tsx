@@ -201,17 +201,19 @@ function FieldLabel({ children, className }: { children: React.ReactNode; classN
   return <Label className={cn("text-sm md:text-base font-semibold", className)}>{children}</Label>;
 }
 
-function DevotionalsAdmin() {
+function DevotionalsAdmin({
+  incoming,
+  onConsumed,
+}: {
+  incoming: { row: DevotionalRow; asCopy: boolean } | null;
+  onConsumed: () => void;
+}) {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [search, setSearch] = useState("");
-  const [monthFilter, setMonthFilter] = useState("all");
-  const [visible, setVisible] = useState(8);
-  const [pendingDelete, setPendingDelete] = useState<{ id: string; title: string } | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
   const today = todayISO();
 
-  const { data: list, isLoading } = useQuery({
+  const { data: list } = useQuery({
     queryKey: ["admin-devotionals"],
     queryFn: async () => {
       const { data, error } = await supabase
