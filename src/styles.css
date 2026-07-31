@@ -165,7 +165,11 @@
   .app-inner h2,
   .app-inner h3,
   .app-inner h4,
-  .app-inner .font-display {
+  .app-inner .font-display,
+  [role="dialog"],
+  [role="dialog"] h1,
+  [role="dialog"] h2,
+  [data-radix-popper-content-wrapper] {
     font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
   }
 }
