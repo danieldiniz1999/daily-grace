@@ -86,8 +86,9 @@ function AuthPage() {
             <Label htmlFor="email">E-mail</Label>
             <Input
               id="email"
-              type="email"
-              required
+              type="text"
+              autoComplete="username"
+
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="voce@email.com"
