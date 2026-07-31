@@ -77,8 +77,15 @@ function ContaPage() {
   const { data: sub } = useSubscription(userId);
 
   const doUpdate = useServerFn(updateProfile);
+  type ProfileUpdatePayload = {
+    full_name?: string;
+    phone?: string | null;
+    notification_enabled?: boolean;
+    preferred_bible_version?: string;
+  };
   const updateMutation = useMutation({
-    mutationFn: (payload: Parameters<typeof doUpdate>[0]["data"]) => doUpdate({ data: payload }),
+    mutationFn: (payload: ProfileUpdatePayload) =>
+      doUpdate({ data: payload } as Parameters<typeof doUpdate>[0]),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["profile", userId] });
       toast.success("Dados salvos!");
