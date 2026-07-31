@@ -37,7 +37,7 @@ export function AppShell({
   }
 
   return (
-    <div className="bg-soft min-h-screen">
+    <div className="app-inner bg-soft min-h-screen">
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
           <Link to="/devocionais" className="flex items-center gap-2">
