@@ -414,6 +414,11 @@ function DevotionalsAdmin() {
                     <Label>Versículo</Label>
                     <CharCount value={form.verse_text} max={LIMITS.verse_text} />
                   </div>
+                  <VersePicker
+                    onSelect={({ reference, text }) =>
+                      setForm((f) => ({ ...f, verse_reference: reference, verse_text: text }))
+                    }
+                  />
                   <AutoTextarea required minRows={2} value={form.verse_text} onChange={set("verse_text")} />
                 </div>
               </AccordionContent>
