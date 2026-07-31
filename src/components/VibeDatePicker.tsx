@@ -37,24 +37,24 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
         <button
           type="button"
           className={cn(
-            "group flex w-full min-w-0 items-center gap-3 rounded-2xl border bg-card px-4 py-3.5 text-left text-base text-foreground transition-all",
+            "group flex w-full min-w-0 items-center gap-2 rounded-2xl border bg-card px-3 py-3 text-left text-base text-foreground transition-all sm:gap-3 sm:px-4 sm:py-3.5",
             "hover:border-primary/50 hover:shadow-[var(--shadow-card)]",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
             invalid ? "border-destructive" : "border-border",
             className,
           )}
         >
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-            <CalendarDays className="size-5" />
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/15 sm:size-10">
+            <CalendarDays className="size-[18px] sm:size-5" />
           </span>
 
           <span className="flex-1 min-w-0">
             {selected ? (
               <>
-                <span className="block truncate font-medium capitalize">
+                <span className="block truncate text-sm font-medium capitalize sm:text-base">
                   {format(selected, "d 'de' MMMM 'de' yyyy", { locale: ptBR })}
                 </span>
-                <span className="block truncate text-sm capitalize text-muted-foreground">
+                <span className="block truncate text-xs capitalize text-muted-foreground sm:text-sm">
                   {format(selected, "EEEE", { locale: ptBR })}
                 </span>
               </>
