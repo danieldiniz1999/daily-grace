@@ -28,7 +28,7 @@ import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin, useProfile, useSubscription } from "@/hooks/useAppData";
 import { claimFirstAdmin } from "@/lib/admin.functions";
-import { changePassword, updateProfile } from "@/lib/account.functions";
+import { updateProfile } from "@/lib/account.functions";
 import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
 import { monthLabel } from "@/lib/date";
 import { formatPhone } from "@/lib/format";
