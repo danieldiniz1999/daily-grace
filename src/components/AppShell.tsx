@@ -22,6 +22,7 @@ export function AppShell({
 
   const items: NavItem[] = [
     { to: "/devocionais", label: "Devocionais", icon: <BookOpenText className="size-5" /> },
+    { to: "/biblia", label: "Bíblia", icon: <BookMarked className="size-5" /> },
     { to: "/conta", label: "Minha conta", icon: <User className="size-5" /> },
     ...(isAdmin
       ? [{ to: "/admin", label: "Admin", icon: <Settings className="size-5" /> } as NavItem]
