@@ -76,15 +76,15 @@ export function VersePicker({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" variant="outline" size="sm" className="gap-2">
-          <BookOpenText className="size-4" />
+        <Button type="button" variant="outline" size="sm" className="gap-2 h-10 px-4 text-sm md:text-base">
+          <BookOpenText className="size-5" />
           {triggerLabel}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>Escolher versículo</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-xl md:text-2xl">Escolher versículo</DialogTitle>
+          <DialogDescription className="text-sm md:text-base">
             Selecione a tradução, o livro, o capítulo e um ou mais versículos.
           </DialogDescription>
         </DialogHeader>
@@ -96,7 +96,7 @@ export function VersePicker({
               type="button"
               onClick={() => setVersion(v.id)}
               className={cn(
-                "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+                "rounded-full border px-3.5 py-1.5 text-xs md:text-sm font-medium transition-colors",
                 version === v.id
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border text-muted-foreground hover:text-foreground",
@@ -107,17 +107,17 @@ export function VersePicker({
           ))}
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-[200px_1fr]">
+        <div className="grid gap-3 sm:grid-cols-[220px_1fr]">
           <div className="space-y-2">
             <div className="relative">
-              <Search className="text-muted-foreground absolute top-2.5 left-2 size-4" />
+              <Search className="text-muted-foreground absolute top-2.5 left-2 size-5" />
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="h-9 pl-8"
+                className="h-10 pl-9 text-base"
               />
             </div>
-            <ScrollArea className="h-64 rounded-lg border">
+            <ScrollArea className="h-72 rounded-lg border">
               <div className="p-1">
                 {filteredBooks.map((b) => (
                   <button
@@ -129,7 +129,7 @@ export function VersePicker({
                       setSelected([]);
                     }}
                     className={cn(
-                      "w-full rounded-md px-2 py-1.5 text-left text-sm transition-colors",
+                      "w-full rounded-md px-3 py-2 text-left text-sm md:text-base transition-colors",
                       bookIndex === b.i
                         ? "bg-secondary text-secondary-foreground"
                         : "hover:bg-muted",
@@ -145,8 +145,8 @@ export function VersePicker({
           <div className="space-y-2">
             {book ? (
               <>
-                <ScrollArea className="max-h-20 rounded-lg border">
-                  <div className="flex flex-wrap gap-1 p-2">
+                <ScrollArea className="max-h-24 rounded-lg border">
+                  <div className="flex flex-wrap gap-1.5 p-2">
                     {Array.from({ length: book.chapters }, (_, i) => i + 1).map((c) => (
                       <button
                         key={c}
@@ -156,7 +156,7 @@ export function VersePicker({
                           setSelected([]);
                         }}
                         className={cn(
-                          "size-7 rounded-md text-xs font-medium transition-colors",
+                          "size-8 rounded-md text-sm font-medium transition-colors",
                           chapter === c
                             ? "bg-primary text-primary-foreground"
                             : "hover:bg-muted text-muted-foreground",
@@ -168,10 +168,10 @@ export function VersePicker({
                   </div>
                 </ScrollArea>
 
-                <ScrollArea className="h-64 rounded-lg border">
+                <ScrollArea className="h-72 rounded-lg border">
                   <div className="space-y-1 p-2">
                     {chapters === null ? (
-                      <p className="text-muted-foreground p-2 text-sm">Carregando…</p>
+                      <p className="text-muted-foreground p-2 text-sm md:text-base">Carregando…</p>
                     ) : (
                       verses.map((text, idx) => {
                         const n = idx + 1;
@@ -182,11 +182,11 @@ export function VersePicker({
                             type="button"
                             onClick={() => toggleVerse(n)}
                             className={cn(
-                              "flex w-full gap-2 rounded-md p-2 text-left text-sm transition-colors",
+                              "flex w-full gap-3 rounded-md p-2.5 text-left text-sm md:text-base transition-colors",
                               active ? "bg-secondary" : "hover:bg-muted",
                             )}
                           >
-                            <span className="text-primary shrink-0 text-xs font-semibold">
+                            <span className="text-primary shrink-0 text-sm font-semibold">
                               {n}
                             </span>
                             <span>{text}</span>
@@ -198,7 +198,7 @@ export function VersePicker({
                 </ScrollArea>
               </>
             ) : (
-              <div className="text-muted-foreground flex h-[22rem] items-center justify-center rounded-lg border text-sm">
+              <div className="text-muted-foreground flex h-[22rem] items-center justify-center rounded-lg border text-sm md:text-base">
                 Escolha um livro
               </div>
             )}
@@ -206,13 +206,13 @@ export function VersePicker({
         </div>
 
         <div className="flex items-center justify-between gap-3">
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-sm md:text-base">
             {book && selected.length > 0
               ? formatReference(book.name, chapter, selected)
               : "Nenhum versículo selecionado"}
           </p>
-          <Button type="button" onClick={confirm} disabled={selected.length === 0} className="gap-2">
-            <Check className="size-4" />
+          <Button type="button" onClick={confirm} disabled={selected.length === 0} className="gap-2 h-11 px-5 text-base">
+            <Check className="size-5" />
             Usar versículo
           </Button>
         </div>
