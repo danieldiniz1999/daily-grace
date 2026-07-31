@@ -1,6 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { BookOpenText, LogOut, Settings, User } from "lucide-react";
+import { BookMarked, BookOpenText, LogOut, Settings, User } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
@@ -22,6 +22,7 @@ export function AppShell({
 
   const items: NavItem[] = [
     { to: "/devocionais", label: "Devocionais", icon: <BookOpenText className="size-5" /> },
+    { to: "/biblia", label: "Bíblia", icon: <BookMarked className="size-5" /> },
     { to: "/conta", label: "Minha conta", icon: <User className="size-5" /> },
     ...(isAdmin
       ? [{ to: "/admin", label: "Admin", icon: <Settings className="size-5" /> } as NavItem]
@@ -36,7 +37,7 @@ export function AppShell({
   }
 
   return (
-    <div className="bg-soft min-h-screen">
+    <div className="app-inner bg-soft min-h-screen">
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
           <Link to="/devocionais" className="flex items-center gap-2">
