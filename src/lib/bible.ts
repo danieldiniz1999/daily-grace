@@ -16,7 +16,7 @@ export const BIBLE_VERSIONS = [
   { id: "nvt", label: "NVT", name: "Nova Versão Transformadora" },
 ] as const;
 
-export const DEFAULT_BIBLE_VERSION = "arc" as const;
+export const DEFAULT_BIBLE_VERSION = "nvt" as const;
 
 export type BibleVersionId = (typeof BIBLE_VERSIONS)[number]["id"];
 
