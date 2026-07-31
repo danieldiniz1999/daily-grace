@@ -51,10 +51,10 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
           <span className="flex-1 min-w-0">
             {selected ? (
               <>
-                <span className="block truncate text-sm font-medium capitalize sm:text-base">
+                <span className="block text-sm font-medium capitalize sm:text-base sm:truncate">
                   {format(selected, "d 'de' MMMM 'de' yyyy", { locale: ptBR })}
                 </span>
-                <span className="block truncate text-xs capitalize text-muted-foreground sm:text-sm">
+                <span className="block text-xs capitalize text-muted-foreground sm:text-sm sm:truncate">
                   {format(selected, "EEEE", { locale: ptBR })}
                 </span>
               </>
