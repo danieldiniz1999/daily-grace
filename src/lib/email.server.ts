@@ -2,7 +2,7 @@ const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
 
 /** Remetente. Precisa ser um domínio verificado na Resend. */
 function fromAddress() {
-  return process.env.RESEND_FROM || "Daily Grace <acesso@dailygrace.halexiabrandao.site>";
+  return process.env.RESEND_FROM || "Daily Grace <acesso@halexiabrandao.site>";
 }
 
 const BRAND = {
