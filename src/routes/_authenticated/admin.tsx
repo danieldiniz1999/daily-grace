@@ -316,6 +316,14 @@ function DevotionalsAdmin({
     if (asCopy) toast.info(`Cópia criada para ${formatLong(nextFreeDate)}.`);
   };
 
+  // Recebe um devocional vindo da aba "Publicados" (editar ou duplicar)
+  useEffect(() => {
+    if (!incoming) return;
+    loadInto(incoming.row, incoming.asCopy);
+    onConsumed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incoming]);
+
   const tooLong =
     form.title.length > LIMITS.title ||
     form.verse_reference.length > LIMITS.verse_reference ||
@@ -326,14 +334,12 @@ function DevotionalsAdmin({
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Devocionais" value={stats.total} />
-        <StatCard label="Já liberados" value={stats.published} />
-        <StatCard label="Agendados" value={stats.scheduled} />
+      <div className="grid gap-4 sm:grid-cols-2">
         <StatCard label="Próxima data livre" value={formatLong(nextFreeDate).split(",")[1]?.trim() ?? nextFreeDate} small />
+        <StatCard label="Data selecionada" value={formatLong(form.publish_date).split(",")[1]?.trim() ?? form.publish_date} small />
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
+      <div className="grid gap-8">
         <form
           ref={formRef}
           onSubmit={(e) => {
