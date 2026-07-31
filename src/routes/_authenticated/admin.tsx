@@ -294,19 +294,6 @@ function DevotionalsAdmin({
       ),
   });
 
-  const remove = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("devotionals").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      toast.success("Devocional removido.");
-      queryClient.invalidateQueries({ queryKey: ["admin-devotionals"] });
-      queryClient.invalidateQueries({ queryKey: ["devotionals"] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
-
   const set = (k: keyof FormState) => (e: { target: { value: string } }) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -314,7 +301,7 @@ function DevotionalsAdmin({
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const loadInto = (d: (typeof filtered)[number], asCopy = false) => {
+  const loadInto = (d: DevotionalRow, asCopy = false) => {
     setForm({
       id: asCopy ? undefined : d.id,
       publish_date: asCopy ? nextFreeDate : d.publish_date,
