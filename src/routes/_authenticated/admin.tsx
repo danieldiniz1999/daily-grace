@@ -531,8 +531,6 @@ function DevotionalsAdmin() {
         </form>
 
         <div className="space-y-8">
-          {showPreview && <DevotionalPreview form={form} />}
-
           <div className="space-y-4">
             <h2 className="font-display text-2xl md:text-3xl font-semibold">Publicados</h2>
             <div className="flex flex-wrap gap-3">
