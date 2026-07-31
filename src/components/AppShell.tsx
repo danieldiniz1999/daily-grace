@@ -133,11 +133,11 @@ export function AppShell({
               </SheetHeader>
 
               <div className="px-6 pb-2">
-                <div className="flex items-center gap-3 rounded-2xl bg-[#FBFFC1]/60 p-3">
+                <div className="flex items-center gap-3 rounded-2xl border border-[#CB6CE6]/40 bg-white p-3">
                   <Avatar size="sm" />
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">Minha conta</p>
-                    <p className="truncate text-xs text-muted-foreground">Ajustes e preferências</p>
+                    <p className="truncate text-sm font-medium text-[#A740C4]">Minha conta</p>
+                    <p className="truncate text-xs text-[#A740C4]/70">Ajustes e preferências</p>
                   </div>
                 </div>
               </div>
