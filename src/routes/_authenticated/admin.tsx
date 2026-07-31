@@ -523,9 +523,6 @@ function DevotionalsAdmin({
               </Button>
             )}
           </div>
-          <p className="text-xs md:text-sm text-muted-foreground">
-            O texto fica salvo automaticamente neste navegador enquanto você escreve.
-          </p>
         </form>
       </div>
     </div>
