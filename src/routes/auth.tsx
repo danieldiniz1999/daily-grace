@@ -67,15 +67,15 @@ function AuthPage() {
 
 
   return (
-    <div className="bg-soft flex min-h-screen flex-col items-center justify-center px-5 py-12">
+    <div className="bg-soft flex min-h-screen flex-col items-center justify-center px-5 py-12 font-['Poppins']">
       <Link to="/" className="mb-8 flex items-center gap-2">
         <img src={logoAsset.url} alt="Daily Grace" className="size-11 object-contain" />
-        <span className="font-display text-3xl font-semibold tracking-tight">Daily Grace</span>
+        <span className="text-3xl font-semibold tracking-tight">Daily Grace</span>
       </Link>
 
       <div className="w-full max-w-md rounded-3xl border border-border/60 bg-card p-7 shadow-soft">
         <div className="mb-6 text-center">
-          <h1 className="font-display text-2xl font-semibold">Entrar na minha conta</h1>
+          <h1 className="text-2xl font-semibold">Entrar na minha conta</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Use o e-mail da sua compra na Kiwify.
           </p>
