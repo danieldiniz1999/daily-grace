@@ -226,7 +226,9 @@ function BibliaPage() {
                     variant="outline"
                     className="w-32 justify-between gap-2 rounded-xl border-border/60 bg-background sm:w-40"
                   >
-                    <span className="truncate">Cap. {chapter}</span>
+                    <span className={cn("truncate", chapter ? "text-foreground" : "text-muted-foreground")}>
+                      {chapter ? `Cap. ${chapter}` : "Capítulo"}
+                    </span>
                     <ChevronDown className="text-muted-foreground size-4 shrink-0" />
                   </Button>
                 </SheetTrigger>
