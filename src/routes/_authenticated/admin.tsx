@@ -368,7 +368,7 @@ function DevotionalsAdmin() {
                 </span>
               </AccordionTrigger>
               <AccordionContent className="pb-5 pt-3">
-                <div className="grid gap-8 pb-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                <div className="grid gap-6 pb-2">
                   <div className="min-w-0 space-y-3 rounded-xl bg-card/40 p-3">
                     <FieldLabel>Data de liberação</FieldLabel>
                     <VibeDatePicker
