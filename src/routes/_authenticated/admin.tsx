@@ -139,7 +139,7 @@ function AdminPage() {
 function CharCount({ value, max }: { value: string; max: number }) {
   const over = value.length > max;
   return (
-    <span className={`text-[11px] ${over ? "text-destructive" : "text-muted-foreground"}`}>
+    <span className={`text-xs md:text-sm font-medium ${over ? "text-destructive" : "text-muted-foreground"}`}>
       {value.length}/{max}
     </span>
   );
@@ -148,6 +148,7 @@ function CharCount({ value, max }: { value: string; max: number }) {
 function AutoTextarea({
   value,
   minRows = 3,
+  className,
   ...rest
 }: React.ComponentProps<typeof Textarea> & { minRows?: number }) {
   const ref = useRef<HTMLTextAreaElement | null>(null);
@@ -157,7 +158,19 @@ function AutoTextarea({
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   }, [value]);
-  return <Textarea ref={ref} rows={minRows} value={value} {...rest} />;
+  return (
+    <Textarea
+      ref={ref}
+      rows={minRows}
+      value={value}
+      className={cn("text-base leading-relaxed md:text-base", className)}
+      {...rest}
+    />
+  );
+}
+
+function FieldLabel({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <Label className={cn("text-sm md:text-base font-semibold", className)}>{children}</Label>;
 }
 
 function DevotionalsAdmin() {
