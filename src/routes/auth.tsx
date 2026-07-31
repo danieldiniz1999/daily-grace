@@ -38,23 +38,33 @@ function AuthPage() {
     });
   }, [navigate]);
 
+  /** Aceita e-mail completo ou apenas o nome de usuário. */
+  function resolveEmail(value: string) {
+    const v = value.trim().toLowerCase();
+    return v.includes("@") ? v : `${v}@dailygrace.app`;
+  }
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: resolveEmail(email),
+      password,
+    });
     setLoading(false);
     if (error) return toast.error("Não conseguimos entrar: verifique e-mail e senha.");
     navigate({ to: "/devocionais", replace: true });
   }
 
   async function handleReset() {
-    if (!email) return toast.error("Digite seu e-mail primeiro.");
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    if (!email.trim()) return toast.error("Digite seu e-mail primeiro.");
+    const { error } = await supabase.auth.resetPasswordForEmail(resolveEmail(email), {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     if (error) return toast.error(error.message);
     toast.success("Enviamos um link de redefinição para o seu e-mail.");
   }
+
 
   return (
     <div className="bg-soft flex min-h-screen flex-col items-center justify-center px-5 py-12">
