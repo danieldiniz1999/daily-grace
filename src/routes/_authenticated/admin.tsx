@@ -261,32 +261,6 @@ function DevotionalsAdmin({
     return candidate;
   }, [takenDates, today]);
 
-  const months = useMemo(() => {
-    const set = new Set((list ?? []).map((d) => d.publish_date.slice(0, 7)));
-    return Array.from(set).sort().reverse();
-  }, [list]);
-
-  const filtered = useMemo(() => {
-    const term = search.trim().toLowerCase();
-    return (list ?? []).filter((d) => {
-      const matchMonth = monthFilter === "all" || d.publish_date.startsWith(monthFilter);
-      const matchTerm =
-        !term ||
-        d.title.toLowerCase().includes(term) ||
-        d.verse_reference.toLowerCase().includes(term) ||
-        d.publish_date.includes(term);
-      return matchMonth && matchTerm;
-    });
-  }, [list, search, monthFilter]);
-
-  const stats = useMemo(() => {
-    const all = list ?? [];
-    return {
-      total: all.length,
-      published: all.filter((d) => d.publish_date <= today).length,
-      scheduled: all.filter((d) => d.publish_date > today).length,
-    };
-  }, [list, today]);
 
   const save = useMutation({
     mutationFn: async (values: FormState) => {
