@@ -68,7 +68,7 @@ export function AppShell({
               <Button
                 variant="ghost"
                 size="icon"
-                className="hidden rounded-full sm:flex"
+                className="hidden rounded-full md:flex"
                 aria-label="Abrir menu"
               >
                 <Menu className="size-5" />
@@ -146,10 +146,10 @@ export function AppShell({
             </SheetContent>
           </Sheet>
 
-          {/* Mobile: botão de sair (bottom nav cuida da navegação) */}
+          {/* Mobile: botão de sair (bottom nav cuida da navegação em telas pequenas) */}
           <button
             onClick={signOut}
-            className="rounded-full p-2 text-muted-foreground sm:hidden"
+            className="rounded-full p-2 text-muted-foreground md:hidden"
             aria-label="Sair"
           >
             <LogOut className="size-5" />
@@ -157,9 +157,9 @@ export function AppShell({
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 pt-6 pb-28 sm:pb-14">{children}</main>
+      <main className="mx-auto max-w-5xl px-4 pt-6 pb-28 md:pb-14">{children}</main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border/60 bg-background/90 backdrop-blur-xl sm:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border/60 bg-background/90 backdrop-blur-xl md:hidden">
         <div className="mx-auto flex max-w-md items-stretch justify-around">
           {items.map((item) => (
             <Link
