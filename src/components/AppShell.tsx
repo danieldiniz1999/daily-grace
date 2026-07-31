@@ -68,7 +68,7 @@ export function AppShell({
               <Button
                 variant="ghost"
                 size="icon"
-                className="hidden rounded-full sm:flex"
+                className="hidden rounded-full md:flex"
                 aria-label="Abrir menu"
               >
                 <Menu className="size-5" />
