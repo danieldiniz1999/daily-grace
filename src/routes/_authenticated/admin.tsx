@@ -112,20 +112,38 @@ function AdminPage() {
     );
   }
 
+  return <AdminTabs />;
+}
+
+function AdminTabs() {
+  const [tab, setTab] = useState("novo");
+  const [incoming, setIncoming] = useState<{ row: DevotionalRow; asCopy: boolean } | null>(null);
+
   return (
     <AppShell isAdmin>
       <h1 className="font-display text-4xl md:text-5xl font-semibold">Administração</h1>
-      <Tabs defaultValue="devocionais" className="mt-8">
-        <TabsList className="rounded-full bg-secondary p-1.5">
-          <TabsTrigger value="devocionais" className="rounded-full px-6 py-2 text-sm md:text-base">
-            Devocionais
+      <Tabs value={tab} onValueChange={setTab} className="mt-8">
+        <TabsList className="flex-wrap rounded-full bg-secondary p-1.5">
+          <TabsTrigger value="novo" className="rounded-full px-6 py-2 text-sm md:text-base">
+            Novo devocional
+          </TabsTrigger>
+          <TabsTrigger value="publicados" className="rounded-full px-6 py-2 text-sm md:text-base">
+            Publicados
           </TabsTrigger>
           <TabsTrigger value="assinantes" className="rounded-full px-6 py-2 text-sm md:text-base">
             Assinantes
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="devocionais" className="mt-8">
-          <DevotionalsAdmin />
+        <TabsContent value="novo" className="mt-8">
+          <DevotionalsAdmin incoming={incoming} onConsumed={() => setIncoming(null)} />
+        </TabsContent>
+        <TabsContent value="publicados" className="mt-8">
+          <DevotionalsList
+            onEdit={(row, asCopy) => {
+              setIncoming({ row, asCopy });
+              setTab("novo");
+            }}
+          />
         </TabsContent>
         <TabsContent value="assinantes" className="mt-8">
           <SubscribersAdmin />
@@ -134,6 +152,17 @@ function AdminPage() {
     </AppShell>
   );
 }
+
+type DevotionalRow = {
+  id: string;
+  publish_date: string;
+  title: string;
+  verse_reference: string;
+  verse_text: string;
+  content: string;
+  reflection_question: string | null;
+  prayer: string | null;
+};
 
 function CharCount({ value, max }: { value: string; max: number }) {
   const over = value.length > max;
@@ -172,17 +201,19 @@ function FieldLabel({ children, className }: { children: React.ReactNode; classN
   return <Label className={cn("text-sm md:text-base font-semibold", className)}>{children}</Label>;
 }
 
-function DevotionalsAdmin() {
+function DevotionalsAdmin({
+  incoming,
+  onConsumed,
+}: {
+  incoming: { row: DevotionalRow; asCopy: boolean } | null;
+  onConsumed: () => void;
+}) {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [search, setSearch] = useState("");
-  const [monthFilter, setMonthFilter] = useState("all");
-  const [visible, setVisible] = useState(8);
-  const [pendingDelete, setPendingDelete] = useState<{ id: string; title: string } | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
   const today = todayISO();
 
-  const { data: list, isLoading } = useQuery({
+  const { data: list } = useQuery({
     queryKey: ["admin-devotionals"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -230,32 +261,6 @@ function DevotionalsAdmin() {
     return candidate;
   }, [takenDates, today]);
 
-  const months = useMemo(() => {
-    const set = new Set((list ?? []).map((d) => d.publish_date.slice(0, 7)));
-    return Array.from(set).sort().reverse();
-  }, [list]);
-
-  const filtered = useMemo(() => {
-    const term = search.trim().toLowerCase();
-    return (list ?? []).filter((d) => {
-      const matchMonth = monthFilter === "all" || d.publish_date.startsWith(monthFilter);
-      const matchTerm =
-        !term ||
-        d.title.toLowerCase().includes(term) ||
-        d.verse_reference.toLowerCase().includes(term) ||
-        d.publish_date.includes(term);
-      return matchMonth && matchTerm;
-    });
-  }, [list, search, monthFilter]);
-
-  const stats = useMemo(() => {
-    const all = list ?? [];
-    return {
-      total: all.length,
-      published: all.filter((d) => d.publish_date <= today).length,
-      scheduled: all.filter((d) => d.publish_date > today).length,
-    };
-  }, [list, today]);
 
   const save = useMutation({
     mutationFn: async (values: FormState) => {
@@ -289,19 +294,6 @@ function DevotionalsAdmin() {
       ),
   });
 
-  const remove = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("devotionals").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      toast.success("Devocional removido.");
-      queryClient.invalidateQueries({ queryKey: ["admin-devotionals"] });
-      queryClient.invalidateQueries({ queryKey: ["devotionals"] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
-
   const set = (k: keyof FormState) => (e: { target: { value: string } }) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -309,7 +301,7 @@ function DevotionalsAdmin() {
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const loadInto = (d: (typeof filtered)[number], asCopy = false) => {
+  const loadInto = (d: DevotionalRow, asCopy = false) => {
     setForm({
       id: asCopy ? undefined : d.id,
       publish_date: asCopy ? nextFreeDate : d.publish_date,
@@ -324,6 +316,14 @@ function DevotionalsAdmin() {
     if (asCopy) toast.info(`Cópia criada para ${formatLong(nextFreeDate)}.`);
   };
 
+  // Recebe um devocional vindo da aba "Publicados" (editar ou duplicar)
+  useEffect(() => {
+    if (!incoming) return;
+    loadInto(incoming.row, incoming.asCopy);
+    onConsumed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incoming]);
+
   const tooLong =
     form.title.length > LIMITS.title ||
     form.verse_reference.length > LIMITS.verse_reference ||
@@ -334,14 +334,12 @@ function DevotionalsAdmin() {
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Devocionais" value={stats.total} />
-        <StatCard label="Já liberados" value={stats.published} />
-        <StatCard label="Agendados" value={stats.scheduled} />
+      <div className="grid gap-4 sm:grid-cols-2">
         <StatCard label="Próxima data livre" value={formatLong(nextFreeDate).split(",")[1]?.trim() ?? nextFreeDate} small />
+        <StatCard label="Data selecionada" value={formatLong(form.publish_date).split(",")[1]?.trim() ?? form.publish_date} small />
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
+      <div className="grid gap-8">
         <form
           ref={formRef}
           onSubmit={(e) => {
@@ -529,114 +527,184 @@ function DevotionalsAdmin() {
             O texto fica salvo automaticamente neste navegador enquanto você escreve.
           </p>
         </form>
+      </div>
+    </div>
+  );
+}
 
-        <div className="space-y-8">
-          <div className="space-y-4">
-            <h2 className="font-display text-2xl md:text-3xl font-semibold">Publicados</h2>
-            <div className="flex flex-wrap gap-3">
-              <div className="relative flex-1 min-w-56">
-                <Search className="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="rounded-full pl-10 h-11 text-base"
-                />
-              </div>
-              <Select value={monthFilter} onValueChange={setMonthFilter}>
-                <SelectTrigger className="w-48 rounded-full h-11 text-base">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os meses</SelectItem>
-                  {months.map((m) => (
-                    <SelectItem key={m} value={m}>
-                      {monthLabel(`${m}-01`)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+function DevotionalsList({ onEdit }: { onEdit: (row: DevotionalRow, asCopy: boolean) => void }) {
+  const queryClient = useQueryClient();
+  const [search, setSearch] = useState("");
+  const [monthFilter, setMonthFilter] = useState("all");
+  const [visible, setVisible] = useState(8);
+  const [pendingDelete, setPendingDelete] = useState<{ id: string; title: string } | null>(null);
+  const today = todayISO();
 
-            {isLoading && (
-              <div className="space-y-4">
-                {[0, 1, 2].map((i) => (
-                  <Skeleton key={i} className="h-24 rounded-2xl" />
-                ))}
-              </div>
-            )}
+  const { data: list, isLoading } = useQuery({
+    queryKey: ["admin-devotionals"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("devotionals")
+        .select("*")
+        .order("publish_date", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
 
-            {filtered.slice(0, visible).map((d) => {
-              const scheduled = d.publish_date > today;
-              const isToday = d.publish_date === today;
-              return (
-                <div
-                  key={d.id}
-                  className="flex items-start justify-between gap-4 rounded-2xl border border-border/60 bg-card p-5 shadow-sm hover:shadow-card transition-shadow"
-                >
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <p className="text-sm text-muted-foreground">{formatLong(d.publish_date)}</p>
-                      {isToday ? (
-                        <Badge className="bg-grace gap-1 text-xs md:text-sm">
-                          <CheckCircle2 className="size-3.5" /> hoje
-                        </Badge>
-                      ) : scheduled ? (
-                        <Badge variant="outline" className="gap-1 text-xs md:text-sm">
-                          <CalendarClock className="size-3.5" /> agendado
-                        </Badge>
-                      ) : (
-                        <Badge variant="secondary" className="text-xs md:text-sm">
-                          liberado
-                        </Badge>
-                      )}
-                    </div>
-                    <p className="font-display truncate text-xl md:text-2xl font-semibold">{d.title}</p>
-                    <p className="truncate text-sm text-muted-foreground">{d.verse_reference}</p>
-                  </div>
-                  <div className="flex shrink-0 gap-1">
-                    <Button size="icon" variant="ghost" className="size-10" title="Editar" onClick={() => loadInto(d)}>
-                      <Pencil className="size-5" />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="size-10"
-                      title="Duplicar"
-                      onClick={() => loadInto(d, true)}
-                    >
-                      <Copy className="size-5" />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="size-10"
-                      title="Excluir"
-                      onClick={() => setPendingDelete({ id: d.id, title: d.title })}
-                    >
-                      <Trash2 className="size-5 text-destructive" />
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
+  const months = useMemo(() => {
+    const set = new Set((list ?? []).map((d) => d.publish_date.slice(0, 7)));
+    return Array.from(set).sort().reverse();
+  }, [list]);
 
-            {filtered.length > visible && (
-              <Button
-                variant="outline"
-                className="w-full rounded-full py-5 text-base"
-                onClick={() => setVisible((v) => v + 8)}
-              >
-                Carregar mais ({filtered.length - visible})
-              </Button>
-            )}
+  const filtered = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    return (list ?? []).filter((d) => {
+      const matchMonth = monthFilter === "all" || d.publish_date.startsWith(monthFilter);
+      const matchTerm =
+        !term ||
+        d.title.toLowerCase().includes(term) ||
+        d.verse_reference.toLowerCase().includes(term) ||
+        d.publish_date.includes(term);
+      return matchMonth && matchTerm;
+    });
+  }, [list, search, monthFilter]);
 
-            {!isLoading && filtered.length === 0 && (
-              <p className="text-base text-muted-foreground">
-                {list?.length ? "Nenhum devocional encontrado com esse filtro." : "Nenhum devocional cadastrado ainda."}
-              </p>
-            )}
+  const stats = useMemo(() => {
+    const all = list ?? [];
+    return {
+      total: all.length,
+      published: all.filter((d) => d.publish_date <= today).length,
+      scheduled: all.filter((d) => d.publish_date > today).length,
+    };
+  }, [list, today]);
+
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("devotionals").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Devocional removido.");
+      queryClient.invalidateQueries({ queryKey: ["admin-devotionals"] });
+      queryClient.invalidateQueries({ queryKey: ["devotionals"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <div className="space-y-8">
+      <div className="grid gap-4 sm:grid-cols-3">
+        <StatCard label="Devocionais" value={stats.total} />
+        <StatCard label="Já liberados" value={stats.published} />
+        <StatCard label="Agendados" value={stats.scheduled} />
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="font-display text-2xl md:text-3xl font-semibold">Publicados</h2>
+        <div className="flex flex-wrap gap-3">
+          <div className="relative flex-1 min-w-56">
+            <Search className="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Buscar por título, referência ou data"
+              className="rounded-full pl-10 h-11 text-base"
+            />
           </div>
+          <Select value={monthFilter} onValueChange={setMonthFilter}>
+            <SelectTrigger className="w-48 rounded-full h-11 text-base">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os meses</SelectItem>
+              {months.map((m) => (
+                <SelectItem key={m} value={m}>
+                  {monthLabel(`${m}-01`)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
+
+        {isLoading && (
+          <div className="space-y-4">
+            {[0, 1, 2].map((i) => (
+              <Skeleton key={i} className="h-24 rounded-2xl" />
+            ))}
+          </div>
+        )}
+
+        {filtered.slice(0, visible).map((d) => {
+          const scheduled = d.publish_date > today;
+          const isToday = d.publish_date === today;
+          return (
+            <div
+              key={d.id}
+              className="flex items-start justify-between gap-4 rounded-2xl border border-border/60 bg-card p-5 shadow-sm hover:shadow-card transition-shadow"
+            >
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <p className="text-sm text-muted-foreground">{formatLong(d.publish_date)}</p>
+                  {isToday ? (
+                    <Badge className="bg-grace gap-1 text-xs md:text-sm">
+                      <CheckCircle2 className="size-3.5" /> hoje
+                    </Badge>
+                  ) : scheduled ? (
+                    <Badge variant="outline" className="gap-1 text-xs md:text-sm">
+                      <CalendarClock className="size-3.5" /> agendado
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary" className="text-xs md:text-sm">
+                      liberado
+                    </Badge>
+                  )}
+                </div>
+                <p className="font-display truncate text-xl md:text-2xl font-semibold">{d.title}</p>
+                <p className="truncate text-sm text-muted-foreground">{d.verse_reference}</p>
+              </div>
+              <div className="flex shrink-0 gap-1">
+                <Button size="icon" variant="ghost" className="size-10" title="Editar" onClick={() => onEdit(d, false)}>
+                  <Pencil className="size-5" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="size-10"
+                  title="Duplicar"
+                  onClick={() => onEdit(d, true)}
+                >
+                  <Copy className="size-5" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="size-10"
+                  title="Excluir"
+                  onClick={() => setPendingDelete({ id: d.id, title: d.title })}
+                >
+                  <Trash2 className="size-5 text-destructive" />
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+
+        {filtered.length > visible && (
+          <Button
+            variant="outline"
+            className="w-full rounded-full py-5 text-base"
+            onClick={() => setVisible((v) => v + 8)}
+          >
+            Carregar mais ({filtered.length - visible})
+          </Button>
+        )}
+
+        {!isLoading && filtered.length === 0 && (
+          <p className="text-base text-muted-foreground">
+            {list?.length ? "Nenhum devocional encontrado com esse filtro." : "Nenhum devocional cadastrado ainda."}
+          </p>
+        )}
       </div>
 
       <AlertDialog open={!!pendingDelete} onOpenChange={(o) => !o && setPendingDelete(null)}>
