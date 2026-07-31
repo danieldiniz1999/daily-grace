@@ -67,11 +67,13 @@ function BibliaPage() {
 
   useEffect(() => {
     setChapters(null);
+    if (bookIndex === null) return;
     void loadBook(version, bookIndex).then(setChapters);
   }, [version, bookIndex]);
 
   const book = books.find((b) => b.i === bookIndex) ?? null;
-  const verses = chapters?.[chapter - 1] ?? [];
+  const verses = bookIndex !== null && chapter !== null ? chapters?.[chapter - 1] ?? [] : [];
+  const canRead = bookIndex !== null && chapter !== null;
 
   const filteredBooks = useMemo(() => {
     const term = search.trim().toLowerCase();
