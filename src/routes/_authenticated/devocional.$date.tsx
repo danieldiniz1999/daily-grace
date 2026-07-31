@@ -26,9 +26,16 @@ function DevocionalPage() {
   const { date } = Route.useParams();
   const { user } = useAuth();
   const { data: isAdmin } = useIsAdmin(user?.id);
+  const queryClient = useQueryClient();
+
+  // Se a lista já foi carregada, mostramos o devocional na hora (sem esperar rede)
+  const cached = (
+    queryClient.getQueryData<{ publish_date: string }[]>(["devotionals"]) ?? []
+  ).find((d) => d.publish_date === date);
 
   const { data, isLoading } = useQuery({
     queryKey: ["devotional", date],
+    initialData: cached as never,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("devotionals")
@@ -39,6 +46,7 @@ function DevocionalPage() {
       return data;
     },
   });
+
 
   return (
     <AppShell isAdmin={isAdmin}>
