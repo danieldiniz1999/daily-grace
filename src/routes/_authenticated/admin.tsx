@@ -336,15 +336,15 @@ function DevotionalsAdmin() {
     form.prayer.length > LIMITS.prayer;
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-3 sm:grid-cols-4">
+    <div className="space-y-8">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Devocionais" value={stats.total} />
         <StatCard label="Já liberados" value={stats.published} />
         <StatCard label="Agendados" value={stats.scheduled} />
         <StatCard label="Próxima data livre" value={formatLong(nextFreeDate).split(",")[1]?.trim() ?? nextFreeDate} small />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+      <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
         <form
           ref={formRef}
           onSubmit={(e) => {
@@ -353,13 +353,13 @@ function DevotionalsAdmin() {
             if (tooLong) return toast.error("Algum campo passou do limite de caracteres.");
             save.mutate(form);
           }}
-          className="h-fit space-y-4 rounded-3xl border border-border/60 bg-card p-6 shadow-card"
+          className="h-fit space-y-6 rounded-3xl border border-border/60 bg-card p-6 md:p-8 shadow-card"
         >
           <div className="flex items-center justify-between gap-2">
-            <h2 className="font-display text-xl font-semibold">
+            <h2 className="font-display text-2xl md:text-3xl font-semibold">
               {form.id ? "Editar devocional" : "Novo devocional"}
             </h2>
-            {form.id && <Badge variant="secondary">editando</Badge>}
+            {form.id && <Badge variant="secondary" className="text-sm">editando</Badge>}
           </div>
 
           <Accordion type="single" collapsible defaultValue="etapa-1" className="w-full">
