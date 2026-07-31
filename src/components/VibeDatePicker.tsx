@@ -69,9 +69,9 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
 
       <PopoverContent
         align="start"
-        className="w-auto overflow-hidden rounded-2xl border-border bg-card p-0 shadow-[var(--shadow-soft)]"
+        className="w-auto max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-2xl border-border bg-card p-0 shadow-[var(--shadow-soft)]"
       >
-        <div className="border-b border-border/70 bg-muted/40 px-4 py-3">
+        <div className="border-b border-border/70 bg-muted/40 px-3 py-2.5 sm:px-4 sm:py-3">
           <p className="text-sm font-medium text-foreground">Data de liberação</p>
           <p className="text-xs text-muted-foreground">O devocional aparece para as assinantes nesse dia.</p>
         </div>
@@ -83,7 +83,7 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
           defaultMonth={selected}
           onSelect={commit}
           initialFocus
-          className={cn("pointer-events-auto bg-transparent p-3", "[--cell-size:2.6rem]")}
+          className={cn("pointer-events-auto bg-transparent p-2 sm:p-3", "[--cell-size:2.2rem] sm:[--cell-size:2.6rem]")}
           classNames={{
             caption_label: "text-base font-semibold capitalize text-foreground",
             button_previous:
@@ -102,7 +102,7 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
                 {...props}
                 data-selected={modifiers.selected || undefined}
                 className={cn(
-                  "flex aspect-square h-auto w-full items-center justify-center rounded-xl text-base text-foreground/85 transition-colors",
+                  "flex aspect-square h-auto w-full items-center justify-center rounded-xl text-sm sm:text-base text-foreground/85 transition-colors",
                   "hover:bg-primary/10 hover:text-primary",
                   "data-[selected=true]:bg-[image:var(--gradient-grace)] data-[selected=true]:font-semibold data-[selected=true]:text-primary-foreground data-[selected=true]:shadow-[var(--shadow-card)]",
                   className,
@@ -114,7 +114,7 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
           }}
         />
 
-        <div className="flex items-center justify-between gap-2 border-t border-border/70 px-4 py-3">
+        <div className="flex items-center justify-between gap-2 border-t border-border/70 px-3 py-2.5 sm:px-4 sm:py-3">
           <span className="text-sm text-muted-foreground">Toque em um dia</span>
           <button
             type="button"

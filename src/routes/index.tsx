@@ -378,7 +378,7 @@ function Landing() {
         </div>
 
         <div className="relative">
-          <div className="bg-grace absolute -inset-6 rounded-[3rem] opacity-15 blur-3xl" />
+          <div className="bg-grace pointer-events-none absolute -inset-y-6 inset-x-0 rounded-[3rem] opacity-15 blur-3xl sm:-inset-x-6" />
           <div className="relative">
             <img
               src={heroUploaded.url}
@@ -830,7 +830,7 @@ function Landing() {
                     loading="lazy"
                     className="aspect-square w-full rounded-[2.25rem] object-cover shadow-lift"
                   />
-                  <div className="absolute -bottom-5 -right-5 max-w-[260px] rounded-2xl border border-border/60 bg-card/95 p-5 shadow-card backdrop-blur sm:-right-8 sm:max-w-[280px]">
+                  <div className="absolute -bottom-5 right-0 max-w-[240px] sm:max-w-[260px] rounded-2xl border border-border/60 bg-card/95 p-5 shadow-card backdrop-blur sm:-right-8 sm:max-w-[280px]">
                     <div className="flex items-center gap-1 text-primary">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star key={i} className="size-4 fill-current" />
