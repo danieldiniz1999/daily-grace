@@ -120,10 +120,6 @@ function AuthPage() {
           </button>
         </form>
 
-        <p className="mt-6 rounded-2xl bg-secondary/60 p-4 text-center text-xs leading-relaxed text-muted-foreground">
-          Comprou agora? Sua conta é criada automaticamente após a confirmação do pagamento. Você
-          recebe um e-mail para definir sua senha.
-        </p>
       </div>
 
       <p className="mt-6 text-sm text-muted-foreground">
