@@ -168,7 +168,6 @@ function DevocionaisPage() {
                   <Input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Buscar no acervo"
                     className="bg-card/80 rounded-full pl-9"
                   />
                 </div>

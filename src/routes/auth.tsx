@@ -92,7 +92,6 @@ function AuthPage() {
               value={email}
 
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="voce@email.com"
             />
           </div>
           <div className="space-y-2">
@@ -103,7 +102,6 @@ function AuthPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
             />
           </div>
           <Button
