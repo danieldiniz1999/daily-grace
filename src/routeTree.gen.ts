@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedBibliaRouteImport } from './routes/_authenticated/biblia'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AuthenticatedDevocionaisRouteImport } from './routes/_authenticated/devocionais'
 import { Route as AuthenticatedDevocionalDateRouteImport } from './routes/_authenticated/devocional.$date'
@@ -41,6 +42,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedBibliaRoute = AuthenticatedBibliaRouteImport.update({
+  id: '/biblia',
+  path: '/biblia',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/biblia': typeof AuthenticatedBibliaRoute
   '/conta': typeof AuthenticatedContaRoute
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/biblia': typeof AuthenticatedBibliaRoute
   '/conta': typeof AuthenticatedContaRoute
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/biblia': typeof AuthenticatedBibliaRoute
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/devocionais': typeof AuthenticatedDevocionaisRoute
   '/_authenticated/devocional/$date': typeof AuthenticatedDevocionalDateRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/admin'
+    | '/biblia'
     | '/conta'
     | '/devocionais'
     | '/devocional/$date'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/admin'
+    | '/biblia'
     | '/conta'
     | '/devocionais'
     | '/devocional/$date'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/_authenticated/admin'
+    | '/_authenticated/biblia'
     | '/_authenticated/conta'
     | '/_authenticated/devocionais'
     | '/_authenticated/devocional/$date'
@@ -177,6 +189,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/biblia': {
+      id: '/_authenticated/biblia'
+      path: '/biblia'
+      fullPath: '/biblia'
+      preLoaderRoute: typeof AuthenticatedBibliaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/conta': {
       id: '/_authenticated/conta'
       path: '/conta'
@@ -210,6 +229,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedBibliaRoute: typeof AuthenticatedBibliaRoute
   AuthenticatedContaRoute: typeof AuthenticatedContaRoute
   AuthenticatedDevocionaisRoute: typeof AuthenticatedDevocionaisRoute
   AuthenticatedDevocionalDateRoute: typeof AuthenticatedDevocionalDateRoute
@@ -217,6 +237,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedBibliaRoute: AuthenticatedBibliaRoute,
   AuthenticatedContaRoute: AuthenticatedContaRoute,
   AuthenticatedDevocionaisRoute: AuthenticatedDevocionaisRoute,
   AuthenticatedDevocionalDateRoute: AuthenticatedDevocionalDateRoute,
