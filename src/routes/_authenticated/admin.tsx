@@ -542,22 +542,22 @@ function DevotionalsAdmin() {
           </p>
         </form>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           {showPreview && <DevotionalPreview form={form} />}
 
-          <div className="space-y-3">
-            <h2 className="font-display text-xl font-semibold">Publicados</h2>
-            <div className="flex flex-wrap gap-2">
-              <div className="relative flex-1 min-w-48">
-                <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <div className="space-y-4">
+            <h2 className="font-display text-2xl md:text-3xl font-semibold">Publicados</h2>
+            <div className="flex flex-wrap gap-3">
+              <div className="relative flex-1 min-w-56">
+                <Search className="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="rounded-full pl-9"
+                  className="rounded-full pl-10 h-11 text-base"
                 />
               </div>
               <Select value={monthFilter} onValueChange={setMonthFilter}>
-                <SelectTrigger className="w-44 rounded-full">
+                <SelectTrigger className="w-48 rounded-full h-11 text-base">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -572,9 +572,9 @@ function DevotionalsAdmin() {
             </div>
 
             {isLoading && (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {[0, 1, 2].map((i) => (
-                  <Skeleton key={i} className="h-20 rounded-2xl" />
+                  <Skeleton key={i} className="h-24 rounded-2xl" />
                 ))}
               </div>
             )}
@@ -585,47 +585,49 @@ function DevotionalsAdmin() {
               return (
                 <div
                   key={d.id}
-                  className="flex items-start justify-between gap-3 rounded-2xl border border-border/60 bg-card p-4"
+                  className="flex items-start justify-between gap-4 rounded-2xl border border-border/60 bg-card p-5 shadow-sm hover:shadow-card transition-shadow"
                 >
                   <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-xs text-muted-foreground">{formatLong(d.publish_date)}</p>
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <p className="text-sm text-muted-foreground">{formatLong(d.publish_date)}</p>
                       {isToday ? (
-                        <Badge className="bg-grace gap-1 text-[10px]">
-                          <CheckCircle2 className="size-3" /> hoje
+                        <Badge className="bg-grace gap-1 text-xs md:text-sm">
+                          <CheckCircle2 className="size-3.5" /> hoje
                         </Badge>
                       ) : scheduled ? (
-                        <Badge variant="outline" className="gap-1 text-[10px]">
-                          <CalendarClock className="size-3" /> agendado
+                        <Badge variant="outline" className="gap-1 text-xs md:text-sm">
+                          <CalendarClock className="size-3.5" /> agendado
                         </Badge>
                       ) : (
-                        <Badge variant="secondary" className="text-[10px]">
+                        <Badge variant="secondary" className="text-xs md:text-sm">
                           liberado
                         </Badge>
                       )}
                     </div>
-                    <p className="font-display truncate text-lg font-semibold">{d.title}</p>
-                    <p className="truncate text-xs text-muted-foreground">{d.verse_reference}</p>
+                    <p className="font-display truncate text-xl md:text-2xl font-semibold">{d.title}</p>
+                    <p className="truncate text-sm text-muted-foreground">{d.verse_reference}</p>
                   </div>
                   <div className="flex shrink-0 gap-1">
-                    <Button size="icon" variant="ghost" title="Editar" onClick={() => loadInto(d)}>
-                      <Pencil className="size-4" />
+                    <Button size="icon" variant="ghost" className="size-10" title="Editar" onClick={() => loadInto(d)}>
+                      <Pencil className="size-5" />
                     </Button>
                     <Button
                       size="icon"
                       variant="ghost"
+                      className="size-10"
                       title="Duplicar"
                       onClick={() => loadInto(d, true)}
                     >
-                      <Copy className="size-4" />
+                      <Copy className="size-5" />
                     </Button>
                     <Button
                       size="icon"
                       variant="ghost"
+                      className="size-10"
                       title="Excluir"
                       onClick={() => setPendingDelete({ id: d.id, title: d.title })}
                     >
-                      <Trash2 className="size-4 text-destructive" />
+                      <Trash2 className="size-5 text-destructive" />
                     </Button>
                   </div>
                 </div>
@@ -635,7 +637,7 @@ function DevotionalsAdmin() {
             {filtered.length > visible && (
               <Button
                 variant="outline"
-                className="w-full rounded-full"
+                className="w-full rounded-full py-5 text-base"
                 onClick={() => setVisible((v) => v + 8)}
               >
                 Carregar mais ({filtered.length - visible})
@@ -643,7 +645,7 @@ function DevotionalsAdmin() {
             )}
 
             {!isLoading && filtered.length === 0 && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-base text-muted-foreground">
                 {list?.length ? "Nenhum devocional encontrado com esse filtro." : "Nenhum devocional cadastrado ainda."}
               </p>
             )}
