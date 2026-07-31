@@ -21,9 +21,11 @@ type NavItem = { to: string; label: string; icon: ReactNode };
 export function AppShell({
   children,
   isAdmin,
+  avatarUrl,
 }: {
   children?: ReactNode;
   isAdmin?: boolean;
+  avatarUrl?: string | null;
 }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -45,6 +47,24 @@ export function AppShell({
     await supabase.auth.signOut();
     setOpen(false);
     navigate({ to: "/auth", replace: true });
+  }
+
+  function Avatar({ size = "md" }: { size?: "sm" | "md" }) {
+    const sizeClasses = size === "sm" ? "size-8" : "size-12";
+    return (
+      <div
+        className={cn(
+          "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-primary/20 bg-muted",
+          sizeClasses,
+        )}
+      >
+        {avatarUrl ? (
+          <img src={avatarUrl} alt="Foto de perfil" className="h-full w-full object-cover" />
+        ) : (
+          <User className={cn("text-muted-foreground", size === "sm" ? "size-4" : "size-5")} />
+        )}
+      </div>
+    );
   }
 
   return (
@@ -111,6 +131,16 @@ export function AppShell({
                   </SheetClose>
                 </div>
               </SheetHeader>
+
+              <div className="px-6 pb-2">
+                <div className="flex items-center gap-3 rounded-2xl bg-[#FBFFC1]/60 p-3">
+                  <Avatar size="sm" />
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">Minha conta</p>
+                    <p className="truncate text-xs text-muted-foreground">Ajustes e preferências</p>
+                  </div>
+                </div>
+              </div>
 
               <nav className="flex-1 px-6 py-4">
                 <ul className="space-y-1">
@@ -184,4 +214,5 @@ export function AppShell({
     </div>
   );
 }
+
 
