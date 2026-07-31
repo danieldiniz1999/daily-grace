@@ -143,7 +143,7 @@ function BibliaPage() {
                     type="button"
                     onClick={() => {
                       setBookIndex(b.i);
-                      setChapter(1);
+                      setChapter(null);
                     }}
                     className={cn(
                       "w-full rounded-lg px-3 py-2 text-left text-sm transition-colors",
