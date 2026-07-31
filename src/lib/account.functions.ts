@@ -15,9 +15,15 @@ export const updateProfile = createServerFn({ method: "POST" })
   .inputValidator((data) => profileSchema.parse(data))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+    type ProfileUpdate = {
+      full_name?: string;
+      phone?: string;
+      notification_enabled?: boolean;
+      preferred_bible_version?: string;
+    };
     const update = Object.fromEntries(
       Object.entries(data).filter(([, v]) => v !== undefined),
-    );
+    ) as ProfileUpdate;
     if (Object.keys(update).length === 0) return { ok: true };
 
     const { error } = await supabase
