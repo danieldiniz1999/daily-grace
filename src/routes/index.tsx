@@ -48,6 +48,9 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [
+      { rel: "preload", as: "image", href: heroUploaded.url, fetchpriority: "high" },
+    ],
   }),
   component: Landing,
 });
@@ -383,6 +386,8 @@ function Landing() {
             <img
               src={heroUploaded.url}
               alt="Mulher sorrindo enquanto lê o devocional no celular com a Bíblia aberta"
+              fetchPriority="high"
+              decoding="async"
               width={1024}
               height={1024}
               className="aspect-square w-full rounded-[2.25rem] object-cover shadow-lift"

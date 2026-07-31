@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Lock } from "lucide-react";
 
@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useAppData";
 import { supabase } from "@/integrations/supabase/client";
 import { formatLong } from "@/lib/date";
+
 
 export const Route = createFileRoute("/_authenticated/devocional/$date")({
   head: () => ({
@@ -25,9 +26,16 @@ function DevocionalPage() {
   const { date } = Route.useParams();
   const { user } = useAuth();
   const { data: isAdmin } = useIsAdmin(user?.id);
+  const queryClient = useQueryClient();
+
+  // Se a lista já foi carregada, mostramos o devocional na hora (sem esperar rede)
+  const cached = (
+    queryClient.getQueryData<{ publish_date: string }[]>(["devotionals"]) ?? []
+  ).find((d) => d.publish_date === date);
 
   const { data, isLoading } = useQuery({
     queryKey: ["devotional", date],
+    initialData: cached as never,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("devotionals")
@@ -38,6 +46,7 @@ function DevocionalPage() {
       return data;
     },
   });
+
 
   return (
     <AppShell isAdmin={isAdmin}>
