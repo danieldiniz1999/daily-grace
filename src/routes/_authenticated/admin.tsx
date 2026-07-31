@@ -19,6 +19,7 @@ import {
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/AppShell";
+import { VersePicker } from "@/components/VersePicker";
 import {
   Accordion,
   AccordionContent,
