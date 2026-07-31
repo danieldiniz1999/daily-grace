@@ -54,9 +54,9 @@ function BibliaPage() {
 
   const [version, setVersion] = useState<BibleVersionId>(DEFAULT_BIBLE_VERSION);
   const [books, setBooks] = useState<BibleBook[]>([]);
-  const [bookIndex, setBookIndex] = useState(42);
+  const [bookIndex, setBookIndex] = useState<number | null>(null);
   const [chapters, setChapters] = useState<string[][] | null>(null);
-  const [chapter, setChapter] = useState(1);
+  const [chapter, setChapter] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [booksOpen, setBooksOpen] = useState(false);
   const [chaptersOpen, setChaptersOpen] = useState(false);
@@ -67,11 +67,13 @@ function BibliaPage() {
 
   useEffect(() => {
     setChapters(null);
+    if (bookIndex === null) return;
     void loadBook(version, bookIndex).then(setChapters);
   }, [version, bookIndex]);
 
   const book = books.find((b) => b.i === bookIndex) ?? null;
-  const verses = chapters?.[chapter - 1] ?? [];
+  const verses = bookIndex !== null && chapter !== null ? chapters?.[chapter - 1] ?? [] : [];
+  const canRead = bookIndex !== null && chapter !== null;
 
   const filteredBooks = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -141,7 +143,7 @@ function BibliaPage() {
                     type="button"
                     onClick={() => {
                       setBookIndex(b.i);
-                      setChapter(1);
+                      setChapter(null);
                     }}
                     className={cn(
                       "w-full rounded-lg px-3 py-2 text-left text-sm transition-colors",
@@ -167,7 +169,9 @@ function BibliaPage() {
                   >
                     <span className="flex items-center gap-2 truncate">
                       <BookOpen className="text-primary size-4 shrink-0" />
-                      <span className="truncate">{book?.name ?? "Livro"}</span>
+                      <span className={cn("truncate", book ? "text-foreground" : "text-muted-foreground")}>
+                        {book?.name ?? "Escolher livro"}
+                      </span>
                     </span>
                     <ChevronDown className="text-muted-foreground size-4 shrink-0" />
                   </Button>
@@ -197,7 +201,7 @@ function BibliaPage() {
                             type="button"
                             onClick={() => {
                               setBookIndex(b.i);
-                              setChapter(1);
+                              setChapter(null);
                               setBooksOpen(false);
                             }}
                             className={cn(
@@ -222,7 +226,9 @@ function BibliaPage() {
                     variant="outline"
                     className="w-32 justify-between gap-2 rounded-xl border-border/60 bg-background sm:w-40"
                   >
-                    <span className="truncate">Cap. {chapter}</span>
+                    <span className={cn("truncate", chapter ? "text-foreground" : "text-muted-foreground")}>
+                      {chapter ? `Cap. ${chapter}` : "Capítulo"}
+                    </span>
                     <ChevronDown className="text-muted-foreground size-4 shrink-0" />
                   </Button>
                 </SheetTrigger>
@@ -284,50 +290,62 @@ function BibliaPage() {
             ) : null}
 
             <article className="rounded-3xl border border-border/60 bg-background p-6">
-              <h2 className="font-display text-2xl font-semibold">
-                {book?.name} {chapter}
-              </h2>
-              <div className="mt-4 space-y-3">
-                {chapters === null ? (
-                  <>
-                    <Skeleton className="h-5 w-full" />
-                    <Skeleton className="h-5 w-11/12" />
-                    <Skeleton className="h-5 w-10/12" />
-                  </>
-                ) : (
-                  verses.map((text, idx) => (
-                    <p key={idx} className="text-[15px] leading-relaxed">
-                      <span className="text-primary mr-1 align-super text-xs font-semibold">
-                        {idx + 1}
-                      </span>
-                      {text}
-                    </p>
-                  ))
-                )}
-              </div>
+              {canRead ? (
+                <>
+                  <h2 className="font-display text-2xl font-semibold">
+                    {book?.name} {chapter}
+                  </h2>
+                  <div className="mt-4 space-y-3">
+                    {chapters === null ? (
+                      <>
+                        <Skeleton className="h-5 w-full" />
+                        <Skeleton className="h-5 w-11/12" />
+                        <Skeleton className="h-5 w-10/12" />
+                      </>
+                    ) : (
+                      verses.map((text, idx) => (
+                        <p key={idx} className="text-[15px] leading-relaxed">
+                          <span className="text-primary mr-1 align-super text-xs font-semibold">
+                            {idx + 1}
+                          </span>
+                          {text}
+                        </p>
+                      ))
+                    )}
+                  </div>
 
-              <div className="mt-6 flex items-center justify-between">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={chapter <= 1}
-                  onClick={() => setChapter((c) => Math.max(1, c - 1))}
-                  className="gap-1"
-                >
-                  <ChevronLeft className="size-4" />
-                  Anterior
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={!book || chapter >= book.chapters}
-                  onClick={() => setChapter((c) => Math.min(book?.chapters ?? c, c + 1))}
-                  className="gap-1"
-                >
-                  Próximo
-                  <ChevronRight className="size-4" />
-                </Button>
-              </div>
+                  <div className="mt-6 flex items-center justify-between">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={!chapter || chapter <= 1}
+                      onClick={() => setChapter((c) => Math.max(1, (c ?? 1) - 1))}
+                      className="gap-1"
+                    >
+                      <ChevronLeft className="size-4" />
+                      Anterior
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={!book || !chapter || chapter >= book.chapters}
+                      onClick={() => setChapter((c) => Math.min(book?.chapters ?? c ?? 1, (c ?? 1) + 1))}
+                      className="gap-1"
+                    >
+                      Próximo
+                      <ChevronRight className="size-4" />
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <div className="py-10 text-center">
+                  <BookOpenText className="text-primary mx-auto size-10" />
+                  <h2 className="font-display mt-4 text-xl font-semibold">Escolha uma referência</h2>
+                  <p className="text-muted-foreground mt-2 max-w-xs mx-auto text-sm">
+                    Selecione o livro e o capítulo para começar a leitura da Palavra.
+                  </p>
+                </div>
+              )}
             </article>
           </section>
         </div>
