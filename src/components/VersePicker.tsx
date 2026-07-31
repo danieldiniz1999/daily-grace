@@ -81,8 +81,7 @@ export function VersePicker({
           {triggerLabel}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl">
-
+      <DialogContent className="max-w-3xl gap-3 sm:gap-4">
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl">Escolher versículo</DialogTitle>
           <DialogDescription className="text-sm md:text-base">
