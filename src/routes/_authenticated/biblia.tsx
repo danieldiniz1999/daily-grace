@@ -290,50 +290,62 @@ function BibliaPage() {
             ) : null}
 
             <article className="rounded-3xl border border-border/60 bg-background p-6">
-              <h2 className="font-display text-2xl font-semibold">
-                {book?.name} {chapter}
-              </h2>
-              <div className="mt-4 space-y-3">
-                {chapters === null ? (
-                  <>
-                    <Skeleton className="h-5 w-full" />
-                    <Skeleton className="h-5 w-11/12" />
-                    <Skeleton className="h-5 w-10/12" />
-                  </>
-                ) : (
-                  verses.map((text, idx) => (
-                    <p key={idx} className="text-[15px] leading-relaxed">
-                      <span className="text-primary mr-1 align-super text-xs font-semibold">
-                        {idx + 1}
-                      </span>
-                      {text}
-                    </p>
-                  ))
-                )}
-              </div>
+              {canRead ? (
+                <>
+                  <h2 className="font-display text-2xl font-semibold">
+                    {book?.name} {chapter}
+                  </h2>
+                  <div className="mt-4 space-y-3">
+                    {chapters === null ? (
+                      <>
+                        <Skeleton className="h-5 w-full" />
+                        <Skeleton className="h-5 w-11/12" />
+                        <Skeleton className="h-5 w-10/12" />
+                      </>
+                    ) : (
+                      verses.map((text, idx) => (
+                        <p key={idx} className="text-[15px] leading-relaxed">
+                          <span className="text-primary mr-1 align-super text-xs font-semibold">
+                            {idx + 1}
+                          </span>
+                          {text}
+                        </p>
+                      ))
+                    )}
+                  </div>
 
-              <div className="mt-6 flex items-center justify-between">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={chapter <= 1}
-                  onClick={() => setChapter((c) => Math.max(1, c - 1))}
-                  className="gap-1"
-                >
-                  <ChevronLeft className="size-4" />
-                  Anterior
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={!book || chapter >= book.chapters}
-                  onClick={() => setChapter((c) => Math.min(book?.chapters ?? c, c + 1))}
-                  className="gap-1"
-                >
-                  Próximo
-                  <ChevronRight className="size-4" />
-                </Button>
-              </div>
+                  <div className="mt-6 flex items-center justify-between">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={!chapter || chapter <= 1}
+                      onClick={() => setChapter((c) => Math.max(1, (c ?? 1) - 1))}
+                      className="gap-1"
+                    >
+                      <ChevronLeft className="size-4" />
+                      Anterior
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={!book || !chapter || chapter >= book.chapters}
+                      onClick={() => setChapter((c) => Math.min(book?.chapters ?? c ?? 1, (c ?? 1) + 1))}
+                      className="gap-1"
+                    >
+                      Próximo
+                      <ChevronRight className="size-4" />
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <div className="py-10 text-center">
+                  <BookOpenText className="text-primary mx-auto size-10" />
+                  <h2 className="font-display mt-4 text-xl font-semibold">Escolha uma referência</h2>
+                  <p className="text-muted-foreground mt-2 max-w-xs mx-auto text-sm">
+                    Selecione o livro e o capítulo para começar a leitura da Palavra.
+                  </p>
+                </div>
+              )}
             </article>
           </section>
         </div>
