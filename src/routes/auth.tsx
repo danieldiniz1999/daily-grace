@@ -88,8 +88,9 @@ function AuthPage() {
               id="email"
               type="text"
               autoComplete="username"
-
+              required
               value={email}
+
               onChange={(e) => setEmail(e.target.value)}
               placeholder="voce@email.com"
             />
