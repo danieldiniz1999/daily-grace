@@ -367,9 +367,9 @@ function DevotionalsAdmin() {
                   Data e referência bíblica
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="pb-4 pt-2">
-                <div className="grid gap-5 pb-2 sm:grid-cols-[minmax(260px,1fr)_minmax(260px,1fr)]">
-                  <div className="space-y-3">
+              <AccordionContent className="pb-5 pt-3">
+                <div className="grid gap-6 pb-2 sm:grid-cols-[minmax(260px,1fr)_minmax(260px,1fr)]">
+                  <div className="space-y-3 rounded-xl border border-border/40 bg-card/40 p-3">
                     <FieldLabel>Data de liberação</FieldLabel>
                     <VibeDatePicker
                       value={form.publish_date}
@@ -391,7 +391,7 @@ function DevotionalsAdmin() {
                       </button>
                     )}
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-3 rounded-xl border border-border/40 bg-card/40 p-3">
                     <div className="flex items-center justify-between">
                       <FieldLabel>Referência bíblica</FieldLabel>
                       <CharCount value={form.verse_reference} max={LIMITS.verse_reference} />
