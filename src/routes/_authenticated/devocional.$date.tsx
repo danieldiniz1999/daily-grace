@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Lock } from "lucide-react";
 
@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useAppData";
 import { supabase } from "@/integrations/supabase/client";
 import { formatLong } from "@/lib/date";
+
 
 export const Route = createFileRoute("/_authenticated/devocional/$date")({
   head: () => ({
