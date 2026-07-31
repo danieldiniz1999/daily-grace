@@ -58,6 +58,8 @@ function BibliaPage() {
   const [chapters, setChapters] = useState<string[][] | null>(null);
   const [chapter, setChapter] = useState(1);
   const [search, setSearch] = useState("");
+  const [booksOpen, setBooksOpen] = useState(false);
+  const [chaptersOpen, setChaptersOpen] = useState(false);
 
   useEffect(() => {
     void loadBooks().then(setBooks);
