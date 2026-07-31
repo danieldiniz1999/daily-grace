@@ -67,7 +67,7 @@ type FormState = {
 const LIMITS = {
   title: 120,
   verse_reference: 100,
-  verse_text: 800,
+  verse_text: 2000,
   content: 6000,
   reflection_question: 500,
   prayer: 1500,
