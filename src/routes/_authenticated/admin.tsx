@@ -112,20 +112,38 @@ function AdminPage() {
     );
   }
 
+  return <AdminTabs />;
+}
+
+function AdminTabs() {
+  const [tab, setTab] = useState("novo");
+  const [incoming, setIncoming] = useState<{ row: DevotionalRow; asCopy: boolean } | null>(null);
+
   return (
     <AppShell isAdmin>
       <h1 className="font-display text-4xl md:text-5xl font-semibold">Administração</h1>
-      <Tabs defaultValue="devocionais" className="mt-8">
-        <TabsList className="rounded-full bg-secondary p-1.5">
-          <TabsTrigger value="devocionais" className="rounded-full px-6 py-2 text-sm md:text-base">
-            Devocionais
+      <Tabs value={tab} onValueChange={setTab} className="mt-8">
+        <TabsList className="flex-wrap rounded-full bg-secondary p-1.5">
+          <TabsTrigger value="novo" className="rounded-full px-6 py-2 text-sm md:text-base">
+            Novo devocional
+          </TabsTrigger>
+          <TabsTrigger value="publicados" className="rounded-full px-6 py-2 text-sm md:text-base">
+            Publicados
           </TabsTrigger>
           <TabsTrigger value="assinantes" className="rounded-full px-6 py-2 text-sm md:text-base">
             Assinantes
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="devocionais" className="mt-8">
-          <DevotionalsAdmin />
+        <TabsContent value="novo" className="mt-8">
+          <DevotionalsAdmin incoming={incoming} onConsumed={() => setIncoming(null)} />
+        </TabsContent>
+        <TabsContent value="publicados" className="mt-8">
+          <DevotionalsList
+            onEdit={(row, asCopy) => {
+              setIncoming({ row, asCopy });
+              setTab("novo");
+            }}
+          />
         </TabsContent>
         <TabsContent value="assinantes" className="mt-8">
           <SubscribersAdmin />
@@ -134,6 +152,17 @@ function AdminPage() {
     </AppShell>
   );
 }
+
+type DevotionalRow = {
+  id: string;
+  publish_date: string;
+  title: string;
+  verse_reference: string;
+  verse_text: string;
+  content: string;
+  reflection_question: string | null;
+  prayer: string | null;
+};
 
 function CharCount({ value, max }: { value: string; max: number }) {
   const over = value.length > max;
