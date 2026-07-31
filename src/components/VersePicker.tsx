@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   BIBLE_VERSIONS,
+  DEFAULT_BIBLE_VERSION,
   formatReference,
   loadBook,
   loadBooks,
@@ -30,7 +31,7 @@ export function VersePicker({
   triggerLabel?: string;
 }) {
   const [open, setOpen] = useState(false);
-  const [version, setVersion] = useState<BibleVersionId>("acf");
+  const [version, setVersion] = useState<BibleVersionId>(DEFAULT_BIBLE_VERSION);
   const [books, setBooks] = useState<BibleBook[]>([]);
   const [bookIndex, setBookIndex] = useState<number | null>(null);
   const [chapters, setChapters] = useState<string[][] | null>(null);

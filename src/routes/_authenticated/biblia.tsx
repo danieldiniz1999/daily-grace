@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin, useSubscription } from "@/hooks/useAppData";
 import {
   BIBLE_VERSIONS,
+  DEFAULT_BIBLE_VERSION,
   loadBook,
   loadBooks,
   type BibleBook,
@@ -36,7 +37,7 @@ function BibliaPage() {
   const { data: subscription, isLoading: loadingSub } = useSubscription(user?.id);
   const blocked = !loadingSub && subscription?.status !== "active" && !isAdmin;
 
-  const [version, setVersion] = useState<BibleVersionId>("acf");
+  const [version, setVersion] = useState<BibleVersionId>(DEFAULT_BIBLE_VERSION);
   const [books, setBooks] = useState<BibleBook[]>([]);
   const [bookIndex, setBookIndex] = useState(42);
   const [chapters, setChapters] = useState<string[][] | null>(null);
