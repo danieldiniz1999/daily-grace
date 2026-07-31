@@ -147,12 +147,12 @@ export function AppShell({
                   {items.map((item) => (
                     <li key={item.to}>
                       <SheetClose asChild>
-                        <Link
+                      <Link
                           to={item.to}
                           className={cn(
                             "group flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-medium transition-all duration-300",
                             pathname.startsWith(item.to)
-                              ? "bg-[#FBFFC1] text-[#A740C4] shadow-sm"
+                              ? "bg-[#A740C4] text-white shadow-sm"
                               : "text-[#A740C4]/80 hover:bg-[#CB6CE6]/10 hover:text-[#A740C4]",
                           )}
                         >
