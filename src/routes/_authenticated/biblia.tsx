@@ -199,7 +199,7 @@ function BibliaPage() {
                             type="button"
                             onClick={() => {
                               setBookIndex(b.i);
-                              setChapter(1);
+                              setChapter(null);
                               setBooksOpen(false);
                             }}
                             className={cn(
