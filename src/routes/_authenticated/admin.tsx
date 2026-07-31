@@ -369,7 +369,7 @@ function DevotionalsAdmin() {
               </AccordionTrigger>
               <AccordionContent className="pb-5 pt-3">
                 <div className="grid gap-8 pb-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                  <div className="min-w-0 space-y-3 rounded-xl border border-border/40 bg-card/40 p-3">
+                  <div className="min-w-0 space-y-3 rounded-xl bg-card/40 p-3">
                     <FieldLabel>Data de liberação</FieldLabel>
                     <VibeDatePicker
                       value={form.publish_date}
@@ -391,7 +391,7 @@ function DevotionalsAdmin() {
                       </button>
                     )}
                   </div>
-                  <div className="min-w-0 space-y-3 rounded-xl border border-border/40 bg-card/40 p-3">
+                  <div className="min-w-0 space-y-3 rounded-xl bg-card/40 p-3">
                     <div className="flex items-center justify-between">
                       <FieldLabel>Referência bíblica</FieldLabel>
                       <CharCount value={form.verse_reference} max={LIMITS.verse_reference} />
