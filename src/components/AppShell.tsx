@@ -76,7 +76,11 @@ export function AppShell({
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="flex w-full flex-col border-none bg-gradient-to-b from-[#CB6CE6] to-[#A740C4] p-0 text-primary-foreground sm:max-w-sm"
+              className="flex w-full flex-col border border-lilac-300 bg-white p-0 text-foreground sm:max-w-sm"
+              style={{
+                borderColor: "#CB6CE6",
+                borderLeftWidth: "2px",
+              }}
             >
               <SheetHeader className="p-6 pb-2 text-left">
                 <SheetTitle className="sr-only">Menu</SheetTitle>
@@ -91,7 +95,7 @@ export function AppShell({
                       alt="Daily Grace"
                       className="size-9 object-contain"
                     />
-                    <span className="font-display text-xl leading-none font-semibold tracking-tight text-white">
+                    <span className="font-display text-xl leading-none font-semibold tracking-tight text-[#A740C4]">
                       Daily Grace
                     </span>
                   </Link>
@@ -99,7 +103,7 @@ export function AppShell({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="text-white hover:bg-white/10"
+                      className="text-[#A740C4] hover:bg-[#CB6CE6]/10"
                       aria-label="Fechar menu"
                     >
                       <X className="size-5" />
@@ -118,8 +122,8 @@ export function AppShell({
                           className={cn(
                             "group flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-medium transition-all duration-300",
                             pathname.startsWith(item.to)
-                              ? "bg-white/15 text-white shadow-sm"
-                              : "text-white/80 hover:bg-white/10 hover:text-white",
+                              ? "bg-[#FBFFC1] text-[#A740C4] shadow-sm"
+                              : "text-[#A740C4]/80 hover:bg-[#CB6CE6]/10 hover:text-[#A740C4]",
                           )}
                         >
                           <span className="transition-transform duration-300 group-hover:scale-110">
@@ -136,7 +140,8 @@ export function AppShell({
               <div className="p-6 pt-2">
                 <button
                   onClick={signOut}
-                  className="flex w-full items-center gap-3 rounded-2xl border border-white/20 px-4 py-3.5 text-sm font-medium text-white/90 transition-colors hover:bg-white/10"
+                  className="flex w-full items-center gap-3 rounded-2xl border px-4 py-3.5 text-sm font-medium transition-colors hover:bg-[#CB6CE6]/10"
+                  style={{ borderColor: "#CB6CE6" }}
                   aria-label="Sair"
                 >
                   <LogOut className="size-5" />
