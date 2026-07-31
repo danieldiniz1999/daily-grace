@@ -386,7 +386,6 @@ function DevotionalsAdmin() {
               </div>
               <Input
                 required
-                placeholder="Salmos 23:1"
                 value={form.verse_reference}
                 onChange={set("verse_reference")}
               />
@@ -400,7 +399,6 @@ function DevotionalsAdmin() {
             </div>
             <Input
               required
-              placeholder="Ex.: A paz que acalma o coração"
               value={form.title}
               onChange={set("title")}
             />
@@ -414,7 +412,6 @@ function DevotionalsAdmin() {
             <AutoTextarea
               required
               minRows={2}
-              placeholder="Texto do versículo..."
               value={form.verse_text}
               onChange={set("verse_text")}
             />
@@ -428,7 +425,6 @@ function DevotionalsAdmin() {
             <AutoTextarea
               required
               minRows={8}
-              placeholder="Escreva a reflexão do dia. Pule uma linha para separar parágrafos."
               value={form.content}
               onChange={set("content")}
             />
@@ -502,7 +498,6 @@ function DevotionalsAdmin() {
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Buscar por título, versículo ou data"
                   className="rounded-full pl-9"
                 />
               </div>
@@ -797,7 +792,6 @@ function KiwifyPanel({ onDone }: { onDone: () => void }) {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="e-mail da assinante"
           className="w-64 rounded-full"
         />
         <Button
