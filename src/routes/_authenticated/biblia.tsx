@@ -54,9 +54,9 @@ function BibliaPage() {
 
   const [version, setVersion] = useState<BibleVersionId>(DEFAULT_BIBLE_VERSION);
   const [books, setBooks] = useState<BibleBook[]>([]);
-  const [bookIndex, setBookIndex] = useState(42);
+  const [bookIndex, setBookIndex] = useState<number | null>(null);
   const [chapters, setChapters] = useState<string[][] | null>(null);
-  const [chapter, setChapter] = useState(1);
+  const [chapter, setChapter] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [booksOpen, setBooksOpen] = useState(false);
   const [chaptersOpen, setChaptersOpen] = useState(false);
