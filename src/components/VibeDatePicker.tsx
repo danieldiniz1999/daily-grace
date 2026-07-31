@@ -37,7 +37,7 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
         <button
           type="button"
           className={cn(
-            "group flex w-full items-center gap-3 rounded-2xl border bg-card px-4 py-3.5 text-left text-base text-foreground transition-all",
+            "group flex min-w-[260px] items-center gap-3 rounded-2xl border bg-card px-4 py-3.5 text-left text-base text-foreground transition-all",
             "hover:border-primary/50 hover:shadow-[var(--shadow-card)]",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
             invalid ? "border-destructive" : "border-border",
@@ -48,10 +48,10 @@ export function VibeDatePicker({ value, onChange, invalid, className }: VibeDate
             <CalendarDays className="size-5" />
           </span>
 
-          <span className="flex-1 truncate">
+          <span className="flex-1 whitespace-nowrap">
             {selected ? (
               <>
-                <span className="block truncate font-medium capitalize">
+                <span className="block font-medium capitalize">
                   {format(selected, "d 'de' MMMM 'de' yyyy", { locale: ptBR })}
                 </span>
                 <span className="block text-sm capitalize text-muted-foreground">
