@@ -96,6 +96,7 @@ export function AppShell({
             </SheetTrigger>
             <SheetContent
               side="right"
+              showClose={false}
               className="flex w-full flex-col border border-lilac-300 bg-white p-0 text-foreground sm:max-w-sm"
               style={{
                 borderColor: "#CB6CE6",
