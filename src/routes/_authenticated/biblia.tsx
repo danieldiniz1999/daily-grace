@@ -68,6 +68,12 @@ function BibliaPage() {
   useEffect(() => {
     setChapters(null);
     if (bookIndex === null) return;
+    // Lembra a última leitura para pré-carregar na próxima abertura
+    try {
+      window.localStorage.setItem("dg-last-bible", JSON.stringify({ version, bookIndex }));
+    } catch {
+      /* espaço cheio: ignora */
+    }
     void loadBook(version, bookIndex).then(setChapters);
   }, [version, bookIndex]);
 
