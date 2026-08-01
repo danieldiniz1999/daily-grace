@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { BookMarked, BookOpenText, LogOut, Menu, Settings, User, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
-import { loadBooks } from "@/lib/bible";
+import { loadBook, loadBooks } from "@/lib/bible";
 
 
 import { supabase } from "@/integrations/supabase/client";
@@ -46,6 +46,18 @@ export function AppShell({
       void loadBooks().catch(() => {});
       for (const to of ["/devocionais", "/biblia", "/conta"]) {
         void router.preloadRoute({ to }).catch(() => {});
+      }
+      // Pré-carrega o último livro lido, para a leitura abrir na hora
+      try {
+        const raw = window.localStorage.getItem("dg-last-bible");
+        if (raw) {
+          const last = JSON.parse(raw) as { version?: string; bookIndex?: number };
+          if (last?.version && typeof last.bookIndex === "number") {
+            void loadBook(last.version as never, last.bookIndex).catch(() => {});
+          }
+        }
+      } catch {
+        /* ignora */
       }
     });
   }, [router]);
