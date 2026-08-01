@@ -47,6 +47,18 @@ export function AppShell({
       for (const to of ["/devocionais", "/biblia", "/conta"]) {
         void router.preloadRoute({ to }).catch(() => {});
       }
+      // Pré-carrega o último livro lido, para a leitura abrir na hora
+      try {
+        const raw = window.localStorage.getItem("dg-last-bible");
+        if (raw) {
+          const last = JSON.parse(raw) as { version?: string; bookIndex?: number };
+          if (last?.version && typeof last.bookIndex === "number") {
+            void loadBook(last.version as never, last.bookIndex).catch(() => {});
+          }
+        }
+      } catch {
+        /* ignora */
+      }
     });
   }, [router]);
 
