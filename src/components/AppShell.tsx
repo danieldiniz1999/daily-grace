@@ -1,4 +1,4 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { BookMarked, BookOpenText, LogOut, Menu, Settings, User, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
@@ -31,6 +31,7 @@ export function AppShell({
   avatarUrl?: string | null;
 }) {
   const navigate = useNavigate();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
