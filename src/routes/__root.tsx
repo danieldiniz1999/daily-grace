@@ -145,6 +145,17 @@ function RootComponent() {
     return () => sub.subscription.unsubscribe();
   }, [router, queryClient]);
 
+  // Guarda no aparelho os arquivos pesados (Bíblia, imagens, fontes)
+  // para as próximas aberturas serem quase instantâneas.
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+    const timer = window.setTimeout(() => {
+      void navigator.serviceWorker.register("/sw.js").catch(() => {});
+    }, 1500);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
