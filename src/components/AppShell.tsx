@@ -35,16 +35,19 @@ export function AppShell({
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
 
-  // Pré-carrega a lista de livros da Bíblia quando o aparelho está ocioso,
-  // para a tela da Bíblia abrir instantaneamente.
+  // Pré-carrega, quando o aparelho está ocioso, a lista de livros da Bíblia e
+  // as telas do menu, para abrirem instantaneamente.
   useEffect(() => {
     const idle =
       (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
         .requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1200));
     idle(() => {
       void loadBooks().catch(() => {});
+      for (const to of ["/devocionais", "/biblia", "/conta"]) {
+        void router.preloadRoute({ to }).catch(() => {});
+      }
     });
-  }, []);
+  }, [router]);
 
 
 
