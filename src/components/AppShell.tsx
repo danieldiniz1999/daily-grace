@@ -1,7 +1,10 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { BookMarked, BookOpenText, LogOut, Menu, Settings, User, X } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+
+import { loadBooks } from "@/lib/bible";
+
 
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
