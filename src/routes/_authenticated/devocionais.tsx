@@ -207,6 +207,7 @@ function DevocionaisPage() {
                 devotionalId={todayDev.id}
                 isCompleted={todayDev.id ? completions?.has(todayDev.id) : false}
                 userId={user?.id}
+                bgUrl={todayDev.daily_phrase_bg_url}
               />
             </div>
           )}
