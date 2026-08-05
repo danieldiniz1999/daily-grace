@@ -181,7 +181,7 @@ function DevocionaisPage() {
                     <span className="font-display text-lg font-semibold">Frase do Dia</span>
                   </div>
                   {todayDev.id && completions?.has(todayDev.id) && (
-                    <div className="flex size-6 items-center justify-center rounded-full bg-green-500 text-white">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-primary text-white">
                       <CheckCircle2 className="size-4" />
                     </div>
                   )}
