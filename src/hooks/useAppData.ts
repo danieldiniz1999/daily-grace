@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-
 import { supabase } from "@/integrations/supabase/client";
 
 export function useSubscription(userId?: string) {
@@ -61,6 +60,21 @@ export function useDevotionals() {
         .order("publish_date", { ascending: false });
       if (error) throw error;
       return data ?? [];
+    },
+  });
+}
+
+export function useCompletions(userId?: string) {
+  return useQuery({
+    queryKey: ["completions", userId],
+    enabled: !!userId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("devotional_completions")
+        .select("devotional_id")
+        .eq("user_id", userId!);
+      if (error) throw error;
+      return new Set(data?.map((c) => c.devotional_id) ?? []);
     },
   });
 }
