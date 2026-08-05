@@ -4,8 +4,6 @@ import { BookMarked, BookOpenText, LogOut, Menu, Settings, User, X } from "lucid
 import { useEffect, useState, type ReactNode } from "react";
 
 import { loadBook, loadBooks } from "@/lib/bible";
-
-
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -35,9 +33,52 @@ export function AppShell({
   const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
-  // Pré-carrega, quando o aparelho está ocioso, a lista de livros da Bíblia e
-  // as telas do menu, para abrirem instantaneamente.
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => authListener.subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const registerPush = async () => {
+      try {
+        const registration = await navigator.serviceWorker.ready;
+        let sub = await registration.pushManager.getSubscription();
+
+        if (!sub) {
+          if (Notification.permission === "granted") {
+            const publicKey = import.meta.env.VITE_VAPID_PUBLIC_KEY;
+            if (publicKey) {
+              sub = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: publicKey,
+              });
+            }
+          }
+        }
+
+        if (sub) {
+          await supabase.from("push_subscriptions" as any).upsert({
+            user_id: user.id,
+            subscription_json: sub.toJSON() as any,
+          } as any, { onConflict: "user_id" } as any);
+        }
+      } catch (err) {
+        console.warn("Push subscription skipped:", err);
+      }
+    };
+
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      registerPush();
+    }
+  }, [user]);
+
   useEffect(() => {
     const idle =
       (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
@@ -47,7 +88,6 @@ export function AppShell({
       for (const to of ["/devocionais", "/biblia", "/conta"]) {
         void router.preloadRoute({ to }).catch(() => {});
       }
-      // Pré-carrega o último livro lido, para a leitura abrir na hora
       try {
         const raw = window.localStorage.getItem("dg-last-bible");
         if (raw) {
@@ -61,8 +101,6 @@ export function AppShell({
       }
     });
   }, [router]);
-
-
 
   const items: NavItem[] = [
     { to: "/devocionais", label: "Devocionais", icon: <BookOpenText className="size-5" /> },
@@ -114,7 +152,6 @@ export function AppShell({
             </span>
           </Link>
 
-          {/* Desktop: hambúrguer sobrepondo a tela */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button
@@ -165,7 +202,6 @@ export function AppShell({
                 </div>
               </SheetHeader>
 
-
               <nav className="flex-1 px-6 py-4">
                 <ul className="space-y-1">
                   {items.map((item) => (
@@ -210,7 +246,6 @@ export function AppShell({
             </SheetContent>
           </Sheet>
 
-          {/* Mobile: botão de sair (bottom nav cuida da navegação em telas pequenas) */}
           <button
             onClick={signOut}
             className="rounded-full p-2 text-muted-foreground md:hidden"
@@ -243,5 +278,3 @@ export function AppShell({
     </div>
   );
 }
-
-

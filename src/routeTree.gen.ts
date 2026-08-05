@@ -19,6 +19,7 @@ import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedDevocionaisRouteImport } from './routes/_authenticated/devocionais'
 import { Route as AuthenticatedDevocionalDateRouteImport } from './routes/_authenticated/devocional.$date'
 import { Route as ApiPublicKiwifyRouteImport } from './routes/api/public/kiwify'
+import { Route as ApiPublicNotificationsCronRouteImport } from './routes/api/public/notifications.cron'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -71,6 +72,12 @@ const ApiPublicKiwifyRoute = ApiPublicKiwifyRouteImport.update({
   path: '/api/public/kiwify',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicNotificationsCronRoute =
+  ApiPublicNotificationsCronRouteImport.update({
+    id: '/api/public/notifications/cron',
+    path: '/api/public/notifications/cron',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
   '/api/public/kiwify': typeof ApiPublicKiwifyRoute
+  '/api/public/notifications/cron': typeof ApiPublicNotificationsCronRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,6 +101,7 @@ export interface FileRoutesByTo {
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
   '/api/public/kiwify': typeof ApiPublicKiwifyRoute
+  '/api/public/notifications/cron': typeof ApiPublicNotificationsCronRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,6 +115,7 @@ export interface FileRoutesById {
   '/_authenticated/devocionais': typeof AuthenticatedDevocionaisRoute
   '/_authenticated/devocional/$date': typeof AuthenticatedDevocionalDateRoute
   '/api/public/kiwify': typeof ApiPublicKiwifyRoute
+  '/api/public/notifications/cron': typeof ApiPublicNotificationsCronRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/devocionais'
     | '/devocional/$date'
     | '/api/public/kiwify'
+    | '/api/public/notifications/cron'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/devocionais'
     | '/devocional/$date'
     | '/api/public/kiwify'
+    | '/api/public/notifications/cron'
   id:
     | '__root__'
     | '/'
@@ -142,6 +154,7 @@ export interface FileRouteTypes {
     | '/_authenticated/devocionais'
     | '/_authenticated/devocional/$date'
     | '/api/public/kiwify'
+    | '/api/public/notifications/cron'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -150,6 +163,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ApiPublicKiwifyRoute: typeof ApiPublicKiwifyRoute
+  ApiPublicNotificationsCronRoute: typeof ApiPublicNotificationsCronRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -224,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicKiwifyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/notifications/cron': {
+      id: '/api/public/notifications/cron'
+      path: '/api/public/notifications/cron'
+      fullPath: '/api/public/notifications/cron'
+      preLoaderRoute: typeof ApiPublicNotificationsCronRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -252,6 +273,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ApiPublicKiwifyRoute: ApiPublicKiwifyRoute,
+  ApiPublicNotificationsCronRoute: ApiPublicNotificationsCronRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
