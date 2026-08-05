@@ -28,24 +28,25 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
         const now = new Date();
         const today = now.toISOString().split('T')[0];
 
-        // Buscar assinaturas push
-        const { data: subs, error: subError } = await supabaseAdmin
-          .from('push_subscriptions')
-          .select('user_id, subscription_json');
+        // Usamos any para evitar erros de tipagem com a tabela nova não gerada
+        const { data: subs, error: subError } = await (supabaseAdmin.from('push_subscriptions' as any)
+          .select('user_id, subscription_json') as any);
 
         if (subError || !subs) return new Response('No subscriptions or error', { status: 200 });
 
         for (const sub of subs) {
-          const userId = (sub as any).user_id;
-          const pushData = (sub as any).subscription_json;
+          const userId = sub.user_id;
+          const pushData = sub.subscription_json;
 
           // Verificar se o usuário já concluiu o devocional de hoje
-          const { data: completion } = await supabaseAdmin
+          const { data: completion } = await (supabaseAdmin
             .from('devotional_completions')
             .select('id')
             .eq('user_id', userId)
-            .eq('publish_date', today)
-            .maybeSingle();
+            // Filtramos por completed_at que comece com o dia de hoje
+            .gte('completed_at', `${today}T00:00:00`)
+            .lte('completed_at', `${today}T23:59:59`)
+            .maybeSingle() as any);
 
           let shouldSend = false;
           let message = "";
