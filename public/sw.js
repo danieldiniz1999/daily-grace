@@ -1,6 +1,30 @@
 // Service worker do Daily Grace: guarda no aparelho os arquivos "pesados"
-// (Bíblia, imagens, fontes) para as próximas aberturas serem instantâneas.
+// e gerencia notificações push.
 const CACHE = "dg-static-v1";
+
+self.addEventListener("push", (event) => {
+  const data = event.data?.json() ?? {
+    title: "Daily Grace",
+    body: "Seu devocional está pronto!",
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: "/icon-192.png",
+      badge: "/favicon.png",
+      data: { url: data.url || "/" },
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients.openWindow(event.notification.data.url)
+  );
+});
+
 
 // Só guardamos conteúdo estático. Nada de HTML, API ou dados do usuário.
 function isCacheable(url) {
