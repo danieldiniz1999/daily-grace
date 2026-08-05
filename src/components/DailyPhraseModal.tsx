@@ -198,7 +198,7 @@ export function DailyPhraseModal({
               >
                 {isCompleted ? (
                   <span className="flex items-center justify-center gap-2">
-                    <Check className="size-5 text-green-400" /> CONCLUÍDO
+                    <Check className="size-5 text-white" /> CONCLUÍDO
                   </span>
                 ) : (
                   "TOQUE AQUI PARA CONCLUIR"
