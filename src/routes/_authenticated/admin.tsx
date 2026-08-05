@@ -285,6 +285,7 @@ function DevotionalsAdmin({
         prayer: values.prayer.trim() || null,
         daily_phrase: values.daily_phrase.trim() || null,
         daily_phrase_author: values.daily_phrase_author.trim() || null,
+        daily_phrase_bg_url: values.daily_phrase_bg_url.trim() || null,
       };
       const query = values.id
         ? supabase.from("devotionals").update(payload).eq("id", values.id)
