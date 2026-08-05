@@ -47,6 +47,8 @@ export type Database = {
         Row: {
           content: string
           created_at: string
+          daily_phrase: string | null
+          daily_phrase_author: string | null
           id: string
           prayer: string | null
           publish_date: string
@@ -59,6 +61,8 @@ export type Database = {
         Insert: {
           content: string
           created_at?: string
+          daily_phrase?: string | null
+          daily_phrase_author?: string | null
           id?: string
           prayer?: string | null
           publish_date: string
@@ -71,6 +75,8 @@ export type Database = {
         Update: {
           content?: string
           created_at?: string
+          daily_phrase?: string | null
+          daily_phrase_author?: string | null
           id?: string
           prayer?: string | null
           publish_date?: string

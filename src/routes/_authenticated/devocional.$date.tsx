@@ -125,7 +125,7 @@ function DevocionalPage() {
             </blockquote>
 
             <div className="mt-8 space-y-5 text-[1.05rem] leading-relaxed text-foreground/90">
-              {data.content.split("\n").map((p, i) =>
+              {data.content.split("\n").map((p: string, i: number) =>
                 p.trim() ? (
                   <p key={i} className="whitespace-pre-wrap">
                     {p}
