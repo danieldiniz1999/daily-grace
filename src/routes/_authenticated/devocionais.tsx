@@ -1,15 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowRight, BookOpenText, Lock, Quote, Search, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpenText, CheckCircle2, Lock, Quote, Search, Sparkles } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
-import { useDevotionals, useIsAdmin, useProfile, useSubscription } from "@/hooks/useAppData";
+import { useCompletions, useDevotionals, useIsAdmin, useProfile, useSubscription } from "@/hooks/useAppData";
 import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
 import { formatLong, monthLabel, parseISODate, todayISO } from "@/lib/date";
+
 
 export const Route = createFileRoute("/_authenticated/devocionais")({
   head: () => ({
@@ -44,7 +45,9 @@ function DevocionaisPage() {
   const { data: profile } = useProfile(user?.id);
   const { data: subscription, isLoading: loadingSub } = useSubscription(user?.id);
   const { data: devotionals, isLoading } = useDevotionals();
+  const { data: completions } = useCompletions(user?.id);
   const [search, setSearch] = useState("");
+
 
   const today = todayISO();
   const list = devotionals ?? [];
@@ -132,7 +135,13 @@ function DevocionaisPage() {
                   <span className="bg-background/95 text-primary inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-transform group-hover:translate-x-0.5">
                     Ler agora <ArrowRight className="size-4" />
                   </span>
+                  {todayDev.id && completions?.has(todayDev.id) && (
+                    <span className="bg-cream/30 text-primary-foreground flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold tracking-wide uppercase backdrop-blur-sm">
+                      <CheckCircle2 className="size-3.5" /> Concluído
+                    </span>
+                  )}
                   <span className="text-primary-foreground/70 text-xs">
+
                     {readingMinutes(todayDev.content)} min de leitura
                   </span>
                 </div>
@@ -201,9 +210,16 @@ function DevocionaisPage() {
                           key={d.id}
                           to="/devocional/$date"
                           params={{ date: d.publish_date }}
-                          className="group border-border/60 bg-card shadow-card hover:border-primary/40 relative flex items-center gap-4 overflow-hidden rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-0.5"
+                          className={`group border-border/60 bg-card shadow-card hover:border-primary/40 relative flex items-center gap-4 overflow-hidden rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-0.5 ${
+                            completions?.has(d.id) ? "opacity-85" : ""
+                          }`}
                         >
-                          <span className="bg-secondary text-secondary-foreground group-hover:bg-grace group-hover:text-primary-foreground flex size-14 shrink-0 flex-col items-center justify-center rounded-2xl transition-colors">
+                          <span className={`flex size-14 shrink-0 flex-col items-center justify-center rounded-2xl transition-colors ${
+                            completions?.has(d.id) 
+                              ? "bg-primary/10 text-primary" 
+                              : "bg-secondary text-secondary-foreground group-hover:bg-grace group-hover:text-primary-foreground"
+                          }`}>
+
                             <span className="font-display text-xl leading-none font-semibold">
                               {dayNumber(d.publish_date)}
                             </span>

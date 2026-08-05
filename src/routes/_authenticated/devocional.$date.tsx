@@ -1,13 +1,16 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Lock } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Circle, Lock } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { useIsAdmin } from "@/hooks/useAppData";
+import { useCompletions, useIsAdmin } from "@/hooks/useAppData";
 import { supabase } from "@/integrations/supabase/client";
 import { formatLong } from "@/lib/date";
+import { toast } from "sonner";
+
 
 
 export const Route = createFileRoute("/_authenticated/devocional/$date")({
@@ -46,6 +49,38 @@ function DevocionalPage() {
       return data;
     },
   });
+
+  const { data: completions } = useCompletions(user?.id);
+
+  const isCompleted = data?.id && completions?.has(data.id);
+
+  const toggleCompletion = useMutation({
+    mutationFn: async () => {
+      if (!user || !data) return;
+      if (isCompleted) {
+        const { error } = await supabase
+          .from("devotional_completions")
+          .delete()
+          .eq("user_id", user.id)
+          .eq("devotional_id", data.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("devotional_completions").insert({
+          user_id: user.id,
+          devotional_id: data.id,
+        });
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["completions", user?.id] });
+      toast.success(isCompleted ? "Marcado como não lido" : "Devocional concluído! 🎉");
+    },
+    onError: () => {
+      toast.error("Erro ao atualizar status");
+    },
+  });
+
 
 
   return (
@@ -116,8 +151,33 @@ function DevocionalPage() {
                 </p>
               </div>
             )}
+
+            <div className="mt-12 flex justify-center border-t border-border/40 pt-10">
+              <Button
+                onClick={() => toggleCompletion.mutate()}
+                disabled={toggleCompletion.isPending}
+                variant={isCompleted ? "outline" : "default"}
+                size="lg"
+                className={`rounded-full px-8 py-6 text-lg transition-all active:scale-95 ${
+                  isCompleted 
+                    ? "border-primary/30 text-primary hover:bg-primary/5" 
+                    : "bg-grace hover:opacity-90 shadow-md"
+                }`}
+              >
+                {isCompleted ? (
+                  <>
+                    <CheckCircle2 className="mr-2 size-6" /> Concluído
+                  </>
+                ) : (
+                  <>
+                    <Circle className="mr-2 size-6" /> Marcar como concluído
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </article>
+
       )}
     </AppShell>
   );
