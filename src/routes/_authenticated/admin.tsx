@@ -64,6 +64,7 @@ type FormState = {
   prayer: string;
   daily_phrase: string;
   daily_phrase_author: string;
+  daily_phrase_bg_url: string;
 };
 
 const LIMITS = {
@@ -89,6 +90,7 @@ const emptyForm = (): FormState => ({
   prayer: "",
   daily_phrase: "",
   daily_phrase_author: "",
+  daily_phrase_bg_url: "",
 });
 
 const isBlank = (f: FormState) =>
@@ -170,6 +172,7 @@ type DevotionalRow = {
   prayer: string | null;
   daily_phrase: string | null;
   daily_phrase_author: string | null;
+  daily_phrase_bg_url: string | null;
 };
 
 function CharCount({ value, max }: { value: string; max: number }) {
@@ -282,6 +285,7 @@ function DevotionalsAdmin({
         prayer: values.prayer.trim() || null,
         daily_phrase: values.daily_phrase.trim() || null,
         daily_phrase_author: values.daily_phrase_author.trim() || null,
+        daily_phrase_bg_url: values.daily_phrase_bg_url.trim() || null,
       };
       const query = values.id
         ? supabase.from("devotionals").update(payload).eq("id", values.id)
@@ -323,6 +327,7 @@ function DevotionalsAdmin({
       prayer: d.prayer ?? "",
       daily_phrase: d.daily_phrase ?? "",
       daily_phrase_author: d.daily_phrase_author ?? "",
+      daily_phrase_bg_url: d.daily_phrase_bg_url ?? "",
     });
     focusForm();
     if (asCopy) toast.info(`Cópia criada para ${formatLong(nextFreeDate)}.`);
@@ -513,6 +518,16 @@ function DevotionalsAdmin({
                     <CharCount value={form.daily_phrase_author} max={LIMITS.daily_phrase_author} />
                   </div>
                   <Input value={form.daily_phrase_author} onChange={set("daily_phrase_author")} placeholder="Ex: Paul D Tripp" className="h-11 text-base md:text-base" />
+                </div>
+                <div className="space-y-3">
+                  <FieldLabel>URL da Imagem de Fundo (Glorify Style)</FieldLabel>
+                  <Input 
+                    value={form.daily_phrase_bg_url} 
+                    onChange={set("daily_phrase_bg_url")} 
+                    placeholder="https://exemplo.com/imagem-devocional.jpg" 
+                    className="h-11 text-base md:text-base" 
+                  />
+                  <p className="text-xs text-muted-foreground">Deixe em branco para usar o fundo padrão floral.</p>
                 </div>
               </AccordionContent>
             </AccordionItem>

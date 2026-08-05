@@ -49,6 +49,7 @@ export type Database = {
           created_at: string
           daily_phrase: string | null
           daily_phrase_author: string | null
+          daily_phrase_bg_url: string | null
           id: string
           prayer: string | null
           publish_date: string
@@ -63,6 +64,7 @@ export type Database = {
           created_at?: string
           daily_phrase?: string | null
           daily_phrase_author?: string | null
+          daily_phrase_bg_url?: string | null
           id?: string
           prayer?: string | null
           publish_date: string
@@ -77,6 +79,7 @@ export type Database = {
           created_at?: string
           daily_phrase?: string | null
           daily_phrase_author?: string | null
+          daily_phrase_bg_url?: string | null
           id?: string
           prayer?: string | null
           publish_date?: string
