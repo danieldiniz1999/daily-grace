@@ -48,7 +48,10 @@ function DevocionalPage() {
       if (error) throw error;
       return data;
     },
+  });
+
   const { data: completions } = useCompletions(user?.id);
+
   const isCompleted = data?.id && completions?.has(data.id);
 
   const toggleCompletion = useMutation({
