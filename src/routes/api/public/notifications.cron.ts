@@ -7,13 +7,14 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
     handlers: {
       POST: async ({ request }) => {
         const authHeader = request.headers.get('Authorization');
-        if (authHeader !== \`Bearer \${process.env['CRON_SECRET']}\`) {
+        const secret = process.env['CRON_SECRET'];
+        
+        if (authHeader !== `Bearer ${secret}`) {
           return new Response('Unauthorized', { status: 401 });
         }
 
         const { hour } = await request.json();
         
-        // Configurar VAPID keys se existirem
         const publicKey = process.env['VAPID_PUBLIC_KEY'];
         const privateKey = process.env['VAPID_PRIVATE_KEY'];
         if (publicKey && privateKey) {
@@ -27,7 +28,6 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
         const now = new Date();
         const today = now.toISOString().split('T')[0];
 
-        // 1. Buscar todos os usuários com assinaturas push
         const { data: subs } = await supabaseAdmin
           .from('push_subscriptions')
           .select('user_id, subscription_json');
@@ -35,7 +35,6 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
         if (!subs) return new Response('No subscriptions', { status: 200 });
 
         for (const sub of subs) {
-          // Verificar se o usuário já concluiu o devocional de hoje
           const { data: completion } = await supabaseAdmin
             .from('devotional_completions')
             .select('id')
@@ -61,7 +60,7 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
                 JSON.stringify({
                   title: 'Daily Grace',
                   body: message,
-                  url: '/devococionais'
+                  url: '/devocionais'
                 })
               );
             } catch (err) {
