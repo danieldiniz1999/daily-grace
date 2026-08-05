@@ -128,24 +128,24 @@ function ContaPage() {
     
     // Solicitar permissão de notificação se ativado
     if (notify && Notification.permission !== "granted") {
-      const permission = await Notification.requestPermission();
-      if (permission === "granted") {
-        const registration = await navigator.serviceWorker.ready;
-        const publicKey = import.meta.env.VITE_VAPID_PUBLIC_KEY;
-        if (publicKey) {
-          try {
+      try {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          const registration = await navigator.serviceWorker.ready;
+          const publicKey = import.meta.env.VITE_VAPID_PUBLIC_KEY;
+          if (publicKey) {
             const sub = await registration.pushManager.subscribe({
               userVisibleOnly: true,
               applicationServerKey: publicKey,
             });
-            await supabase.from("push_subscriptions" as any).upsert({
+            await supabase.from("push_subscriptions").upsert({
               user_id: userId,
               subscription_json: sub.toJSON() as any,
-            } as any, { onConflict: "user_id" } as any);
-          } catch (err) {
-            console.error("Erro ao assinar push:", err);
+            }, { onConflict: "user_id" });
           }
         }
+      } catch (err) {
+        console.error("Erro ao assinar push:", err);
       }
     }
 
