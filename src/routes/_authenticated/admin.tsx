@@ -131,14 +131,23 @@ function AdminTabs() {
     <AppShell isAdmin>
       <h1 className="font-display text-4xl md:text-5xl font-semibold">Administração</h1>
       <Tabs value={tab} onValueChange={setTab} className="mt-8">
-        <TabsList className="flex-wrap rounded-full bg-secondary p-1.5">
-          <TabsTrigger value="novo" className="rounded-full px-6 py-2 text-sm md:text-base">
+        <TabsList className="inline-flex h-auto w-auto items-center justify-start rounded-full bg-secondary/50 p-1 mb-4 overflow-hidden">
+          <TabsTrigger 
+            value="novo" 
+            className="rounded-full px-5 py-2.5 text-sm md:text-base font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm"
+          >
             Novo devocional
           </TabsTrigger>
-          <TabsTrigger value="publicados" className="rounded-full px-6 py-2 text-sm md:text-base">
+          <TabsTrigger 
+            value="publicados" 
+            className="rounded-full px-5 py-2.5 text-sm md:text-base font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm"
+          >
             Publicados
           </TabsTrigger>
-          <TabsTrigger value="assinantes" className="rounded-full px-6 py-2 text-sm md:text-base">
+          <TabsTrigger 
+            value="assinantes" 
+            className="rounded-full px-5 py-2.5 text-sm md:text-base font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm"
+          >
             Assinantes
           </TabsTrigger>
         </TabsList>
