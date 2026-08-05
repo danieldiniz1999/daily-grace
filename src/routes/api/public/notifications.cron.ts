@@ -28,17 +28,22 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
         const now = new Date();
         const today = now.toISOString().split('T')[0];
 
-        const { data: subs } = await supabaseAdmin
+        // Buscar assinaturas push
+        const { data: subs, error: subError } = await supabaseAdmin
           .from('push_subscriptions')
           .select('user_id, subscription_json');
 
-        if (!subs) return new Response('No subscriptions', { status: 200 });
+        if (subError || !subs) return new Response('No subscriptions or error', { status: 200 });
 
         for (const sub of subs) {
+          const userId = (sub as any).user_id;
+          const pushData = (sub as any).subscription_json;
+
+          // Verificar se o usuário já concluiu o devocional de hoje
           const { data: completion } = await supabaseAdmin
             .from('devotional_completions')
             .select('id')
-            .eq('user_id', sub.user_id)
+            .eq('user_id', userId)
             .eq('publish_date', today)
             .maybeSingle();
 
@@ -53,10 +58,10 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
             message = "Um momento para Deus? Seu devocional de hoje ainda espera por você. 🙏";
           }
 
-          if (shouldSend && publicKey && privateKey) {
+          if (shouldSend && publicKey && privateKey && pushData) {
             try {
               await webpush.sendNotification(
-                sub.subscription_json as any,
+                pushData as any,
                 JSON.stringify({
                   title: 'Daily Grace',
                   body: message,
@@ -64,7 +69,7 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
                 })
               );
             } catch (err) {
-              console.error('Push error:', err);
+              console.error('Push error for user', userId, ':', err);
             }
           }
         }
