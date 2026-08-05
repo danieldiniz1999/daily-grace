@@ -281,6 +281,13 @@ function DevotionalsAdmin({
     return candidate;
   }, [takenDates, today]);
 
+  // Se a data do formulário conflitar e for um novo devocional, ajusta para a próxima livre
+  useEffect(() => {
+    if (!form.id && takenDates.has(form.publish_date)) {
+      setForm(f => ({ ...f, publish_date: nextFreeDate }));
+    }
+  }, [nextFreeDate, form.id, takenDates, form.publish_date]);
+
 
   const save = useMutation({
     mutationFn: async (values: FormState) => {
