@@ -90,6 +90,7 @@ const emptyForm = (): FormState => ({
   prayer: "",
   daily_phrase: "",
   daily_phrase_author: "",
+  daily_phrase_bg_url: "",
 });
 
 const isBlank = (f: FormState) =>
