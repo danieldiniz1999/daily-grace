@@ -520,13 +520,70 @@ function DevotionalsAdmin({
                   <Input value={form.daily_phrase_author} onChange={set("daily_phrase_author")} placeholder="Ex: Paul D Tripp" className="h-11 text-base md:text-base" />
                 </div>
                 <div className="space-y-3">
-                  <FieldLabel>URL da Imagem de Fundo (Glorify Style)</FieldLabel>
-                  <Input 
-                    value={form.daily_phrase_bg_url} 
-                    onChange={set("daily_phrase_bg_url")} 
-                    placeholder="https://exemplo.com/imagem-devocional.jpg" 
-                    className="h-11 text-base md:text-base" 
-                  />
+                  <FieldLabel>Imagem de Fundo (Estilo Glorify)</FieldLabel>
+                  <div className="flex flex-col gap-3">
+                    {form.daily_phrase_bg_url ? (
+                      <div className="relative aspect-video w-full max-w-sm overflow-hidden rounded-xl border border-border shadow-sm group">
+                        <img 
+                          src={form.daily_phrase_bg_url} 
+                          alt="Background" 
+                          className="h-full w-full object-cover"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                          <Button 
+                            type="button" 
+                            variant="destructive" 
+                            size="sm" 
+                            className="rounded-full"
+                            onClick={() => setForm(f => ({ ...f, daily_phrase_bg_url: "" }))}
+                          >
+                            <Trash2 className="mr-2 size-4" /> Remover
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="relative flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border/60 bg-secondary/10 p-8 transition-colors hover:border-primary/40 hover:bg-secondary/20">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/30">
+                          <Plus className="size-6 text-muted-foreground" />
+                        </div>
+                        <div className="text-center">
+                          <p className="text-sm font-medium">Faça upload de uma imagem</p>
+                          <p className="mt-1 text-xs text-muted-foreground">Recomendado: 1080x1920 (9:16)</p>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="absolute inset-0 cursor-pointer opacity-0"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+
+                            const loadingToast = toast.loading("Enviando imagem...");
+                            try {
+                              const fileExt = file.name.split('.').pop();
+                              const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+                              const filePath = `phrases/${fileName}`;
+
+                              const { error: uploadError } = await supabase.storage
+                                .from('devotional-assets')
+                                .upload(filePath, file);
+
+                              if (uploadError) throw uploadError;
+
+                              const { data: { publicUrl } } = supabase.storage
+                                .from('devotional-assets')
+                                .getPublicUrl(filePath);
+
+                              setForm(f => ({ ...f, daily_phrase_bg_url: publicUrl }));
+                              toast.success("Imagem enviada com sucesso!", { id: loadingToast });
+                            } catch (error: any) {
+                              toast.error("Erro ao enviar: " + error.message, { id: loadingToast });
+                            }
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
                   <p className="text-xs text-muted-foreground">Deixe em branco para usar o fundo padrão floral.</p>
                 </div>
               </AccordionContent>
