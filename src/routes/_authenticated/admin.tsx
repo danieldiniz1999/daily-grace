@@ -172,6 +172,7 @@ type DevotionalRow = {
   prayer: string | null;
   daily_phrase: string | null;
   daily_phrase_author: string | null;
+  daily_phrase_bg_url: string | null;
 };
 
 function CharCount({ value, max }: { value: string; max: number }) {
