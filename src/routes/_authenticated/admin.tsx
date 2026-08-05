@@ -496,6 +496,31 @@ function DevotionalsAdmin({
               <AccordionTrigger className="text-base md:text-lg font-semibold [&>svg]:size-5">
                 <span className="flex items-center gap-3">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-primary-foreground shadow-sm">5</span>
+                  Frase do Dia (Glorify Style)
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="space-y-5 pb-4 pt-2">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <FieldLabel>A Frase do Dia</FieldLabel>
+                    <CharCount value={form.daily_phrase} max={LIMITS.daily_phrase} />
+                  </div>
+                  <AutoTextarea minRows={3} value={form.daily_phrase} onChange={set("daily_phrase")} placeholder="Ex: Viver no pequeno reino é uma busca interminável..." />
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <FieldLabel>Autor da frase</FieldLabel>
+                    <CharCount value={form.daily_phrase_author} max={LIMITS.daily_phrase_author} />
+                  </div>
+                  <Input value={form.daily_phrase_author} onChange={set("daily_phrase_author")} placeholder="Ex: Paul D Tripp" className="h-11 text-base md:text-base" />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="etapa-6" className="rounded-2xl border border-border/60 bg-secondary/20 px-4 md:px-5 py-1">
+              <AccordionTrigger className="text-base md:text-lg font-semibold [&>svg]:size-5">
+                <span className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-sm font-bold text-primary-foreground shadow-sm">6</span>
                   Revisar e publicar
                 </span>
               </AccordionTrigger>
