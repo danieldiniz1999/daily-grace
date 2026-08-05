@@ -64,6 +64,7 @@ type FormState = {
   prayer: string;
   daily_phrase: string;
   daily_phrase_author: string;
+  daily_phrase_bg_url: string;
 };
 
 const LIMITS = {
