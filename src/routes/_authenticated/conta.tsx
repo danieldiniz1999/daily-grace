@@ -121,8 +121,32 @@ function ContaPage() {
   const info = sub ? statusInfo[sub.status] : undefined;
   const Icon = info?.icon ?? CircleAlert;
 
-  function handleSave(e: React.FormEvent) {
+  async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+    
+    // Solicitar permissão de notificação se ativado
+    if (notify && Notification.permission !== "granted") {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        const registration = await navigator.serviceWorker.ready;
+        const publicKey = import.meta.env.VITE_VAPID_PUBLIC_KEY;
+        if (publicKey) {
+          try {
+            const sub = await registration.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: publicKey,
+            });
+            await supabase.from("push_subscriptions" as any).upsert({
+              user_id: userId,
+              subscription_json: sub.toJSON() as any,
+            } as any, { onConflict: "user_id" } as any);
+          } catch (err) {
+            console.error("Erro ao assinar push:", err);
+          }
+        }
+      }
+    }
+
     updateMutation.mutate({
       full_name: fullName,
       phone: phone.replace(/\D/g, "") || null,
@@ -130,6 +154,7 @@ function ContaPage() {
       preferred_bible_version: bibleVersion,
     });
   }
+
 
   return (
     <AppShell isAdmin={isAdmin} avatarUrl={avatarUrl}>

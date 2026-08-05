@@ -28,22 +28,22 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
         const now = new Date();
         const today = now.toISOString().split('T')[0];
 
-        // Usamos any para evitar erros de tipagem com a tabela nova não gerada
+        // Usamos cast 'as any' para evitar erros de tipo enquanto a tabela não está no types.ts
         const { data: subs, error: subError } = await (supabaseAdmin.from('push_subscriptions' as any)
           .select('user_id, subscription_json') as any);
 
         if (subError || !subs) return new Response('No subscriptions or error', { status: 200 });
 
-        for (const sub of subs) {
+        for (const sub of (subs as any[])) {
           const userId = sub.user_id;
           const pushData = sub.subscription_json;
 
           // Verificar se o usuário já concluiu o devocional de hoje
+          // Tipagem forçada para evitar erros com colunas que o TS ainda não conhece
           const { data: completion } = await (supabaseAdmin
-            .from('devotional_completions')
+            .from('devotional_completions' as any)
             .select('id')
             .eq('user_id', userId)
-            // Filtramos por completed_at que comece com o dia de hoje
             .gte('completed_at', `${today}T00:00:00`)
             .lte('completed_at', `${today}T23:59:59`)
             .maybeSingle() as any);
@@ -70,7 +70,7 @@ export const Route = createFileRoute('/api/public/notifications/cron')({
                 })
               );
             } catch (err) {
-              console.error('Push error for user', userId, ':', err);
+              console.error(`Push error for user ${userId}:`, err);
             }
           }
         }
