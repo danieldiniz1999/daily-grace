@@ -62,6 +62,8 @@ type FormState = {
   content: string;
   reflection_question: string;
   prayer: string;
+  daily_phrase: string;
+  daily_phrase_author: string;
 };
 
 const LIMITS = {
@@ -71,6 +73,8 @@ const LIMITS = {
   content: 10000,
   reflection_question: 2000,
   prayer: 3000,
+  daily_phrase: 1000,
+  daily_phrase_author: 200,
 };
 
 const DRAFT_KEY = "dg-admin-devotional-draft";
@@ -83,10 +87,12 @@ const emptyForm = (): FormState => ({
   content: "",
   reflection_question: "",
   prayer: "",
+  daily_phrase: "",
+  daily_phrase_author: "",
 });
 
 const isBlank = (f: FormState) =>
-  !f.title && !f.verse_reference && !f.verse_text && !f.content && !f.reflection_question && !f.prayer;
+  !f.title && !f.verse_reference && !f.verse_text && !f.content && !f.reflection_question && !f.prayer && !f.daily_phrase;
 
 function addDays(iso: string, days: number) {
   const [y, m, d] = iso.split("-").map(Number);
@@ -162,6 +168,8 @@ type DevotionalRow = {
   content: string;
   reflection_question: string | null;
   prayer: string | null;
+  daily_phrase: string | null;
+  daily_phrase_author: string | null;
 };
 
 function CharCount({ value, max }: { value: string; max: number }) {
@@ -272,6 +280,8 @@ function DevotionalsAdmin({
         content: values.content.trim(),
         reflection_question: values.reflection_question.trim() || null,
         prayer: values.prayer.trim() || null,
+        daily_phrase: values.daily_phrase.trim() || null,
+        daily_phrase_author: values.daily_phrase_author.trim() || null,
       };
       const query = values.id
         ? supabase.from("devotionals").update(payload).eq("id", values.id)
@@ -311,6 +321,8 @@ function DevotionalsAdmin({
       content: d.content,
       reflection_question: d.reflection_question ?? "",
       prayer: d.prayer ?? "",
+      daily_phrase: d.daily_phrase ?? "",
+      daily_phrase_author: d.daily_phrase_author ?? "",
     });
     focusForm();
     if (asCopy) toast.info(`Cópia criada para ${formatLong(nextFreeDate)}.`);
@@ -330,7 +342,9 @@ function DevotionalsAdmin({
     form.verse_text.length > LIMITS.verse_text ||
     form.content.length > LIMITS.content ||
     form.reflection_question.length > LIMITS.reflection_question ||
-    form.prayer.length > LIMITS.prayer;
+    form.prayer.length > LIMITS.prayer ||
+    form.daily_phrase.length > LIMITS.daily_phrase ||
+    form.daily_phrase_author.length > LIMITS.daily_phrase_author;
 
   return (
     <div className="space-y-8">
