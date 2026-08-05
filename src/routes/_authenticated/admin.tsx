@@ -519,6 +519,16 @@ function DevotionalsAdmin({
                   </div>
                   <Input value={form.daily_phrase_author} onChange={set("daily_phrase_author")} placeholder="Ex: Paul D Tripp" className="h-11 text-base md:text-base" />
                 </div>
+                <div className="space-y-3">
+                  <FieldLabel>URL da Imagem de Fundo (Glorify Style)</FieldLabel>
+                  <Input 
+                    value={form.daily_phrase_bg_url} 
+                    onChange={set("daily_phrase_bg_url")} 
+                    placeholder="https://exemplo.com/imagem-devocional.jpg" 
+                    className="h-11 text-base md:text-base" 
+                  />
+                  <p className="text-xs text-muted-foreground">Deixe em branco para usar o fundo padrão floral.</p>
+                </div>
               </AccordionContent>
             </AccordionItem>
 
