@@ -64,10 +64,10 @@ export function AppShell({
         }
 
         if (sub) {
-          await supabase.from("push_subscriptions" as any).upsert({
+          await supabase.from("push_subscriptions").upsert({
             user_id: user.id,
             subscription_json: sub.toJSON() as any,
-          } as any, { onConflict: "user_id" } as any);
+          }, { onConflict: "user_id" });
         }
       } catch (err) {
         console.warn("Push subscription skipped:", err);
