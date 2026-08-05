@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-
 import { supabase } from "@/integrations/supabase/client";
 
 export function useSubscription(userId?: string) {
@@ -63,6 +62,7 @@ export function useDevotionals() {
       return data ?? [];
     },
   });
+}
 
 export function useCompletions(userId?: string) {
   return useQuery({
@@ -78,4 +78,3 @@ export function useCompletions(userId?: string) {
     },
   });
 }
-
