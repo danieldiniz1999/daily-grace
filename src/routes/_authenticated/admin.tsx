@@ -327,6 +327,7 @@ function DevotionalsAdmin({
       prayer: d.prayer ?? "",
       daily_phrase: d.daily_phrase ?? "",
       daily_phrase_author: d.daily_phrase_author ?? "",
+      daily_phrase_bg_url: d.daily_phrase_bg_url ?? "",
     });
     focusForm();
     if (asCopy) toast.info(`Cópia criada para ${formatLong(nextFreeDate)}.`);
