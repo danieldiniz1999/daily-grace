@@ -508,6 +508,7 @@ function DevotionalsAdmin({
                     <li><span className="text-muted-foreground">Título:</span> {form.title || "—"}</li>
                     <li><span className="text-muted-foreground">Versículo:</span> {form.verse_text ? `${form.verse_text.slice(0, 70)}...` : "—"}</li>
                     <li><span className="text-muted-foreground">Mensagem:</span> {form.content ? `${form.content.slice(0, 100)}...` : "—"}</li>
+                    <li><span className="text-muted-foreground">Frase do Dia:</span> {form.daily_phrase ? "Preenchida" : "—"}</li>
                   </ul>
                 </div>
               </AccordionContent>

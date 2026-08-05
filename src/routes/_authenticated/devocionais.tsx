@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowRight, BookOpenText, CheckCircle2, Lock, Quote, Search, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpenText, CheckCircle2, Lock, Quote, Search, Sparkles, Feather } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
+import { DailyPhraseModal } from "@/components/DailyPhraseModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -47,6 +48,7 @@ function DevocionaisPage() {
   const { data: devotionals, isLoading } = useDevotionals();
   const { data: completions } = useCompletions(user?.id);
   const [search, setSearch] = useState("");
+  const [isPhraseOpen, setIsPhraseOpen] = useState(false);
 
 
   const today = todayISO();
@@ -162,6 +164,50 @@ function DevocionaisPage() {
               <p className="text-muted-foreground mt-2 text-sm">
                 Volte em instantes — ele será liberado ainda hoje.
               </p>
+            </div>
+          )}
+
+          {todayDev && todayDev.daily_phrase && (
+            <div className="mt-8">
+               <button
+                onClick={() => setIsPhraseOpen(true)}
+                className="w-full overflow-hidden rounded-2xl border border-border/60 bg-cream/30 p-5 text-left transition-all hover:bg-cream/50 active:scale-[0.98]"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-10 items-center justify-center rounded-full bg-secondary/50 text-primary">
+                      <Feather className="size-5" />
+                    </div>
+                    <span className="font-display text-lg font-semibold">Frase do Dia</span>
+                  </div>
+                  {todayDev.id && completions?.has(todayDev.id) && (
+                    <div className="flex size-6 items-center justify-center rounded-full bg-green-500 text-white">
+                      <CheckCircle2 className="size-4" />
+                    </div>
+                  )}
+                </div>
+                
+                <div className="mt-4">
+                  <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">A CITAÇÃO DE HOJE É DE:</p>
+                  <p className="font-display mt-1 text-2xl font-bold">{todayDev.daily_phrase_author || "Autor Desconhecido"}</p>
+                </div>
+                
+                <div className="mt-5">
+                   <div className="inline-flex w-full items-center justify-center rounded-2xl bg-black px-6 py-3 text-sm font-bold text-white uppercase">
+                      Ler
+                   </div>
+                </div>
+              </button>
+
+              <DailyPhraseModal 
+                isOpen={isPhraseOpen}
+                onClose={() => setIsPhraseOpen(false)}
+                phrase={todayDev.daily_phrase}
+                author={todayDev.daily_phrase_author || "Autor Desconhecido"}
+                devotionalId={todayDev.id}
+                isCompleted={todayDev.id ? completions?.has(todayDev.id) : false}
+                userId={user?.id}
+              />
             </div>
           )}
 
