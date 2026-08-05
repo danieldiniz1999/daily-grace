@@ -15,6 +15,8 @@ import {
   Save,
 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+
 
 import { AppShell } from "@/components/AppShell";
 import { AvatarUpload } from "@/components/AvatarUpload";
