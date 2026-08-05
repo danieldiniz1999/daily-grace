@@ -14,6 +14,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      devotional_completions: {
+        Row: {
+          completed_at: string
+          devotional_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          devotional_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          devotional_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devotional_completions_devotional_id_fkey"
+            columns: ["devotional_id"]
+            isOneToOne: false
+            referencedRelation: "devotionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       devotionals: {
         Row: {
           content: string
