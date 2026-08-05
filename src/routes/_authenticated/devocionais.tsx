@@ -107,7 +107,9 @@ function DevocionaisPage() {
             <Link
               to="/devocional/$date"
               params={{ date: todayDev.publish_date }}
-              className="bg-grace shadow-soft group relative block overflow-hidden rounded-[2rem] p-8 transition-all duration-300 hover:-translate-y-1 sm:p-10"
+              className={`bg-grace shadow-soft group relative block overflow-hidden rounded-[2rem] p-8 transition-all duration-300 hover:-translate-y-1 sm:p-10 ${
+                todayDev.id && completions?.has(todayDev.id) ? "after:bg-black/5 after:absolute after:inset-0 after:pointer-events-none" : ""
+              }`}
             >
               {/* textura decorativa */}
               <span className="bg-cream/20 pointer-events-none absolute -top-24 -right-16 size-64 rounded-full blur-2xl" />
@@ -132,14 +134,16 @@ function DevocionaisPage() {
                 </div>
 
                 <div className="mt-8 flex flex-wrap items-center gap-4">
-                  <span className="bg-background/95 text-primary inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-transform group-hover:translate-x-0.5">
-                    Ler agora <ArrowRight className="size-4" />
-                  </span>
-                  {todayDev.id && completions?.has(todayDev.id) && (
-                    <span className="bg-cream/30 text-primary-foreground flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold tracking-wide uppercase backdrop-blur-sm">
-                      <CheckCircle2 className="size-3.5" /> Concluído
+                  <div className="flex items-center gap-3">
+                    <span className="bg-background/95 text-primary inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-transform group-hover:translate-x-0.5">
+                      {todayDev.id && completions?.has(todayDev.id) ? "Revisitar" : "Ler agora"} <ArrowRight className="size-4" />
                     </span>
-                  )}
+                    {todayDev.id && completions?.has(todayDev.id) && (
+                      <span className="bg-cream text-primary flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold tracking-wide uppercase shadow-sm">
+                        <CheckCircle2 className="size-4" /> Concluído
+                      </span>
+                    )}
+                  </div>
                   <span className="text-primary-foreground/70 text-xs">
 
                     {readingMinutes(todayDev.content)} min de leitura
