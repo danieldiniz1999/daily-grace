@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { X, Share2, Check, Camera } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { X, Share2, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -66,15 +66,35 @@ export function DailyPhraseModal({
     setIsCapturing(true);
     try {
       // Pequeno delay para garantir que o DOM está pronto e animações terminadas
-      await new Promise(r => setTimeout(r, 100));
+      await new Promise(r => setTimeout(r, 500));
       
+      const filter = (node: HTMLElement) => {
+        const exclusionClasses = ['pointer-events-auto', 'ui-controls'];
+        return !exclusionClasses.some(cls => node.classList?.contains(cls));
+      };
+
       const dataUrl = await htmlToImage.toPng(cardRef.current, {
         quality: 1,
-        pixelRatio: 2,
+        pixelRatio: 3,
+        cacheBust: true,
+        style: {
+          transform: 'scale(1)',
+          transformOrigin: 'top left',
+          backgroundColor: '#000'
+        },
+        // Forçar a renderização de imagens externas
+        includeQueryParams: true,
+      });
+
+      // Segundo passo para garantir que tudo foi renderizado
+      // Às vezes o primeiro render falha com fontes/imagens externas
+      const finalDataUrl = await htmlToImage.toPng(cardRef.current, {
+        quality: 1,
+        pixelRatio: 3,
         cacheBust: true,
       });
 
-      const blob = await (await fetch(dataUrl)).blob();
+      const blob = await (await fetch(finalDataUrl)).blob();
       const file = new File([blob], "daily-grace-frase.png", { type: "image/png" });
 
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
@@ -85,13 +105,13 @@ export function DailyPhraseModal({
       } else {
         const link = document.createElement('a');
         link.download = 'daily-grace-frase.png';
-        link.href = dataUrl;
+        link.href = finalDataUrl;
         link.click();
         toast.success("Imagem baixada para compartilhar!");
       }
     } catch (err) {
       console.error("Erro ao gerar imagem:", err);
-      toast.error("Não foi possível gerar a imagem para compartilhar.");
+      toast.error("Não foi possível gerar a imagem. Tente novamente.");
     } finally {
       setIsCapturing(false);
     }
@@ -106,20 +126,21 @@ export function DailyPhraseModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex flex-col bg-black"
+          className="fixed inset-0 z-[100] flex flex-col bg-black overflow-hidden"
         >
           {/* Container para Captura (Glorify Style) */}
           <div 
             ref={cardRef}
             className="relative flex h-full w-full flex-col overflow-hidden bg-black"
           >
-            {/* Background Image */}
+            {/* Background Image - Forçar crossOrigin e carregamento total */}
             <div className="absolute inset-0 z-0">
               <img 
                 src={finalBgUrl} 
                 className="h-full w-full object-cover opacity-60"
                 alt="Fundo"
                 crossOrigin="anonymous"
+                loading="eager"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
             </div>
@@ -132,6 +153,7 @@ export function DailyPhraseModal({
                   src={logoAsset.url} 
                   alt="Daily Grace" 
                   className="size-12 object-contain brightness-0 invert" 
+                  crossOrigin="anonymous"
                 />
                 <h3 className="font-display text-sm font-bold tracking-[0.3em] text-white/70 uppercase">
                   DAILY GRACE
