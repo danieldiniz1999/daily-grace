@@ -54,7 +54,9 @@ function DevocionaisPage() {
   const today = todayISO();
   const list = devotionals ?? [];
   const todayDev = list.find((d) => d.publish_date === today);
-  const history = list.filter((d) => d.publish_date !== today);
+  
+  // O histórico contém todos os devocionais liberados exceto o de hoje
+  const history = list.filter((d) => d.publish_date < today);
   const blocked = !loadingSub && subscription?.status !== "active" && !isAdmin;
 
   const firstName = (profile?.full_name ?? "").split(" ")[0];
