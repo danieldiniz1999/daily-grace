@@ -244,7 +244,9 @@ function DevocionaisPage() {
             {history.length === 0 ? (
               <div className="border-border/60 bg-card/70 mt-6 rounded-2xl border p-8 text-center">
                 <p className="text-muted-foreground text-sm">
-                  Seu acervo começa hoje. A cada dia um novo devocional entra aqui. 💜
+                  {isAdmin 
+                    ? "Nenhum devocional anterior encontrado no sistema." 
+                    : "Seu acervo começa hoje. A cada dia um novo devocional entra aqui. 💜"}
                 </p>
               </div>
             ) : filteredHistory.length === 0 ? (
