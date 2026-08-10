@@ -55,8 +55,13 @@ function DevocionaisPage() {
   const list = devotionals ?? [];
   const todayDev = list.find((d) => d.publish_date === today);
   
-  // O histórico contém todos os devocionais liberados exceto o de hoje
-  const history = list.filter((d) => d.publish_date < today);
+  // O histórico contém os devocionais liberados. 
+  // Para Admins, mostra tudo (inclusive hoje se quiserem ver no acervo, mas aqui mantemos o hoje separado).
+  // A regra de segurança do banco (RLS) já filtra o acesso progressivo para assinantes.
+  const history = isAdmin 
+    ? list.filter((d) => d.publish_date !== today)
+    : list.filter((d) => d.publish_date < today);
+
   const blocked = !loadingSub && subscription?.status !== "active" && !isAdmin;
 
   const firstName = (profile?.full_name ?? "").split(" ")[0];
@@ -239,7 +244,9 @@ function DevocionaisPage() {
             {history.length === 0 ? (
               <div className="border-border/60 bg-card/70 mt-6 rounded-2xl border p-8 text-center">
                 <p className="text-muted-foreground text-sm">
-                  Seu acervo começa hoje. A cada dia um novo devocional entra aqui. 💜
+                  {isAdmin 
+                    ? "Nenhum devocional anterior encontrado no sistema." 
+                    : "Seu acervo começa hoje. A cada dia um novo devocional entra aqui. 💜"}
                 </p>
               </div>
             ) : filteredHistory.length === 0 ? (
