@@ -28,7 +28,11 @@ import mockupApp from "@/assets/mockup-app.png.asset.json";
 import seIdentifica from "@/assets/se-identifica.jpg.asset.json";
 import { AnimateIn } from "@/components/animate-in";
 import { Button } from "@/components/ui/button";
-import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
+import {
+  KIWIFY_CHECKOUT_URL,
+  KIWIFY_CHECKOUT_MONTHLY,
+  KIWIFY_CHECKOUT_ANNUAL,
+} from "@/lib/config";
 import logoAsset from "@/assets/daily-grace-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -59,10 +63,12 @@ function CTA({
   children = "Quero começar hoje",
   tone = "solid",
   className = "",
+  href = "#oferta",
 }: {
   children?: React.ReactNode;
   tone?: "solid" | "cream" | "white";
   className?: string;
+  href?: string;
 }) {
   const toneClasses = {
     solid: "bg-grace btn-glow text-primary-foreground",
@@ -70,13 +76,18 @@ function CTA({
     white: "bg-white text-foreground hover:bg-white/95 border border-white/80 shadow-soft",
   };
 
+  const isExternal = href.startsWith("http");
+
   return (
     <Button
       asChild
       size="lg"
       className={`group relative h-14 overflow-hidden rounded-full px-9 text-base font-semibold tracking-tight transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-xl active:scale-[0.98] ${toneClasses[tone]} ${className}`}
     >
-      <a href={KIWIFY_CHECKOUT_URL} target="_blank" rel="noreferrer">
+      <a
+        href={href}
+        {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
+      >
         {children}
         <ArrowRight className="ml-1 size-4 transition-transform duration-300 group-hover:translate-x-1" />
       </a>
@@ -323,7 +334,7 @@ function Landing() {
               asChild
               className="bg-grace hidden rounded-full px-6 font-semibold shadow-soft sm:inline-flex"
             >
-              <a href={KIWIFY_CHECKOUT_URL} target="_blank" rel="noreferrer">
+              <a href="#oferta">
                 Quero assinar
               </a>
             </Button>
@@ -945,56 +956,153 @@ function Landing() {
 
       {/* OFERTA */}
       <AnimateIn>
-        <section id="oferta" className="mx-auto max-w-3xl px-5 pb-24">
-          <div className="overflow-hidden rounded-[2.5rem] border border-primary/20 bg-card shadow-lift">
-            <div className="bg-grace px-8 py-7 text-center">
-              <Eyebrow tone="on">Assinatura Daily Grace</Eyebrow>
-              <h2 className="font-display mt-4 text-4xl leading-tight font-semibold text-primary-foreground text-balance">
-                Menos que um café por dia para caminhar com Deus
-              </h2>
-            </div>
-            <div className="px-8 py-11 text-center sm:px-14">
-              <p className="text-muted-foreground text-pretty">
-                Acesso completo à área da assinante, devocional novo todos os dias, acervo liberado e
-                bônus inclusos.
-              </p>
+        <section id="oferta" className="mx-auto max-w-5xl px-5 pb-24">
+          <SectionHead
+            eyebrow="Planos e Assinatura"
+            title="Escolha o plano ideal para a sua caminhada"
+            sub="Acesso imediato a todos os devocionais, acervo liberado e bônus exclusivos. Cancele quando quiser."
+          />
 
-              <ul className="mx-auto mt-8 max-w-md space-y-3 text-left">
-                {[
-                  "Devocional inédito todos os dias",
-                  "Versículo, reflexão e oração guiada",
-                  "Acervo completo do seu período de assinatura",
-                  "Guia de Oração da Mulher de Fé",
-                  "30 Versículos para dias difíceis",
-                  "Acesso no celular, tablet e computador",
-                  "Cancelamento livre, sem multa",
-                ].map((i) => (
-                  <li key={i} className="flex items-start gap-3 text-[15px]">
-                    <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
-                    {i}
-                  </li>
-                ))}
-              </ul>
+          <div className="mt-12 grid items-stretch gap-8 lg:grid-cols-2">
+            {/* PLANO MENSAL */}
+            <div className="relative flex flex-col justify-between rounded-[2.5rem] border border-border/70 bg-card/90 p-8 shadow-card backdrop-blur transition-all duration-300 hover:border-primary/30 sm:p-10">
+              <div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="rounded-full bg-secondary px-3.5 py-1 text-xs font-bold tracking-wider text-secondary-foreground uppercase">
+                    Plano Mensal
+                  </span>
+                  <span className="text-xs font-medium text-muted-foreground">Sem fidelidade</span>
+                </div>
+
+                <div className="mt-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-sm font-semibold text-muted-foreground">R$</span>
+                    <span className="font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
+                      19,90
+                    </span>
+                    <span className="text-sm font-medium text-muted-foreground">/mês</span>
+                  </div>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Cobrança mensal automática. Cancele a qualquer momento direto na Kiwify.
+                  </p>
+                </div>
+
+                <div className="my-8 h-px bg-border/60" />
+
+                <ul className="space-y-3.5 text-sm">
+                  {[
+                    "Devocional inédito todos os dias",
+                    "Versículo, reflexão e oração guiada",
+                    "Frase do Dia para download e compartilhamento",
+                    "Bíblia Sagrada completa em 8 versões",
+                    "Acervo de devocionais liberados",
+                    "Acesso no celular, tablet e computador",
+                    "Cancelamento livre, sem multa",
+                  ].map((i) => (
+                    <li key={i} className="flex items-start gap-3 text-foreground/85">
+                      <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <span>{i}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               <div className="mt-10">
-                <CTA className="w-full sm:w-auto">Assinar o Daily Grace</CTA>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="group relative h-14 w-full rounded-full border-primary/40 bg-card text-base font-semibold transition-all duration-300 hover:border-primary hover:bg-primary/5 active:scale-[0.98]"
+                >
+                  <a href={KIWIFY_CHECKOUT_MONTHLY} target="_blank" rel="noreferrer">
+                    Assinar Plano Mensal
+                    <ArrowRight className="ml-1 size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                </Button>
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  Acesso liberado na hora via e-mail
+                </p>
               </div>
-              <p className="mt-4 text-sm text-muted-foreground">
-                Pagamento seguro pela Kiwify · Acesso imediato · Cancele quando quiser
-              </p>
+            </div>
+
+            {/* PLANO ANUAL (DESTAQUE) */}
+            <div className="relative flex flex-col justify-between overflow-hidden rounded-[2.5rem] border-2 border-primary bg-card p-8 shadow-lift sm:p-10">
+              {/* Badge de Destaque */}
+              <div className="bg-grace absolute top-0 right-0 rounded-bl-2xl px-5 py-1.5 text-[11px] font-bold tracking-wider text-primary-foreground uppercase shadow-sm">
+                ⭐ Mais Escolhido · Economize 25%
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="rounded-full bg-primary/10 px-3.5 py-1 text-xs font-bold tracking-wider text-primary uppercase">
+                    Plano Anual
+                  </span>
+                </div>
+
+                <div className="mt-6">
+                  <p className="text-xs font-medium text-muted-foreground line-through">
+                    De R$ 238,80 por apenas:
+                  </p>
+                  <div className="flex items-baseline gap-1 mt-0.5">
+                    <span className="text-sm font-semibold text-muted-foreground">R$</span>
+                    <span className="font-display text-5xl font-bold tracking-tight text-primary sm:text-6xl">
+                      179,90
+                    </span>
+                    <span className="text-sm font-medium text-muted-foreground">/ano</span>
+                  </div>
+                  <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                    <Sparkles className="size-3.5" /> Equivale a apenas R$ 14,99 por mês
+                  </div>
+                </div>
+
+                <div className="my-8 h-px bg-border/60" />
+
+                <ul className="space-y-3.5 text-sm">
+                  {[
+                    "Tudo do plano mensal garantido por 1 ano",
+                    "Economia de R$ 58,90 no ano (quase 3 meses grátis)",
+                    "Bônus: Guia de Oração da Mulher de Fé",
+                    "Bônus: 30 Versículos para dias difíceis",
+                    "Bônus: Acervo que só cresce com o tempo",
+                    "Devocional inédito todas as manhãs",
+                    "Garantia incondicional de 7 dias",
+                  ].map((i) => (
+                    <li key={i} className="flex items-start gap-3 text-foreground/90 font-medium">
+                      <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <span>{i}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mt-10">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-grace btn-glow group relative h-14 w-full rounded-full text-base font-semibold text-primary-foreground shadow-soft transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98]"
+                >
+                  <a href={KIWIFY_CHECKOUT_ANNUAL} target="_blank" rel="noreferrer">
+                    Quero o Plano Anual com Desconto
+                    <ArrowRight className="ml-1 size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                </Button>
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  Pagamento seguro Kiwify · Cartão, PIX ou Boleto
+                </p>
+              </div>
             </div>
           </div>
 
           {/* GARANTIA */}
-          <div className="mt-8 flex flex-col items-center gap-5 rounded-[2rem] border border-border/60 bg-background/75 p-8 text-center sm:flex-row sm:text-left">
+          <div className="mt-10 flex flex-col items-center gap-5 rounded-[2rem] border border-border/60 bg-background/75 p-8 text-center sm:flex-row sm:text-left">
             <span className="bg-grace flex size-18 shrink-0 items-center justify-center rounded-full shadow-soft">
               <ShieldCheck className="size-9 text-primary-foreground" />
             </span>
             <div>
               <h3 className="font-display text-2xl font-semibold">Garantia incondicional de 7 dias</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                Experimente sem risco. Se em 7 dias você sentir que o Daily Grace não é para você,
-                basta pedir o reembolso e devolvemos 100% do valor. O risco é todo nosso.
+                Experimente qualquer um dos planos sem risco. Se em até 7 dias você sentir que o Daily Grace não é para você,
+                basta solicitar o reembolso direto na Kiwify e devolvemos 100% do seu valor. O risco é todo nosso.
               </p>
             </div>
           </div>
@@ -1113,7 +1221,7 @@ function Landing() {
           asChild
           className="bg-grace group relative h-12 w-full overflow-hidden rounded-full text-base font-semibold shadow-soft btn-glow transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
         >
-          <a href={KIWIFY_CHECKOUT_URL} target="_blank" rel="noreferrer">
+          <a href="#oferta">
             Quero assinar agora
             <ArrowRight className="ml-1 size-4 transition-transform duration-300 group-hover:translate-x-1" />
           </a>

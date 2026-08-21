@@ -108,7 +108,7 @@ export const Route = createFileRoute("/api/public/kiwify")({
           }
         }
 
-        const paidEvents = ["order_approved", "subscription_renewed", "billet_created"];
+        const paidEvents = ["order_approved", "subscription_renewed"];
         const isPaid =
           orderStatus === "paid" ||
           orderStatus === "approved" ||
@@ -117,9 +117,13 @@ export const Route = createFileRoute("/api/public/kiwify")({
         const isCanceled = ["refunded", "chargedback", "canceled", "cancelled"].includes(
           orderStatus,
         );
-        const isLate = ["subscription_late", "billet_expired", "waiting_payment"].includes(
-          webhookEvent || orderStatus,
-        );
+        const isLate = [
+          "subscription_late",
+          "billet_expired",
+          "waiting_payment",
+          "billet_created",
+          "pix_created",
+        ].includes(webhookEvent || orderStatus);
 
         const status = isCanceled ? "canceled" : isLate ? "past_due" : isPaid ? "active" : null;
         if (!status) return new Response("ok (evento ignorado)");
