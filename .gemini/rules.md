@@ -38,6 +38,11 @@ Isso garante que o Lovable receba as mudanças em tempo real.
 - O arquivo `.env` NÃO é sincronizado com o GitHub por segurança
 - Se precisar de chaves de API (Supabase, etc.), peça ao usuário
 
+### 6. Execução Direta e Autonomia Total (Instrução Permanente do Usuário)
+- **Não fazer perguntas intermediárias**: Quando o usuário enviar o que deseja, execute diretamente no código de forma autônoma.
+- Não pause para pedir aprovação ou confirmação se o pedido já estiver claro.
+- Aplique as alterações no código, valide e envie (commit + push) diretamente.
+
 ## Stack do Projeto
 - React 19 + TypeScript + Vite 8
 - TanStack Router + React Query
