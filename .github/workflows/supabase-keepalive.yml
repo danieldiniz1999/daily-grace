@@ -1,0 +1,43 @@
+name: Supabase keepalive
+
+on:
+  schedule:
+    # Daily at 09:17 America/Fortaleza (12:17 UTC).
+    - cron: '17 12 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read one devotional ID
+        shell: bash
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$SUPABASE_URL" || -z "$SUPABASE_ANON_KEY" ]]; then
+            echo 'Required Supabase secrets are missing.'
+            exit 1
+          fi
+
+          for attempt in 1 2 3 4; do
+            if status=$(curl --silent --output /dev/null --write-out '%{http_code}' \
+              --connect-timeout 10 --max-time 30 \
+              --header "apikey: $SUPABASE_ANON_KEY" \
+              "${SUPABASE_URL%/}/rest/v1/devotionals?select=id&limit=1") \
+              && [[ "$status" == '200' ]]; then
+              echo 'Supabase read-only query succeeded (HTTP 200).'
+              exit 0
+            fi
+            echo "Attempt $attempt of 4 failed."
+            if [[ "$attempt" -lt 4 ]]; then
+              sleep 10
+            fi
+          done
+          echo 'Supabase read-only query failed after 4 attempts.'
+          exit 1
