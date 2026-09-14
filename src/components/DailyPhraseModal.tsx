@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import logoAsset from "@/assets/daily-grace-logo.png.asset.json";
+import logoAsset from "@/assets/daily-grace-logo.png";
 import * as htmlToImage from 'html-to-image';
 
 interface DailyPhraseModalProps {
@@ -150,7 +150,7 @@ export function DailyPhraseModal({
               {/* Header com Logo - Centralizado como no Glorify */}
               <div className="flex flex-col items-center justify-center space-y-3">
                 <img 
-                  src={logoAsset.url} 
+                  src={logoAsset} 
                   alt="Daily Grace" 
                   className="size-12 object-contain brightness-0 invert" 
                   crossOrigin="anonymous"

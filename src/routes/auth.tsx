@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { KIWIFY_CHECKOUT_URL } from "@/lib/config";
-import logoAsset from "@/assets/daily-grace-logo.png.asset.json";
+import logoAsset from "@/assets/daily-grace-logo.png";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -69,7 +69,7 @@ function AuthPage() {
   return (
     <div className="bg-soft flex min-h-screen flex-col items-center justify-center px-5 py-12 font-['Poppins']">
       <Link to="/" className="mb-8 flex items-center gap-2">
-        <img src={logoAsset.url} alt="Daily Grace" className="size-11 object-contain" />
+        <img src={logoAsset} alt="Daily Grace" className="size-11 object-contain" />
         <span className="text-3xl font-semibold tracking-tight">Daily Grace</span>
       </Link>
 

@@ -23,9 +23,9 @@ import {
 
 import autoraImg from "@/assets/autora.jpg";
 import depoimentoModerno from "@/assets/depoimento-moderno.jpg";
-import heroUploaded from "@/assets/hero-uploaded.png.asset.json";
-import mockupApp from "@/assets/mockup-app.png.asset.json";
-import seIdentifica from "@/assets/se-identifica.jpg.asset.json";
+import heroUploaded from "@/assets/hero-uploaded.png";
+import mockupApp from "@/assets/mockup-app.png";
+import seIdentifica from "@/assets/se-identifica.jpg";
 import { AnimateIn } from "@/components/animate-in";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,7 +33,7 @@ import {
   KIWIFY_CHECKOUT_MONTHLY,
   KIWIFY_CHECKOUT_ANNUAL,
 } from "@/lib/config";
-import logoAsset from "@/assets/daily-grace-logo.png.asset.json";
+import logoAsset from "@/assets/daily-grace-logo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,7 +52,7 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "preload", as: "image", href: heroUploaded.url }],
+    links: [{ rel: "preload", as: "image", href: heroUploaded }],
   }),
   component: Landing,
 });
@@ -306,7 +306,7 @@ function Landing() {
       <div className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
         <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
           <div className="flex items-center gap-2.5">
-            <img src={logoAsset.url} alt="Daily Grace" className="size-9 object-contain" />
+            <img src={logoAsset} alt="Daily Grace" className="size-9 object-contain" />
             <span className="font-display text-2xl font-semibold tracking-tight">Daily Grace</span>
           </div>
           <nav className="hidden items-center gap-7 text-sm text-muted-foreground lg:flex">
@@ -393,7 +393,7 @@ function Landing() {
           <div className="bg-grace pointer-events-none absolute -inset-y-6 inset-x-0 rounded-[3rem] opacity-15 blur-3xl sm:-inset-x-6" />
           <div className="relative">
             <img
-              src={heroUploaded.url}
+              src={heroUploaded}
               alt="Mulher sorrindo enquanto lê o devocional no celular com a Bíblia aberta"
               fetchPriority="high"
               decoding="async"
@@ -430,7 +430,7 @@ function Landing() {
             <div className="relative">
               <div className="absolute -inset-4 rounded-[2.5rem] bg-cream/70" />
               <img
-                src={seIdentifica.url}
+                src={seIdentifica}
                 alt="Bíblia lilás, celular com notificações de fé, café e flores - a rotina que deseja"
                 width={1200}
                 height={900}
@@ -522,7 +522,7 @@ function Landing() {
                 </div>
               </div>
               <img
-                src={mockupApp.url}
+                src={mockupApp}
                 alt="Celular mostrando a tela do app Daily Grace com o devocional do dia"
                 width={1024}
                 height={1024}
@@ -1176,7 +1176,7 @@ function Landing() {
         <footer className="border-t border-border/60 bg-background/70">
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 px-5 py-8 sm:flex-row">
             <div className="flex items-center gap-2.5">
-              <img src={logoAsset.url} alt="Daily Grace" className="size-7 object-contain" />
+              <img src={logoAsset} alt="Daily Grace" className="size-7 object-contain" />
               <span className="font-display text-xl font-semibold tracking-tight">Daily Grace</span>
             </div>
 

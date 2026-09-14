@@ -15,7 +15,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import logoAsset from "@/assets/daily-grace-logo.png.asset.json";
+import logoAsset from "@/assets/daily-grace-logo.png";
 
 type NavItem = { to: string; label: string; icon: ReactNode };
 
@@ -143,7 +143,7 @@ export function AppShell({
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
           <Link to="/devocionais" className="flex items-center gap-2">
             <img
-              src={logoAsset.url}
+              src={logoAsset}
               alt="Daily Grace"
               className="size-9 object-contain"
             />
@@ -181,7 +181,7 @@ export function AppShell({
                     className="flex items-center gap-2"
                   >
                     <img
-                      src={logoAsset.url}
+                      src={logoAsset}
                       alt="Daily Grace"
                       className="size-9 object-contain"
                     />
