@@ -95,30 +95,48 @@ function welcomeHtml(params: { name?: string | null; email: string; password: st
 
 
 async function sendEmail(to: string, subject: string, html: string) {
-  const lovableKey = process.env.LOVABLE_API_KEY;
   const resendKey = process.env.RESEND_API_KEY;
-  if (!lovableKey || !resendKey) {
-    console.error("[email] chaves de envio ausentes (LOVABLE_API_KEY/RESEND_API_KEY)");
+  const lovableKey = process.env.LOVABLE_API_KEY;
+
+  if (!resendKey) {
+    console.error("[email] chave de envio ausente (RESEND_API_KEY)");
     return { sent: false, error: "missing_keys" };
   }
 
-  const response = await fetch(`${GATEWAY_URL}/emails`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${lovableKey}`,
-      "X-Connection-Api-Key": resendKey,
-    },
-    body: JSON.stringify({ from: fromAddress(), to: [to], subject, html }),
-  });
+  const isLovableGateway = Boolean(lovableKey);
+  const endpoint = isLovableGateway
+    ? `${GATEWAY_URL}/emails`
+    : "https://api.resend.com/emails";
 
-  if (!response.ok) {
-    const body = await response.text();
-    console.error(`[email] falha no envio [${response.status}]: ${body}`);
-    return { sent: false, error: `${response.status}: ${body}` };
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (isLovableGateway) {
+    headers["Authorization"] = `Bearer ${lovableKey}`;
+    headers["X-Connection-Api-Key"] = resendKey;
+  } else {
+    headers["Authorization"] = `Bearer ${resendKey}`;
   }
 
-  return { sent: true };
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ from: fromAddress(), to: [to], subject, html }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      console.error(`[email] falha no envio [${response.status}]: ${body}`);
+      return { sent: false, error: `${response.status}: ${body}` };
+    }
+
+    return { sent: true };
+  } catch (err: any) {
+    console.error("[email] erro ao conectar com o serviço de e-mail:", err?.message || err);
+    return { sent: false, error: err?.message || "fetch_error" };
+  }
 }
 
 /** E-mail de boas-vindas com os dados de acesso (senha definitiva). */

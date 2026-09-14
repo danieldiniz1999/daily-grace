@@ -1,9 +1,9 @@
-# Daily Grace — Regras de Sincronização (Lovable ↔ GitHub ↔ Antigravity)
+# Daily Grace — Regras do Projeto (Vercel ↔ GitHub ↔ Antigravity)
 
 ## Contexto
-Este projeto é gerenciado por 3 ferramentas que se comunicam via GitHub:
-- **Lovable** (editor visual): https://lovable.dev/projects/fde306fb-dadf-470c-a0b2-77eb3395eaf3
-- **GitHub** (hub central): https://github.com/danieldiniz1999/daily-grace
+Este projeto é versionado no GitHub e implantado na Vercel:
+- **Deploy**: Vercel (conectado via GitHub)
+- **GitHub** (repositório central): https://github.com/danieldiniz1999/daily-grace
 - **Antigravity** (IA/código): workspace local
 
 ## Regras OBRIGATÓRIAS

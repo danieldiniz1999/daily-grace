@@ -49,9 +49,7 @@ export function reportLovableError(error: unknown, context: Record<string, unkno
       : error instanceof Error
         ? error.message
         : String(error);
-  window.__lovableReportRuntimeError?.({
-    message,
-    stack: error instanceof Error ? error.stack : undefined,
-    filename: window.location.pathname,
-  });
+  if (!window.__lovableEvents && !window.__lovableReportRuntimeError) {
+    console.error("[Runtime Error]", error, context);
+  }
 }

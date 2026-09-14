@@ -1,26 +1,40 @@
-# Daily Grace
+# Daily Grace 💜
 
-oi
+Aplicativo devocional diário cristão para mulheres, construído com **React 19**, **TanStack Start (SSR)**, **Vite**, **Tailwind CSS v4** e **Supabase**.
 
-This project was built with [Lovable](https://lovable.dev).
+---
 
-**Live app**: https://welcoming-wave-hello.lovable.app
+## 🚀 Deploy na Vercel
 
-## Build with Lovable
+O projeto está 100% configurado para rodar na Vercel com suporte nativo a SSR e Server Functions via Nitro.
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/fde306fb-dadf-470c-a0b2-77eb3395eaf3).
+### Passo a passo para importar na Vercel:
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+1. Acesse o dashboard da [Vercel](https://vercel.com/new).
+2. Conecte sua conta do GitHub e importe o repositório **`danieldiniz1999/daily-grace`**.
+3. Em **Framework Preset**, a Vercel detectará automaticamente **Vite** (configurado via `vercel.json`).
+4. Em **Environment Variables**, adicione as variáveis necessárias (consulte o arquivo `.env.example`).
+5. Clique em **Deploy**.
 
-## Development
+---
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## 🛠️ Desenvolvimento Local
+
+Pré-requisitos: Node.js 20+ e npm.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+# 1. Instalar dependências
+npm install
+
+# 2. Iniciar servidor de desenvolvimento
 npm run dev
+
+# 3. Build de produção (preset Vercel)
+npm run build
 ```
+
+---
+
+## 🔐 Variáveis de Ambiente
+
+Consulte o arquivo [`.env.example`](./.env.example) para a lista completa das variáveis de ambiente necessárias (Supabase, Kiwify, Resend, VAPID).
