@@ -79,7 +79,7 @@ export const syncKiwifySales = createServerFn({ method: "POST" })
 /** Consulta na Kiwify o status atual de uma assinante e atualiza o app. */
 export const refreshKiwifyStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { email: string }) => {
+  .validator((input: { email: string }) => {
     const email = String(input?.email ?? "").trim().toLowerCase();
     if (!email.includes("@")) throw new Error("E-mail inválido.");
     return { email };

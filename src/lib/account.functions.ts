@@ -12,7 +12,7 @@ const profileSchema = z.object({
 
 export const updateProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) => profileSchema.parse(data))
+  .validator((data) => profileSchema.parse(data))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     type ProfileUpdate = {
@@ -42,7 +42,7 @@ const passwordSchema = z.object({
 
 export const changePassword = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) => passwordSchema.parse(data))
+  .validator((data) => passwordSchema.parse(data))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
@@ -70,7 +70,7 @@ export const changePassword = createServerFn({ method: "POST" })
 
 export const uploadAvatar = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) => {
+  .validator((data) => {
     if (!(data instanceof FormData)) throw new Error("Payload inválido.");
     const file = data.get("file");
     if (!(file instanceof File)) throw new Error("Arquivo inválido.");
