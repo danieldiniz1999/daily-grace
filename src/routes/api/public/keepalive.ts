@@ -12,7 +12,8 @@ export const Route = createFileRoute('/api/public/keepalive')({
             .limit(1);
 
           if (error) {
-            return new Response(JSON.stringify({ ok: false, error: error.message }), {
+            console.error('[keepalive] erro na consulta:', error.message);
+            return new Response(JSON.stringify({ ok: false, error: 'Falha no keepalive' }), {
               status: 500,
               headers: { 'Content-Type': 'application/json' },
             });
@@ -31,7 +32,8 @@ export const Route = createFileRoute('/api/public/keepalive')({
             }
           );
         } catch (err: any) {
-          return new Response(JSON.stringify({ ok: false, error: err?.message || 'unknown' }), {
+          console.error('[keepalive] erro interno:', err?.message || err);
+          return new Response(JSON.stringify({ ok: false, error: 'Erro interno' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
           });

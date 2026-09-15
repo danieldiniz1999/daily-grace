@@ -1,20 +1,41 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
 import webpush from 'web-push';
+import { timingSafeEqual } from 'crypto';
 
 export const Route = createFileRoute('/api/public/notifications/cron')({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const authHeader = request.headers.get('Authorization');
-        const secret = process.env['CRON_SECRET'];
+        const authHeader = request.headers.get('Authorization') ?? '';
+        const secret = process.env['CRON_SECRET']?.trim();
         
-        if (authHeader !== `Bearer ${secret}`) {
+        if (!secret) {
+          console.error('[cron] CRON_SECRET não configurado no ambiente.');
           return new Response('Unauthorized', { status: 401 });
         }
 
-        const { hour } = await request.json();
-        
+        const expectedHeader = `Bearer ${secret}`;
+        const authBuffer = Buffer.from(authHeader);
+        const expectedBuffer = Buffer.from(expectedHeader);
+
+        if (
+          authBuffer.length !== expectedBuffer.length ||
+          !timingSafeEqual(authBuffer, expectedBuffer)
+        ) {
+          return new Response('Unauthorized', { status: 401 });
+        }
+
+        let hour: number | undefined;
+        try {
+          const body = await request.json();
+          if (typeof body?.hour === 'number') {
+            hour = body.hour;
+          }
+        } catch {
+          return new Response('Bad Request', { status: 400 });
+        }
+
         const publicKey = process.env['VAPID_PUBLIC_KEY'];
         const privateKey = process.env['VAPID_PRIVATE_KEY'];
         if (publicKey && privateKey) {

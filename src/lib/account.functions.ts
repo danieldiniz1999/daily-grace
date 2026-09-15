@@ -74,20 +74,40 @@ export const uploadAvatar = createServerFn({ method: "POST" })
     if (!(data instanceof FormData)) throw new Error("Payload inválido.");
     const file = data.get("file");
     if (!(file instanceof File)) throw new Error("Arquivo inválido.");
-    return { file };
+    
+    // Limite de tamanho: máx 5MB
+    const MAX_SIZE = 5 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      throw new Error("A imagem deve ter no máximo 5MB.");
+    }
+
+    // Validação estrita de tipo MIME permitido
+    const allowedMimeMap: Record<string, string> = {
+      "image/jpeg": "jpg",
+      "image/jpg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp",
+    };
+
+    const ext = allowedMimeMap[file.type.toLowerCase()];
+    if (!ext) {
+      throw new Error("Formato não suportado. Envie uma imagem JPG, PNG ou WEBP.");
+    }
+
+    return { file, ext, contentType: file.type };
   })
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    const { file } = data;
+    const { file, ext, contentType } = data;
 
-    const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
+    // Caminho estritamente isolado pelo ID do usuário autenticado
     const path = `${userId}/avatar.${ext}`;
 
     const { error: uploadError } = await supabase.storage
       .from("avatars")
       .upload(path, file, {
         upsert: true,
-        contentType: file.type || "image/jpeg",
+        contentType,
       });
 
     if (uploadError) throw new Error(uploadError.message);
