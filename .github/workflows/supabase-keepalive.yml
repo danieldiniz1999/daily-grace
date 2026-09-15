@@ -16,8 +16,8 @@ jobs:
       - name: Read one devotional ID
         shell: bash
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://oouviympqvwyjcocbaza.supabase.co' }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXZpeW1wcXZ3eWpjb2NiYXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzNjMxMDEsImV4cCI6MjEwMDkzOTEwMX0.Oo2B1wOacnQLLyHQn5zoC5Mf1yeowN3pT7tnuv8h1dc' }}
         run: |
           set -euo pipefail
           if [[ -z "$SUPABASE_URL" || -z "$SUPABASE_ANON_KEY" ]]; then

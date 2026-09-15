@@ -18,6 +18,7 @@ import { Route as AuthenticatedBibliaRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AuthenticatedDevocionaisRouteImport } from './routes/_authenticated/devocionais'
 import { Route as AuthenticatedDevocionalDateRouteImport } from './routes/_authenticated/devocional.$date'
+import { Route as ApiPublicKeepaliveRouteImport } from './routes/api/public/keepalive'
 import { Route as ApiPublicKiwifyRouteImport } from './routes/api/public/kiwify'
 import { Route as ApiPublicNotificationsCronRouteImport } from './routes/api/public/notifications.cron'
 
@@ -67,6 +68,11 @@ const AuthenticatedDevocionalDateRoute =
     path: '/devocional/$date',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicKeepaliveRoute = ApiPublicKeepaliveRouteImport.update({
+  id: '/api/public/keepalive',
+  path: '/api/public/keepalive',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicKiwifyRoute = ApiPublicKiwifyRouteImport.update({
   id: '/api/public/kiwify',
   path: '/api/public/kiwify',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/conta': typeof AuthenticatedContaRoute
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
+  '/api/public/keepalive': typeof ApiPublicKeepaliveRoute
   '/api/public/kiwify': typeof ApiPublicKiwifyRoute
   '/api/public/notifications/cron': typeof ApiPublicNotificationsCronRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/conta': typeof AuthenticatedContaRoute
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
+  '/api/public/keepalive': typeof ApiPublicKeepaliveRoute
   '/api/public/kiwify': typeof ApiPublicKiwifyRoute
   '/api/public/notifications/cron': typeof ApiPublicNotificationsCronRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/devocionais': typeof AuthenticatedDevocionaisRoute
   '/_authenticated/devocional/$date': typeof AuthenticatedDevocionalDateRoute
+  '/api/public/keepalive': typeof ApiPublicKeepaliveRoute
   '/api/public/kiwify': typeof ApiPublicKiwifyRoute
   '/api/public/notifications/cron': typeof ApiPublicNotificationsCronRoute
 }
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/conta'
     | '/devocionais'
     | '/devocional/$date'
+    | '/api/public/keepalive'
     | '/api/public/kiwify'
     | '/api/public/notifications/cron'
   fileRoutesByTo: FileRoutesByTo
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/conta'
     | '/devocionais'
     | '/devocional/$date'
+    | '/api/public/keepalive'
     | '/api/public/kiwify'
     | '/api/public/notifications/cron'
   id:
@@ -153,6 +164,7 @@ export interface FileRouteTypes {
     | '/_authenticated/conta'
     | '/_authenticated/devocionais'
     | '/_authenticated/devocional/$date'
+    | '/api/public/keepalive'
     | '/api/public/kiwify'
     | '/api/public/notifications/cron'
   fileRoutesById: FileRoutesById
@@ -162,6 +174,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiPublicKeepaliveRoute: typeof ApiPublicKeepaliveRoute
   ApiPublicKiwifyRoute: typeof ApiPublicKiwifyRoute
   ApiPublicNotificationsCronRoute: typeof ApiPublicNotificationsCronRoute
 }
@@ -231,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDevocionalDateRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/keepalive': {
+      id: '/api/public/keepalive'
+      path: '/api/public/keepalive'
+      fullPath: '/api/public/keepalive'
+      preLoaderRoute: typeof ApiPublicKeepaliveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/kiwify': {
       id: '/api/public/kiwify'
       path: '/api/public/kiwify'
@@ -272,6 +292,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiPublicKeepaliveRoute: ApiPublicKeepaliveRoute,
   ApiPublicKiwifyRoute: ApiPublicKiwifyRoute,
   ApiPublicNotificationsCronRoute: ApiPublicNotificationsCronRoute,
 }
