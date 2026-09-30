@@ -5,6 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import { loadBook, loadBooks } from "@/lib/bible";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,15 +34,7 @@ export function AppShell({
   const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => authListener.subscription.unsubscribe();
-  }, []);
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!user) return;

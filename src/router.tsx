@@ -6,9 +6,9 @@ export const getRouter = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        // Evita refetches desnecessários: dados ficam "frescos" por 5 minutos
-        staleTime: 5 * 60 * 1000,
-        gcTime: 30 * 60 * 1000,
+        // Dados frescos por 10 minutos (navegação instantânea sem flashes de loading)
+        staleTime: 10 * 60 * 1000,
+        gcTime: 60 * 60 * 1000,
         refetchOnWindowFocus: false,
         refetchOnReconnect: true,
         retry: 1,
@@ -20,10 +20,10 @@ export const getRouter = () => {
     routeTree,
     context: { queryClient },
     scrollRestoration: true,
-    // Pré-carrega a rota quando a usuária passa o mouse/toca no link
+    // Pré-carrega rotas e dados de forma ultra-rápida ao toque ou hover
     defaultPreload: "intent",
-    defaultPreloadDelay: 60,
-    defaultPreloadStaleTime: 0,
+    defaultPreloadDelay: 40,
+    defaultPreloadStaleTime: 60 * 1000,
   });
 
   return router;

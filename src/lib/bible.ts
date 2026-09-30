@@ -25,7 +25,15 @@ const bookCache = new Map<string, Promise<string[][]>>();
 
 export function loadBooks(): Promise<BibleBook[]> {
   if (!booksCache) {
-    booksCache = fetch("/bible/books.json").then((r) => r.json());
+    booksCache = fetch("/bible/books.json")
+      .then((r) => {
+        if (!r.ok) throw new Error("Falha ao carregar livros da Bíblia");
+        return r.json();
+      })
+      .catch((err) => {
+        booksCache = null; // Permite tentar novamente na próxima chamada
+        throw err;
+      });
   }
   return booksCache;
 }
@@ -34,7 +42,15 @@ export function loadBook(version: BibleVersionId, bookIndex: number): Promise<st
   const key = `${version}:${bookIndex}`;
   let cached = bookCache.get(key);
   if (!cached) {
-    cached = fetch(`/bible/${version}/${bookIndex}.json`).then((r) => r.json());
+    cached = fetch(`/bible/${version}/${bookIndex}.json`)
+      .then((r) => {
+        if (!r.ok) throw new Error("Falha ao carregar capítulo");
+        return r.json();
+      })
+      .catch((err) => {
+        bookCache.delete(key); // Permite retry em caso de falha de rede
+        throw err;
+      });
     bookCache.set(key, cached);
   }
   return cached;
