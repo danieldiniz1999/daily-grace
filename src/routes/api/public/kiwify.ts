@@ -140,10 +140,11 @@ export const Route = createFileRoute("/api/public/kiwify")({
             ? new Date(paidAt)
             : new Date();
 
+        const phone = String(customer.mobile ?? customer.phone ?? customer.Phone ?? "") || null;
         const { provisionSubscription } = await import("@/lib/subscription.server");
 
         try {
-          await provisionSubscription({
+          const result = await provisionSubscription({
             email,
             name,
             status,
@@ -152,6 +153,20 @@ export const Route = createFileRoute("/api/public/kiwify")({
             orderId: orderId || null,
             renew: webhookEvent === "subscription_renewed",
           });
+
+          // Se a conta for nova e tiver telefone, envia mensagem pelo WhatsApp via Evolution API (se configurada)
+          if (result.created && phone) {
+            try {
+              const { sendWelcomeWhatsApp } = await import("@/lib/evolution.server");
+              await sendWelcomeWhatsApp({
+                phone,
+                name,
+                email,
+              });
+            } catch (whatsErr) {
+              console.warn("[kiwify] Aviso: falha ao enviar WhatsApp de boas-vindas:", whatsErr);
+            }
+          }
         } catch (e) {
           console.error("[kiwify] erro ao salvar assinatura", e);
           return new Response("Erro ao salvar assinatura", { status: 500 });

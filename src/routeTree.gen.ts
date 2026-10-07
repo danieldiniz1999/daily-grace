@@ -18,6 +18,7 @@ import { Route as AuthenticatedBibliaRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AuthenticatedDevocionaisRouteImport } from './routes/_authenticated/devocionais'
 import { Route as AuthenticatedDevocionalDateRouteImport } from './routes/_authenticated/devocional.$date'
+import { Route as ApiPublicAsaasRouteImport } from './routes/api/public/asaas'
 import { Route as ApiPublicKeepaliveRouteImport } from './routes/api/public/keepalive'
 import { Route as ApiPublicKiwifyRouteImport } from './routes/api/public/kiwify'
 import { Route as ApiPublicNotificationsCronRouteImport } from './routes/api/public/notifications.cron'
@@ -68,6 +69,11 @@ const AuthenticatedDevocionalDateRoute =
     path: '/devocional/$date',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicAsaasRoute = ApiPublicAsaasRouteImport.update({
+  id: '/api/public/asaas',
+  path: '/api/public/asaas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicKeepaliveRoute = ApiPublicKeepaliveRouteImport.update({
   id: '/api/public/keepalive',
   path: '/api/public/keepalive',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/conta': typeof AuthenticatedContaRoute
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
+  '/api/public/asaas': typeof ApiPublicAsaasRoute
   '/api/public/keepalive': typeof ApiPublicKeepaliveRoute
   '/api/public/kiwify': typeof ApiPublicKiwifyRoute
   '/api/public/notifications/cron': typeof ApiPublicNotificationsCronRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/conta': typeof AuthenticatedContaRoute
   '/devocionais': typeof AuthenticatedDevocionaisRoute
   '/devocional/$date': typeof AuthenticatedDevocionalDateRoute
+  '/api/public/asaas': typeof ApiPublicAsaasRoute
   '/api/public/keepalive': typeof ApiPublicKeepaliveRoute
   '/api/public/kiwify': typeof ApiPublicKiwifyRoute
   '/api/public/notifications/cron': typeof ApiPublicNotificationsCronRoute
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/devocionais': typeof AuthenticatedDevocionaisRoute
   '/_authenticated/devocional/$date': typeof AuthenticatedDevocionalDateRoute
+  '/api/public/asaas': typeof ApiPublicAsaasRoute
   '/api/public/keepalive': typeof ApiPublicKeepaliveRoute
   '/api/public/kiwify': typeof ApiPublicKiwifyRoute
   '/api/public/notifications/cron': typeof ApiPublicNotificationsCronRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/conta'
     | '/devocionais'
     | '/devocional/$date'
+    | '/api/public/asaas'
     | '/api/public/keepalive'
     | '/api/public/kiwify'
     | '/api/public/notifications/cron'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/conta'
     | '/devocionais'
     | '/devocional/$date'
+    | '/api/public/asaas'
     | '/api/public/keepalive'
     | '/api/public/kiwify'
     | '/api/public/notifications/cron'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/_authenticated/conta'
     | '/_authenticated/devocionais'
     | '/_authenticated/devocional/$date'
+    | '/api/public/asaas'
     | '/api/public/keepalive'
     | '/api/public/kiwify'
     | '/api/public/notifications/cron'
@@ -174,6 +186,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiPublicAsaasRoute: typeof ApiPublicAsaasRoute
   ApiPublicKeepaliveRoute: typeof ApiPublicKeepaliveRoute
   ApiPublicKiwifyRoute: typeof ApiPublicKiwifyRoute
   ApiPublicNotificationsCronRoute: typeof ApiPublicNotificationsCronRoute
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDevocionalDateRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/asaas': {
+      id: '/api/public/asaas'
+      path: '/api/public/asaas'
+      fullPath: '/api/public/asaas'
+      preLoaderRoute: typeof ApiPublicAsaasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/keepalive': {
       id: '/api/public/keepalive'
       path: '/api/public/keepalive'
@@ -292,6 +312,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiPublicAsaasRoute: ApiPublicAsaasRoute,
   ApiPublicKeepaliveRoute: ApiPublicKeepaliveRoute,
   ApiPublicKiwifyRoute: ApiPublicKiwifyRoute,
   ApiPublicNotificationsCronRoute: ApiPublicNotificationsCronRoute,
